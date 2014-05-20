@@ -9,9 +9,9 @@ package Agents;
 import jade.core.Agent;
 
 /**
- *
- * @author Lucas
- */
+* Clase transporte, es el agente encargado de representar a un
+* Transporte específico.
+*/
 public class AgentTransport extends Agent{
     
 }

@@ -9,8 +9,8 @@ package Agents;
 import jade.core.Agent;
 
 /**
- *
- * @author Lucas
+* Clase Agencia de Turismo, es el agente encargado de representar 
+* a una Agencia de Turismo específica.
  */
 public class AgentTuristAgency extends Agent{
     

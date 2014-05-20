@@ -9,8 +9,8 @@ package Agents;
 import jade.core.Agent;
 
 /**
- *
- * @author Lucas
+* Clase Lugar, es el agente encargado de representar 
+* a un Lugar específico.
  */
 public class AgentPlace extends Agent {
     

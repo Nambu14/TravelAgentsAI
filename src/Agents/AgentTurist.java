@@ -9,8 +9,8 @@ package Agents;
 import jade.core.Agent;
 
 /**
- *
- * @author Lucas
+* Clase Turista, es el agente encargado de representar 
+* a los intereses de un Turista específico.
  */
 public class AgentTurist extends Agent {
     
