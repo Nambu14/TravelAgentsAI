@@ -15,7 +15,12 @@ Sobre la *plataforma de desarrollo*:
 
 ### How do I get set up? ###
 
-Para empezar, primero instalan todo y después **MAGIC**
+Para empezar, primero instalan todo y después **MAGIC** 
+
+Links útiles:
+
+* [JADE Programmer's Guide](http://jade.tilab.com/doc/programmersguide.pdf)
+* [Using Git in Netbeans](https://netbeans.org/kb/docs/ide/git.html)
 
 ### Who do I talk to? ###
 
