@@ -11,7 +11,7 @@ Sobre la *plataforma de desarrollo*:
 * [Netbeans 8.0](https://netbeans.org/)
 * [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html?ssSourceSiteId=otnes)
 * [Jade 4.3.2](http://jade.tilab.com/)
-* [Solarized Theme 4Netbeans <--- OBLIGATORIO](http://ethanschoonover.com/solarized) jaja
+* [Solarized Theme 4Netbeans <--- OBLIGATORIO no](http://ethanschoonover.com/solarized)
 
 ### How do I get set up? ###
 
