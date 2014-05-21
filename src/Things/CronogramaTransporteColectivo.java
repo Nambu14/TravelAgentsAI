@@ -16,12 +16,21 @@ import java.util.ArrayList;
 public class CronogramaTransporteColectivo extends CronogramaTrasporte {
     
     public static enum Comodidad {Ejecutivo, Cama, Semicama};
-    public Comodidad comodidad;
+    private Comodidad comodidad;
     
     public CronogramaTransporteColectivo(String origen, String destino, float precio, int capacidad, Comodidad comodidad, ArrayList<DayOfWeek> salidas) {
         super(origen, destino, precio, capacidad, salidas);
         this.comodidad=comodidad;
     }
+
+    public Comodidad getComodidad() {
+        return comodidad;
+    }
+
+    public void setComodidad(Comodidad comodidad) {
+        this.comodidad = comodidad;
+    }
+    
     
     
 }

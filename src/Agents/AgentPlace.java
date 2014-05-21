@@ -13,5 +13,6 @@ import jade.core.Agent;
 * a un Lugar específico.
  */
 public class AgentPlace extends Agent {
+    private String ciudad;
     
 }

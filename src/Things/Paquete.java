@@ -13,14 +13,14 @@ import java.util.GregorianCalendar;
  * @author Lucas
  */
 public class Paquete {
-    public String origen;
-    public String destino;
-    public float presupuestoMax;
-    public int cantidadPersonas;
-    public GregorianCalendar fechaInicialInferior;
-    public GregorianCalendar fechaInicialSuperior;
-    public int duracion;
-    public Lugar alojamiento;
+    private String origen;
+    private String destino;
+    private float presupuestoMax;
+    private int cantidadPersonas;
+    private GregorianCalendar fechaInicialInferior;
+    private GregorianCalendar fechaInicialSuperior;
+    private int duracion;
+    private Lugar alojamiento;
 
     public Paquete(String origen, String destino, float presupuestoMax, int cantidadPersonas, GregorianCalendar fechaInicialInferior, GregorianCalendar fechaInicialSuperior, int duracion, Lugar alojamiento) {
         this.origen = origen;

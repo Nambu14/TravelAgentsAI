@@ -12,7 +12,7 @@ package Things;
  */
 public class Lugar {
 
-    public int estrellas;
-    public int precioHabitacion;
+    private int estrellas;
+    private int precioHabitacion;
     
 }

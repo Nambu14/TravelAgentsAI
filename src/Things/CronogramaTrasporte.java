@@ -16,11 +16,11 @@ import java.util.GregorianCalendar;
  * 
  */
 public class CronogramaTrasporte {
-    public String origen;
-    public String destino;
-    public float precioPersona;
-    public int capacidad;
-    public ArrayList<DayOfWeek> salidas;
+    private String origen;
+    private String destino;
+    private float precioPersona;
+    private int capacidad;
+    private ArrayList<DayOfWeek> salidas;
 
     /**
      *
