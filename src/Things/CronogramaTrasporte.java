@@ -18,7 +18,7 @@ import java.util.GregorianCalendar;
 public class CronogramaTrasporte {
     public String origen;
     public String destino;
-    public float precio;
+    public float precioPersona;
     public int capacidad;
     public ArrayList<DayOfWeek> salidas;
 
@@ -33,7 +33,7 @@ public class CronogramaTrasporte {
     public CronogramaTrasporte(String origen, String destino, float precio, int capacidad, ArrayList<DayOfWeek> salidas) {
         this.origen = origen;
         this.destino = destino;
-        this.precio = precio;
+        this.precioPersona = precio;
         this.capacidad = capacidad;
         this.salidas = salidas;
     }
@@ -55,11 +55,11 @@ public class CronogramaTrasporte {
     }
 
     public float getPrecio() {
-        return precio;
+        return precioPersona;
     }
 
     public void setPrecio(float precio) {
-        this.precio = precio;
+        this.precioPersona = precio;
     }
 
     public int getCapacidad() {
