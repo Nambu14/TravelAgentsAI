@@ -22,6 +22,14 @@ public class CronogramaTrasporte {
     public int capacidad;
     public ArrayList<DayOfWeek> salidas;
 
+    /**
+     *
+     * @param origen
+     * @param destino
+     * @param precio
+     * @param capacidad
+     * @param salidas
+     */
     public CronogramaTrasporte(String origen, String destino, float precio, int capacidad, ArrayList<DayOfWeek> salidas) {
         this.origen = origen;
         this.destino = destino;
