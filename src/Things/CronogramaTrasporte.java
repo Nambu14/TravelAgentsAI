@@ -20,16 +20,13 @@ public class CronogramaTrasporte {
     public String destino;
     public float precio;
     public int capacidad;
-    public static enum Comodidad {Ejecutivo, Cama, Semicama};
-    public Comodidad comodidad;
     public ArrayList<DayOfWeek> salidas;
 
-    public CronogramaTrasporte(String origen, String destino, float precio, int capacidad, Comodidad comodidad, ArrayList<DayOfWeek> salidas) {
+    public CronogramaTrasporte(String origen, String destino, float precio, int capacidad, ArrayList<DayOfWeek> salidas) {
         this.origen = origen;
         this.destino = destino;
         this.precio = precio;
         this.capacidad = capacidad;
-        this.comodidad = comodidad;
         this.salidas = salidas;
     }
 
@@ -63,14 +60,6 @@ public class CronogramaTrasporte {
 
     public void setCapacidad(int capacidad) {
         this.capacidad = capacidad;
-    }
-
-    public Comodidad getComodidad() {
-        return comodidad;
-    }
-
-    public void setComodidad(Comodidad comodidad) {
-        this.comodidad = comodidad;
     }
 
     public ArrayList<DayOfWeek> getSalidas() {
