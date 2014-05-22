@@ -12,7 +12,8 @@ package Things;
  */
 public class Lugar {
 
-    private int estrellas;
-    private int precioHabitacion;
+    private String ciudad;
+    private int precioPersona;
+    private String[] servicios;
     
 }

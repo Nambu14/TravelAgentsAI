@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
  */
 public class PaqueteAereo extends Paquete{
 
-   public static enum Comodidad {PrimeraClase, Business, Turista};
+   public static enum Comodidad {PRIMERA_CLASE, BUSSINES, TURISTA};
    private Comodidad comodidad;
   
     public PaqueteAereo(String origen, String destino, float presupuestoMax, Comodidad comodidad, int cantidadPersonas, GregorianCalendar fechaInicialInferior, GregorianCalendar fechaInicialSuperior, int duracion, Lugar alojamiento) {
