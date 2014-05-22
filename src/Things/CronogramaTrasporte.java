@@ -15,7 +15,7 @@ import java.util.GregorianCalendar;
  *
  * 
  */
-public class CronogramaTrasporte {
+public abstract class CronogramaTrasporte {
     private String origen;
     private String destino;
     private float precioPersona;

@@ -9,9 +9,16 @@ package Agents;
 import jade.core.Agent;
 
 /**
-* Clase transporte, es el agente encargado de representar a un
-* Transporte específico.
+* Clase transporte, es el agente encargado de representar a una
+* empresa de transporte específica.
 */
-public class AgentTransport extends Agent{
+public abstract class AgentTransport extends Agent{
     
+    private float[] descuentoPorPersonas;
+    private float[] descuentoPorAnticipacion;
+    //Descuento dado por promociones en determinados días.
+    private float[] descuentoPorDias;
+    
+    
+
 }

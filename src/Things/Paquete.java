@@ -6,6 +6,7 @@
 
 package Things;
 
+import Agents.AgenteLugar;
 import java.util.GregorianCalendar;
 
 /**
@@ -20,84 +21,30 @@ public class Paquete {
     private GregorianCalendar fechaInicialInferior;
     private GregorianCalendar fechaInicialSuperior;
     private int duracion;
-    private Lugar alojamiento;
-
-    public Paquete(String origen, String destino, float presupuestoMax, int cantidadPersonas, GregorianCalendar fechaInicialInferior, GregorianCalendar fechaInicialSuperior, int duracion, Lugar alojamiento) {
-        this.origen = origen;
-        this.destino = destino;
-        this.presupuestoMax = presupuestoMax;
-        this.cantidadPersonas = cantidadPersonas;
-        this.fechaInicialInferior = fechaInicialInferior;
-        this.fechaInicialSuperior = fechaInicialSuperior;
-        this.duracion = duracion;
-        this.alojamiento = alojamiento;
-    }
-
-    public String getOrigen() {
-        return origen;
-    }
-
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
-
-    public String getDestino() {
-        return destino;
-    }
-
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
-
-    public float getPresupuestoMax() {
-        return presupuestoMax;
-    }
-
-    public void setPresupuestoMax(float presupuestoMax) {
-        this.presupuestoMax = presupuestoMax;
-    }
-
-    public int getCantidadPersonas() {
-        return cantidadPersonas;
-    }
-
-    public void setCantidadPersonas(int cantidadPersonas) {
-        this.cantidadPersonas = cantidadPersonas;
-    }
-
-    public GregorianCalendar getFechaInicialInferior() {
-        return fechaInicialInferior;
-    }
-
-    public void setFechaInicialInferior(GregorianCalendar fechaInicialInferior) {
-        this.fechaInicialInferior = fechaInicialInferior;
-    }
-
-    public GregorianCalendar getFechaInicialSuperior() {
-        return fechaInicialSuperior;
-    }
-
-    public void setFechaInicialSuperior(GregorianCalendar fechaInicialSuperior) {
-        this.fechaInicialSuperior = fechaInicialSuperior;
-    }
-
-    public int getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
-    }
-
-    public Lugar getAlojamiento() {
-        return alojamiento;
-    }
-
-    public void setAlojamiento(Lugar alojamiento) {
-        this.alojamiento = alojamiento;
-    }
-
+    private AgenteLugar alojamiento;
+    private float ponderacionPrecio;
+    private float ponderacionCalidad;
     
-    
-    
+    public void setPonderacion (float precio, float calidad){
+        if ((precio+calidad)==1){
+            this.setPonderacionCalidad(calidad);
+            this.setPonderacionPrecio(precio);
+        }
+    }
+
+    public float getPonderacionPrecio() {
+        return ponderacionPrecio;
+    }
+
+    private void setPonderacionPrecio(float ponderacionPrecio) {
+        this.ponderacionPrecio = ponderacionPrecio;
+    }
+
+    public float getPonderacionCalidad() {
+        return ponderacionCalidad;
+    }
+
+    private void setPonderacionCalidad(float ponderacionCalidad) {
+        this.ponderacionCalidad = ponderacionCalidad;
+    }
 }

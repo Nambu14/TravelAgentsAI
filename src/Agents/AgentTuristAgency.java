@@ -6,6 +6,7 @@
 
 package Agents;
 
+import jade.core.AID;
 import jade.core.Agent;
 
 /**
@@ -14,4 +15,14 @@ import jade.core.Agent;
  */
 public class AgentTuristAgency extends Agent{
     
+    //Descuentos máximos a pedir a una empresa de transporte o lugar.
+    private float descuentoTransporte;
+    private float descuentoLugar;
+    //Descuentos por pago con efectivo o tarjeta.
+    private float[] descuentoPropio;
+    private AID[] transportes;
+    private AID[] lugares;
+    
+    
+   
 }

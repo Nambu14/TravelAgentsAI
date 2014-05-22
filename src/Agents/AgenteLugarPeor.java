@@ -4,21 +4,21 @@
  * and open the template in the editor.
  */
 
-package Things;
+package Agents;
 
 /**
  *
  * @author Torre
  */
-public class LugarMejor extends Lugar {
-    
-    private enum Tipo{HOTEL, APART};
+public class AgenteLugarPeor extends AgenteLugar {
+    private enum Tipo{CABAÑA, HOSTAL};
+    private Tipo tipo;
     private int calidad;
 
-    public LugarMejor(int calidad) {
-            if(calidad>0 && calidad<6){
+    public AgenteLugarPeor(int calidad, Tipo tipo) {
+            if(calidad>0 && calidad<4){
             this.calidad = calidad;
             }
+            this.tipo=tipo;
     }
-    
 }

@@ -4,16 +4,13 @@
  * and open the template in the editor.
  */
 
-package Things;
+package Agents;
 
 /**
  *
- * @author Lucas
+ * @author Torre
  */
-public class Lugar {
-
-    private String ciudad;
-    private int precioPersona;
-    private String[] servicios;
+public class AgenteColectivo extends AgentTransport{
+    
     
 }
