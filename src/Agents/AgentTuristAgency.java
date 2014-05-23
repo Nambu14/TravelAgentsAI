@@ -26,14 +26,7 @@ public class AgentTuristAgency extends Agent{
     @Override
     protected void setup() {
         
-        Object [] args = getArguments();
-        if (args != null && args.length >0) {
-            descuentoTransporte = (float) args[0];
-            descuentoLugar = (float) args[1];
-            descuentoPropio = (float []) args[2];
-            transportes = (AID[]) args[3];
-            lugares = (AID[]) args[4];
-        }
+        
     }
     
  

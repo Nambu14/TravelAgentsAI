@@ -22,12 +22,7 @@ public abstract class AgentTransport extends Agent{
     @Override
    protected void setup(){
        
-       Object[] args = getArguments();
-       if (args != null && args.length >0) {
-           descuentoPorPersonas = (float []) args[0];
-           descuentoPorAnticipacion = (float []) args[1];
-           descuentoPorDias = (float []) args[2];
-       }
+     
        }
  
 }

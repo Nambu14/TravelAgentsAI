@@ -17,9 +17,6 @@ public class AgenteAvion extends AgentTransport {
     
     @Override
     protected void setup() {
-    Object[] args = getArguments();
-       if (args != null && args.length >0) {
-           rutas = (CronogramaTransporteAereo []) args;
-           }
+    
     }
 }
