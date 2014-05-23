@@ -19,6 +19,7 @@ public abstract class AgentTransport extends Agent{
     //Descuento dado por promociones en determinados días.
     private float[] descuentoPorDias;
     
+    @Override
    protected void setup(){
        
        Object[] args = getArguments();

@@ -21,5 +21,16 @@ public class AgenteLugar extends Agent{
     private float[] descuentoPorAnticipacion;
     private float[] descuentoPorCantidadDeDias;
     
-    
+    @Override
+    protected void setup() {
+        Object [] args = getArguments();
+        if (args != null && args.length >0) {
+        ciudad = (String) args[0];
+        precioPersona = (int) args [1];
+        servicios = (String []) args [2];
+        descuentoPorPersonas = (float []) args[3];
+        descuentoPorAnticipacion = (float []) args[4];
+        descuentoPorCantidadDeDias = (float []) args[5];
+        }
+    }
 }

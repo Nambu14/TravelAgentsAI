@@ -15,6 +15,7 @@ import Things.CronogramaTransporteColectivo;
 public class AgenteColectivo extends AgentTransport{
     private CronogramaTransporteColectivo [] rutas;
     
+    @Override
     protected void setup() {
     Object[] args = getArguments();
        if (args != null && args.length >0) {

@@ -16,11 +16,16 @@ public class AgenteLugarMejor extends AgenteLugar {
     private Tipo tipo;
     private int calidad;
 
-    public AgenteLugarMejor(int calidad, Tipo tipo) {
-            if(calidad>0 && calidad<6){
-            this.calidad = calidad;
-            }
-            this.tipo=tipo;
+    @Override
+    protected void setup() {
+      Object [] args = getArguments();
+      if (args != null && args.length >0) {
+          tipo = (Tipo) args[0];      
+          int cal = (int) args [1];
+          if(cal>0 && cal<6){
+            calidad = cal;
+              }
+      }
     }
     
 }
