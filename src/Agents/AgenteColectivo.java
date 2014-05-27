@@ -8,12 +8,17 @@ package Agents;
 
 import Things.CronogramaTransporteColectivo;
 import Ventanas.VentanaTransporteColectivo;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 
 /**
  *
  * @author Torre
  */
 public class AgenteColectivo extends AgentTransport{
+    private String nombre;
     private CronogramaTransporteColectivo [] rutas;
     private VentanaTransporteColectivo myGui;
    
@@ -21,10 +26,33 @@ public class AgenteColectivo extends AgentTransport{
     protected void setup() {
         myGui= new VentanaTransporteColectivo(this);
         myGui.showGui();
-    
+    //Registro en paginas amarillas
+        DFAgentDescription dfd = new DFAgentDescription();
+        dfd.setName(getAID());
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("Transporte Colectivo");
+        sd.setName(nombre);
+        dfd.addServices(sd);
+        try{
+            DFService.register(this, dfd);
+        }
+        catch (FIPAException fe){
+            fe.printStackTrace();
+        }
     }
     
-    public void asignarRutas(CronogramaTransporteColectivo[] cronograma){
-        rutas= cronograma;
+    public void definirColectivo(String name, CronogramaTransporteColectivo[] cronograma){
+        nombre = name;
+        rutas = cronograma;
     }
+    protected void takeDown(){
+        //Quitar registro de las paginas amarillas
+        try{
+            DFService.deregister(this);
+        }
+        catch (FIPAException fe){
+            fe.printStackTrace();
+        }
+    }
+    
 }
