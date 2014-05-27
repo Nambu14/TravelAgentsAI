@@ -6,25 +6,31 @@
 
 package Agents;
 
+import Ventanas.VentanaLugarPeor;
+
 /**
  *
  * @author Torre
  */
 public class AgenteLugarPeor extends AgenteLugar {
-    private enum Tipo{CABAÑA, HOSTAL};
+    public enum Tipo{CABAÑA, HOSTAL};
     private Tipo tipo;
     private int calidad;
+    private VentanaLugarPeor myGui;
 
-    private void AgenteLugarPeor(Tipo tipo, int calidad){
-        if(calidad>0 && calidad<4){
-            this.calidad = calidad;
-              }
-        this.tipo = tipo;
-    }
     @Override
     protected void setup() {
-     
+        myGui= new VentanaLugarPeor(this);
+        myGui.showGui();
           
       
     }
+    //ver bien la definicion del tipo en la gui
+    public void definirLugarPeor(Tipo tipo, int calidad){
+        this.calidad = calidad;
+        this.tipo = tipo;
+    }
+    
+    
+   
 }

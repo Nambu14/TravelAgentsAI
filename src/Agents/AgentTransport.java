@@ -8,6 +8,7 @@ package Agents;
 
 import jade.core.Agent;
 
+
 /**
 * Clase transporte, es el agente encargado de representar a una
 * empresa de transporte específica.
@@ -18,11 +19,20 @@ public abstract class AgentTransport extends Agent{
     private float[] descuentoPorAnticipacion;
     //Descuento dado por promociones en determinados días.
     private float[] descuentoPorDias;
-    
+        
     @Override
    protected void setup(){
-       
-     
+            
        }
- 
+   // Métodos llamados desde la interfaz, donde ya se crean los arreglos
+   public void asignarDescuentoPersonas(float[] dtoPsas) {
+       descuentoPorPersonas = dtoPsas;
+   }
+   public void asignarDescuentoDias(float[] dtoDias) {
+       descuentoPorDias = dtoDias;
+   }
+   public void asignarDescuentoAnticipación(float[] dtoAnticipacion) {
+       descuentoPorAnticipacion = dtoAnticipacion;
+   }
+   
 }

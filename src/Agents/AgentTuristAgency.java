@@ -6,6 +6,7 @@
 
 package Agents;
 
+import Ventanas.VentanaAgencia;
 import jade.core.AID;
 import jade.core.Agent;
 
@@ -22,12 +23,26 @@ public class AgentTuristAgency extends Agent{
     private float[] descuentoPropio;
     private AID[] transportes;
     private AID[] lugares;
+    private VentanaAgencia myGui;
     
     @Override
     protected void setup() {
-        
-        
+        myGui= new VentanaAgencia(this);
+        myGui.showGui();
+        descuentoPropio = new float[2];
     }
     
- 
+    //Métodos llamados desde la interfaz
+    
+    public void agregarDescuentos(float dtoTransporte, float dtoLugar){
+        descuentoTransporte = dtoTransporte;
+        descuentoLugar = dtoLugar;
+    }
+    
+    public void asignarDescuentoPropio(float efectivo, float tarjeta){
+        descuentoPropio[0] = efectivo;
+        descuentoPropio[1] = tarjeta;
+    }
+    
+    //Falta lugares y transportes que deberían ser dinámicos 
 }

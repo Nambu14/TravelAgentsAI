@@ -25,4 +25,22 @@ public class AgenteLugar extends Agent{
     protected void setup() {
       
     }
+    // Métodos llamados desde la interfaz, donde ya se crean los arreglos
+   public void definirLugar(String ciudad, int precio){
+       this.ciudad = ciudad;
+       precioPersona = precio;
+   }
+   public void asignarServicios(String[] servicios){
+       this.servicios = servicios;
+   }
+   public void asignarDescuentoPersonas(float[] dtoPsas) {
+       descuentoPorPersonas = dtoPsas;
+   }
+   public void asignarDescuentoDias(float[] dtoDias) {
+       descuentoPorCantidadDeDias = dtoDias;
+   }
+   public void asignarDescuentoAnticipación(float[] dtoAnticipacion) {
+       descuentoPorAnticipacion = dtoAnticipacion;
+   }
+    
 }

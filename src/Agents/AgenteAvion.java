@@ -7,6 +7,7 @@
 package Agents;
 
 import Things.CronogramaTransporteAereo;
+import Ventanas.VentanaTransporteAereo;
 
 /**
  *
@@ -14,9 +15,15 @@ import Things.CronogramaTransporteAereo;
  */
 public class AgenteAvion extends AgentTransport {
     private CronogramaTransporteAereo [] rutas;
+    private VentanaTransporteAereo myGui;
     
     @Override
     protected void setup() {
+        myGui= new VentanaTransporteAereo(this);
+        myGui.showGui();
     
+    }
+    public void asignarRutas(CronogramaTransporteAereo[] cronograma){
+        rutas= cronograma;
     }
 }

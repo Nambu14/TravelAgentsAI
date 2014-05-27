@@ -7,6 +7,7 @@
 package Agents;
 
 import Things.CronogramaTransporteColectivo;
+import Ventanas.VentanaTransporteColectivo;
 
 /**
  *
@@ -14,9 +15,16 @@ import Things.CronogramaTransporteColectivo;
  */
 public class AgenteColectivo extends AgentTransport{
     private CronogramaTransporteColectivo [] rutas;
-    
+    private VentanaTransporteColectivo myGui;
+   
     @Override
     protected void setup() {
+        myGui= new VentanaTransporteColectivo(this);
+        myGui.showGui();
     
+    }
+    
+    public void asignarRutas(CronogramaTransporteColectivo[] cronograma){
+        rutas= cronograma;
     }
 }
