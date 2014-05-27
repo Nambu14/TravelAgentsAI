@@ -6,7 +6,12 @@
 
 package Agents;
 
+import Ventanas.VentanaLugar;
 import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 
 /**
  *
@@ -20,15 +25,39 @@ public class AgenteLugar extends Agent{
     private float[] descuentoPorPersonas;
     private float[] descuentoPorAnticipacion;
     private float[] descuentoPorCantidadDeDias;
+    public enum Tipo{HOTEL, APART, CABAÑA, HOSTAL};
+    private String nombre;
+    private int calidad;
+    private Tipo tipo;
+    private VentanaLugar myGui;
     
     @Override
     protected void setup() {
-      
+        //myGui= new VentanaLugar(this);
+        //myGui.showGui();
+          
+        //Registro en paginas amarillas
+        DFAgentDescription dfd = new DFAgentDescription();
+        dfd.setName(getAID());
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("Lugar");
+        sd.setName(nombre);
+        dfd.addServices(sd);
+        try{
+            DFService.register(this, dfd);
+        }
+        catch (FIPAException fe){
+            fe.printStackTrace();
+        }
     }
+    
     // Métodos llamados desde la interfaz, donde ya se crean los arreglos
-   public void definirLugar(String ciudad, int precio){
+    public void definirLugar(String ciudad, int precio, String nombre, int calidad, Tipo tipo){
        this.ciudad = ciudad;
        precioPersona = precio;
+       this.nombre = nombre;
+       this.calidad = calidad;
+       this.tipo = tipo;
    }
    public void asignarServicios(String[] servicios){
        this.servicios = servicios;
@@ -42,5 +71,14 @@ public class AgenteLugar extends Agent{
    public void asignarDescuentoAnticipación(float[] dtoAnticipacion) {
        descuentoPorAnticipacion = dtoAnticipacion;
    }
-    
+   
+   protected void takeDown(){
+                try{
+            DFService.deregister(this);
+        }
+        catch (FIPAException fe){
+            fe.printStackTrace();
+        }
+    }
+
 }

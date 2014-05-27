@@ -15,12 +15,14 @@ import java.util.GregorianCalendar;
  *
  * 
  */
-public abstract class CronogramaTrasporte {
+public abstract class CronogramaTransporte {
     private String origen;
     private String destino;
     private float precioPersona;
     private int capacidad;
     private ArrayList<DayOfWeek> salidas;
+    public enum Calidad {EJECUTIVO, CAMA, SEMICAMA, PRIMERACLASE, BUSSINES, TURISTA};
+    public Calidad calidad;
 
     /**
      *
@@ -30,7 +32,7 @@ public abstract class CronogramaTrasporte {
      * @param capacidad
      * @param salidas
      */
-    public CronogramaTrasporte(String origen, String destino, float precio, int capacidad, ArrayList<DayOfWeek> salidas) {
+    public CronogramaTransporte(String origen, String destino, float precio, int capacidad, ArrayList<DayOfWeek> salidas) {
         this.origen = origen;
         this.destino = destino;
         this.precioPersona = precio;

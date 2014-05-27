@@ -10,12 +10,12 @@ package Ventanas;
  *
  * @author Torre
  */
-public class VentanaTransporteAereo extends javax.swing.JFrame {
+public class VentanaTransporte extends javax.swing.JFrame {
 
     /**
-     * Creates new form ventanaTransporteAereo
+     * Creates new form ventanaTransporte
      */
-    public VentanaTransporteAereo() {
+    public VentanaTransporte() {
         initComponents();
     }
 
@@ -61,20 +61,20 @@ public class VentanaTransporteAereo extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaTransporteAereo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaTransporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaTransporteAereo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaTransporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaTransporteAereo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaTransporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaTransporteAereo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaTransporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaTransporteAereo().setVisible(true);
+                new VentanaTransporte().setVisible(true);
             }
         });
     }

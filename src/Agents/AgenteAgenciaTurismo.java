@@ -9,6 +9,7 @@ package Agents;
 import Ventanas.VentanaAgencia;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -18,7 +19,7 @@ import jade.domain.FIPAException;
 * Clase Agencia de Turismo, es el agente encargado de representar 
 * a una Agencia de Turismo específica.
  */
-public class AgentTuristAgency extends Agent{
+public class AgenteAgenciaTurismo extends Agent{
     private String nombre;
     //Descuentos máximos a pedir a una empresa de transporte o lugar.
     private float descuentoTransporte;
@@ -31,8 +32,7 @@ public class AgentTuristAgency extends Agent{
     
     @Override
     protected void setup() {
-        myGui= new VentanaAgencia(this);
-        myGui.showGui();
+        
         descuentoPropio = new float[2];
         
         //Registro en paginas amarillas
@@ -48,6 +48,9 @@ public class AgentTuristAgency extends Agent{
         catch (FIPAException fe){
             fe.printStackTrace();
         }
+        addBehaviour(new ActualizarLugares());
+        //myGui= new VentanaAgencia(this);
+        //myGui.showGui();
     }
     
     //Métodos llamados desde la interfaz
@@ -73,5 +76,27 @@ public class AgentTuristAgency extends Agent{
         }
     }
     
-    //Falta lugares y transportes que deberían ser dinámicos 
+    //Falta lugares y transportes que deberían ser dinámicos
+    //Behaviour para actualizar la lista con todos las empresas de Transportes y Lugares,
+    //para luego ser mostradas en la GUI.
+    private class ActualizarLugares extends OneShotBehaviour{
+
+        @Override
+        public void action() {
+            DFAgentDescription dfd = new DFAgentDescription();
+            ServiceDescription sd = new ServiceDescription();
+            sd.setType("Lugar");
+            dfd.addServices(sd);
+            try {
+                DFAgentDescription[] lugarcitos = DFService.search(myAgent, dfd); 
+                lugares = new AID[lugarcitos.length];
+                for (int i = 0; i < lugarcitos.length; ++i) {
+                    lugares[i] = lugarcitos[i].getName();
+                }
+            }
+            catch (FIPAException fe) {
+            }
+        }
+        
+    }
 }
