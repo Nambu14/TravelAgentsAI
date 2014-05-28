@@ -81,4 +81,10 @@ public class AgenteLugar extends Agent{
         }
     }
 
+    @Override
+    public String toString() {
+        return "AgenteLugar{" + "ciudad=" + ciudad + ", servicios=" + servicios + ", nombre=" + nombre + ", calidad=" + calidad + ", tipo=" + tipo + '}';
+    }
+   
+
 }

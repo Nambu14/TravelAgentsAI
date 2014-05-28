@@ -16,18 +16,24 @@ import java.util.GregorianCalendar;
 public final class Paquete {
     private String origen;
     private String destino;
+    //presupouesto máximo que una persona pretende gastar,
+    //o en su defecto el precio del paquete armado por la Agencia
     private float presupuestoMax;
     private int cantidadPersonas;
     private GregorianCalendar fechaInicialInferior;
     private GregorianCalendar fechaInicialSuperior;
     private int duracion;
-    private AgenteLugar alojamiento;
+    private String alojamiento;
     private float ponderacionPrecio;
     private float ponderacionCalidad;
     public enum Calidad {EJECUTIVO, CAMA, SEMICAMA, PRIMERACLASE, BUSSINES, TURISTA};
-    private Calidad calidad;
+    private Calidad calidadTransporte;
 
-    public Paquete(String origen, String destino, float presupuestoMax, int cantidadPersonas, GregorianCalendar fechaInicialInferior, GregorianCalendar fechaInicialSuperior, int duracion, AgenteLugar alojamiento, float ponderacionPrecio, float ponderacionCalidad, Calidad calidad) {
+    public Paquete(String origen, String destino, float presupuestoMax,
+            int cantidadPersonas, GregorianCalendar fechaInicialInferior, 
+            GregorianCalendar fechaInicialSuperior, int duracion, 
+            String alojamiento, float ponderacionPrecio, 
+            float ponderacionCalidad, Calidad calidad) {
         this.origen = origen;
         this.destino = destino;
         this.presupuestoMax = presupuestoMax;
@@ -37,7 +43,10 @@ public final class Paquete {
         this.duracion = duracion;
         this.alojamiento = alojamiento;
         this.setPonderacion(presupuestoMax, ponderacionCalidad);
-        this.calidad = calidad;
+        this.calidadTransporte = calidad;
+    }
+    
+    private Paquete() {
     }
         
     private void setPonderacion (float precio, float calidad){
@@ -48,6 +57,51 @@ public final class Paquete {
         //throw new RuntimeException
         //arreglar esto 
         }
+    }
+    
+    public static Paquete stringToPaquete (String string){
+        Paquete paquete;
+        paquete = new Paquete();
+        String[] str = string.split(",,,");
+        /*
+        1: origen String
+        2: destino String
+        3: presupuestoMax float
+        4: cantidadPersonas int
+        5: fechaInicialInferior GregorianCalendar
+        6: fechaInicialSuperior GregorianCalendar
+        7: duracion int
+        8: alojamiento String
+        9: ponderacionPrecio float
+        10: ponderacionCalidad float
+        11: calidadTransporte Calidad
+        */
+        if(str.length==11){
+            paquete.setOrigen(str[1]);
+            paquete.setDestino(str[2]);
+            paquete.setPresupuestoMax(Float.parseFloat(str[3]));
+            paquete.setCantidadPersonas(Integer.parseInt(str[4]));
+            //Acá faltan el tema de las fechas
+            //paquete.setFechaInicialInferior(new GregorianCalendar);
+            paquete.setDuracion(Integer.parseInt(str[7]));
+            paquete.setAlojamiento(str[8]);
+            paquete.setPonderacionPrecio(Float.parseFloat(str[9]));
+            paquete.setPonderacionCalidad(Float.parseFloat(str[10]));
+            String p = str[11];
+            switch (p){
+                case "EJECUTIVO": paquete.setCalidad(Calidad.EJECUTIVO); break;
+                case "CAMA": paquete.setCalidad(Calidad.CAMA); break;
+                case "SEMICAMA": paquete.setCalidad(Calidad.SEMICAMA); break;
+                case "PRIMERACLASE": paquete.setCalidad(Calidad.PRIMERACLASE); break;
+                case "BUSSINES": paquete.setCalidad(Calidad.BUSSINES); break;
+                case "TURISTA": paquete.setCalidad(Calidad.TURISTA); break;
+                //EXCEPTION DE CALIDAD
+                default: break;     
+            }
+        }else{
+            //TRATAR EXCEPTION
+        }
+        return paquete;
     }
 
     public float getPonderacionPrecio() {
@@ -122,25 +176,29 @@ public final class Paquete {
         this.duracion = duracion;
     }
 
-    public AgenteLugar getAlojamiento() {
+    public String getAlojamiento() {
         return alojamiento;
     }
 
-    public void setAlojamiento(AgenteLugar alojamiento) {
+    public void setAlojamiento(String alojamiento) {
         this.alojamiento = alojamiento;
     }
 
     public Calidad getCalidad() {
-        return calidad;
+        return calidadTransporte;
     }
 
     public void setCalidad(Calidad calidad) {
-        this.calidad = calidad;
+        this.calidadTransporte = calidad;
     }
 
-    @Override
-    public String toString() {
-        return "Paquete{" + "origen=" + origen + ", destino=" + destino + ", presupuestoMax=" + presupuestoMax + ", cantidadPersonas=" + cantidadPersonas + ", fechaInicialInferior=" + fechaInicialInferior + ", fechaInicialSuperior=" + fechaInicialSuperior + ", duracion=" + duracion + ", alojamiento=" + alojamiento + ", ponderacionPrecio=" + ponderacionPrecio + ", ponderacionCalidad=" + ponderacionCalidad + ", calidad=" + calidad + '}';
+    public String toStringForMessage() {
+        return  origen + ",,," + destino + ",,," + presupuestoMax + 
+                ",,," + cantidadPersonas + ",,," + 
+                fechaInicialInferior + ",,," + fechaInicialSuperior + 
+                ",,," + duracion + ",,," + alojamiento + ",,," +
+                ponderacionPrecio + ",,," + ponderacionCalidad + 
+                ",,," + calidadTransporte + '}';
     }
     
     
