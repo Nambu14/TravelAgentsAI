@@ -33,7 +33,7 @@ public final class Paquete {
             int cantidadPersonas, GregorianCalendar fechaInicialInferior, 
             GregorianCalendar fechaInicialSuperior, int duracion, 
             String alojamiento, float ponderacionPrecio, 
-            float ponderacionCalidad, Calidad calidad) {
+            float ponderacionCalidad, Calidad calidad) throws Exception {
         this.origen = origen;
         this.destino = destino;
         this.presupuestoMax = presupuestoMax;
@@ -49,17 +49,16 @@ public final class Paquete {
     private Paquete() {
     }
         
-    private void setPonderacion (float precio, float calidad){
+    private void setPonderacion (float precio, float calidad) throws Exception{
         if ((precio+calidad)==1){
             this.setPonderacionCalidad(calidad);
             this.setPonderacionPrecio(precio);
         }else{
-        //throw new RuntimeException
-        //arreglar esto 
+            throw new Exception("Las ponderaciones para el precio y la calidad no suman 1");
         }
     }
     
-    public static Paquete stringToPaquete (String string){
+    public static Paquete stringToPaquete (String string) throws Exception{
         Paquete paquete;
         paquete = new Paquete();
         String[] str = string.split(",,,");
@@ -95,11 +94,10 @@ public final class Paquete {
                 case "PRIMERACLASE": paquete.setCalidad(Calidad.PRIMERACLASE); break;
                 case "BUSSINES": paquete.setCalidad(Calidad.BUSSINES); break;
                 case "TURISTA": paquete.setCalidad(Calidad.TURISTA); break;
-                //EXCEPTION DE CALIDAD
-                default: break;     
+                default: throw new Exception("Error dentro del paquete en calidad");     
             }
         }else{
-            //TRATAR EXCEPTION
+            throw new Exception("Paquete incompleto");
         }
         return paquete;
     }
@@ -200,6 +198,4 @@ public final class Paquete {
                 ponderacionPrecio + ",,," + ponderacionCalidad + 
                 ",,," + calidadTransporte + '}';
     }
-    
-    
 }
