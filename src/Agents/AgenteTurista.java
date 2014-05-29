@@ -50,7 +50,7 @@ public class AgenteTurista extends Agent {
                     }
                 }
                 catch (FIPAException fe) {
-                    System.out.println("Excepcion FIPA en busqueda de Agencias");
+                    fe.printStackTrace();
                 }
             }
         });

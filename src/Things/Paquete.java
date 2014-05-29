@@ -7,25 +7,37 @@
 package Things;
 
 import Agents.AgenteLugar;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Lucas
  */
 public final class Paquete {
+    //Ciudad de origen del viaje.
     private String origen;
+    //Ciudad de destino del viaje.
     private String destino;
-    //presupouesto máximo que una persona pretende gastar,
-    //o en su defecto el precio del paquete armado por la Agencia
+    //Presupouesto máximo que una persona pretende gastar,
+    //o en su defecto el precio del paquete armado por la Agencia.
     private float presupuestoMax;
+    //Cantidad de personas que viajarán.
     private int cantidadPersonas;
+    //Rango de fechas en las que se puede INICIAR el viaje.
     private GregorianCalendar fechaInicialInferior;
     private GregorianCalendar fechaInicialSuperior;
+    //Duración del viaje.
     private int duracion;
+    //Información relativa al lugar donde se alojará, calidad y precio.
     private String alojamiento;
+    //Ponderaciones que le da el turista a la importancia que tengan
+    //a su criterio el confort y el precio a pagar.
     private float ponderacionPrecio;
     private float ponderacionCalidad;
+    //Calidades ofrecidas para los tipos de transporte, ya sea aéreo o terrestre.
     public enum Calidad {EJECUTIVO, CAMA, SEMICAMA, PRIMERACLASE, BUSSINES, TURISTA};
     private Calidad calidadTransporte;
 
@@ -46,10 +58,24 @@ public final class Paquete {
         this.calidadTransporte = calidad;
     }
     
-    private Paquete() {
+    public Paquete() {
+        this.origen = new String();
+        this.destino = new String();
+        this.presupuestoMax = 0;
+        this.cantidadPersonas = 0;
+        this.fechaInicialInferior = new GregorianCalendar();
+        this.fechaInicialSuperior = new GregorianCalendar();
+        this.duracion = 0;
+        this.alojamiento = new String();
+        try {
+            this.setPonderacion((float)0.5, (float)0.5);
+        } catch (Exception ex) {
+            Logger.getLogger(Paquete.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.calidadTransporte = Calidad.SEMICAMA;
     }
-        
-    private void setPonderacion (float precio, float calidad) throws Exception{
+    
+    public void setPonderacion (float precio, float calidad) throws Exception{
         if ((precio+calidad)==1){
             this.setPonderacionCalidad(calidad);
             this.setPonderacionPrecio(precio);
@@ -63,30 +89,46 @@ public final class Paquete {
         paquete = new Paquete();
         String[] str = string.split(",,,");
         /*
-        1: origen String
-        2: destino String
-        3: presupuestoMax float
-        4: cantidadPersonas int
-        5: fechaInicialInferior GregorianCalendar
-        6: fechaInicialSuperior GregorianCalendar
-        7: duracion int
-        8: alojamiento String
-        9: ponderacionPrecio float
-        10: ponderacionCalidad float
-        11: calidadTransporte Calidad
+        0: origen String
+        1: destino String
+        2: presupuestoMax float
+        3: cantidadPersonas int
+        4: fechaInicialInferior GregorianCalendar
+        5: fechaInicialSuperior GregorianCalendar
+        6: duracion int
+        7: alojamiento String
+        8: ponderacionPrecio float
+        9: ponderacionCalidad float
+        10: calidadTransporte Calidad
         */
         if(str.length==11){
-            paquete.setOrigen(str[1]);
-            paquete.setDestino(str[2]);
-            paquete.setPresupuestoMax(Float.parseFloat(str[3]));
-            paquete.setCantidadPersonas(Integer.parseInt(str[4]));
-            //Acá faltan el tema de las fechas
-            //paquete.setFechaInicialInferior(new GregorianCalendar);
-            paquete.setDuracion(Integer.parseInt(str[7]));
-            paquete.setAlojamiento(str[8]);
-            paquete.setPonderacionPrecio(Float.parseFloat(str[9]));
-            paquete.setPonderacionCalidad(Float.parseFloat(str[10]));
-            String p = str[11];
+            paquete.setOrigen(str[0]);
+            paquete.setDestino(str[1]);
+            paquete.setPresupuestoMax(Float.parseFloat(str[2]));
+            paquete.setCantidadPersonas(Integer.parseInt(str[3]));
+            //tratamiento de la primera fecha: fechaInicialInferior
+            String[] fechaInferior = str[4].split("--");
+            GregorianCalendar fechaInferiorIncial = new GregorianCalendar();
+            int ano1 = Integer.parseInt(fechaInferior[2]);
+            int mes1 = Integer.parseInt(fechaInferior[1]);
+            int dia1 = Integer.parseInt(fechaInferior[0]);
+            fechaInferiorIncial.set(ano1,mes1,dia1);
+            paquete.setFechaInicialInferior(fechaInferiorIncial);
+            //tratamiento de la segunda fecha: fechaInicialSuperior
+            String[] fechaSuperior = str[5].split("--");
+            GregorianCalendar fechaSuperiorIncial = new GregorianCalendar();
+            int ano2 = Integer.parseInt(fechaSuperior[2]);
+            int mes2 = Integer.parseInt(fechaSuperior[1]);
+            int dia2 = Integer.parseInt(fechaSuperior[0]);
+            fechaSuperiorIncial.set(ano2,mes2,dia2);
+            paquete.setFechaInicialInferior(fechaInferiorIncial);
+            //fin tratamiento fechas
+            paquete.setDuracion(Integer.parseInt(str[6]));
+            paquete.setAlojamiento(str[7]);
+            paquete.setPonderacionPrecio(Float.parseFloat(str[8]));
+            paquete.setPonderacionCalidad(Float.parseFloat(str[9]));
+            //Tratamiento calidad
+            String p = str[10];
             switch (p){
                 case "EJECUTIVO": paquete.setCalidad(Calidad.EJECUTIVO); break;
                 case "CAMA": paquete.setCalidad(Calidad.CAMA); break;
@@ -155,7 +197,8 @@ public final class Paquete {
     }
 
     public void setFechaInicialInferior(GregorianCalendar fechaInicialInferior) {
-        this.fechaInicialInferior = fechaInicialInferior;
+        this.fechaInicialInferior.set(fechaInicialInferior.get(Calendar.YEAR),fechaInicialInferior.get(Calendar.MONTH),
+                                        fechaInicialInferior.get(Calendar.DAY_OF_MONTH));
     }
 
     public GregorianCalendar getFechaInicialSuperior() {
@@ -163,7 +206,8 @@ public final class Paquete {
     }
 
     public void setFechaInicialSuperior(GregorianCalendar fechaInicialSuperior) {
-        this.fechaInicialSuperior = fechaInicialSuperior;
+        this.fechaInicialSuperior.set(fechaInicialSuperior.get(Calendar.YEAR),fechaInicialSuperior.get(Calendar.MONTH),
+                                        fechaInicialSuperior.get(Calendar.DAY_OF_MONTH));
     }
 
     public int getDuracion() {
@@ -189,13 +233,58 @@ public final class Paquete {
     public void setCalidad(Calidad calidad) {
         this.calidadTransporte = calidad;
     }
+    
+    public int getDiaFechaInicialInferior(){
+        int var1 = fechaInicialInferior.get(Calendar.DAY_OF_MONTH);
+        return var1;
+    }
+    
+    public int getMesFechaInicialInferior(){
+        int var1 = fechaInicialInferior.get(Calendar.MONTH);
+        return var1;
+    }
+    
+    public int getAnoFechaInicialInferior(){
+        int var1 = fechaInicialInferior.get(Calendar.YEAR);
+        return var1;
+    }
+    
+    public int getDiaFechaInicialSuperior(){
+        int var1 = fechaInicialSuperior.get(Calendar.DAY_OF_MONTH);
+        return var1;
+    }
+    
+    public int getMesFechaInicialSuperior(){
+        int var1 = fechaInicialSuperior.get(Calendar.MONTH);
+        return var1;
+    }
+    
+    public int getAnoFechaInicialSuperior(){
+        int var1 = fechaInicialSuperior.get(Calendar.YEAR);
+        return var1;
+    }
 
     public String toStringForMessage() {
-        return  origen + ",,," + destino + ",,," + presupuestoMax + 
+        String paqueteString = (origen + ",,," + destino + ",,," + presupuestoMax + 
                 ",,," + cantidadPersonas + ",,," + 
-                fechaInicialInferior + ",,," + fechaInicialSuperior + 
+                getDiaFechaInicialInferior() + "--" + getMesFechaInicialInferior() +
+                "--"+getAnoFechaInicialInferior() + ",,," + getDiaFechaInicialSuperior() + 
+                "--" + getMesFechaInicialSuperior() + "--" + getAnoFechaInicialSuperior() + 
                 ",,," + duracion + ",,," + alojamiento + ",,," +
                 ponderacionPrecio + ",,," + ponderacionCalidad + 
-                ",,," + calidadTransporte + '}';
+                ",,," + calidadTransporte);
+        /*
+        String[] paqueteSubString = paqueteString.split(",,,");
+        if (paqueteSubString.length <> 11){
+            throw new Exception("Paquete incompleto");
+            }
+        */
+        return paqueteString;
     }
+
+    @Override
+    public String toString() {
+        return "Paquete{" + "origen=" + origen + ", destino=" + destino + ", presupuestoMax=" + presupuestoMax + ", cantidadPersonas=" + cantidadPersonas + ", fechaInicialInferior=" + fechaInicialInferior + ", fechaInicialSuperior=" + fechaInicialSuperior + ", duracion=" + duracion + ", alojamiento=" + alojamiento + ", ponderacionPrecio=" + ponderacionPrecio + ", ponderacionCalidad=" + ponderacionCalidad + ", calidadTransporte=" + calidadTransporte + '}';
+    }
+    
 }
