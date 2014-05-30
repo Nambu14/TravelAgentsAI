@@ -7,6 +7,7 @@
 package Ventanas;
 
 import Agents.AgenteAgenciaTurismo;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -123,30 +124,24 @@ public class VentanaAgencia extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(238, 238, 238)
-                                .addComponent(accederDF))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(270, 270, 270)
-                                .addComponent(aceptar)
-                                .addGap(23, 23, 23)
-                                .addComponent(cancelar)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(238, 238, 238)
+                        .addComponent(accederDF))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(270, 270, 270)
+                        .addComponent(aceptar)
+                        .addGap(23, 23, 23)
+                        .addComponent(cancelar))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(dtoEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel8))
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 115, Short.MAX_VALUE))
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(dtoEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
@@ -164,13 +159,12 @@ public class VentanaAgencia extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(dtoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel10)))))
-                .addGap(38, 38, 38))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(28, 28, 28)
-                .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel10))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(28, 28, 28)
+                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -200,10 +194,11 @@ public class VentanaAgencia extends javax.swing.JFrame {
                     .addComponent(dtoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(32, 32, 32)
                 .addComponent(accederDF)
                 .addGap(11, 11, 11)
@@ -239,12 +234,17 @@ public class VentanaAgencia extends javax.swing.JFrame {
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
         String name = nombre.getText();
-        float descuentoTransporte = Float.parseFloat(dtoTransporte.getText());
-        float descuentoLugar = Float.parseFloat(dtoLugar.getText());
-        float efectivo = Float.parseFloat(dtoEfectivo.getText());
-        float tarjeta = Float.parseFloat(dtoTarjeta.getText());
-        miAgente.definirAgencia(name, descuentoTransporte, descuentoLugar);
-        miAgente.asignarDescuentoPropio(efectivo, tarjeta);
+        try { 
+            float descuentoTransporte = Float.parseFloat(dtoTransporte.getText());
+            float descuentoLugar = Float.parseFloat(dtoLugar.getText());
+            float efectivo = Float.parseFloat(dtoEfectivo.getText());
+            float tarjeta = Float.parseFloat(dtoTarjeta.getText());
+            miAgente.definirAgencia(name, descuentoTransporte, descuentoLugar);
+            miAgente.asignarDescuentoPropio(efectivo, tarjeta);
+        }
+        catch (NumberFormatException e) {
+		JOptionPane.showMessageDialog(VentanaAgencia.this, "Valores inválidos"+e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); 
+		}
                 
         
     }//GEN-LAST:event_aceptarActionPerformed

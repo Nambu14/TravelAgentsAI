@@ -59,6 +59,7 @@ public class AgenteAgenciaTurismo extends Agent{
         nombre= name;
         descuentoTransporte = dtoTransporte/100;
         descuentoLugar = dtoLugar/100;
+        AID id = new AID(nombre, AID.ISLOCALNAME);
     }
     
     public void asignarDescuentoPropio(float efectivo, float tarjeta){
