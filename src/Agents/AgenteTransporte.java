@@ -20,7 +20,7 @@ import java.util.ArrayList;
 * Clase transporte, es el agente encargado de representar a una
 * empresa de transporte específica.
 */
-public abstract class AgenteTransporte extends Agent{
+public class AgenteTransporte extends Agent{
     //Hasta determinada cantidad de personas hay descuento, esa cantidad es la longitud del arreglo
     private float[] descuentoPorPersonas;
     private float[] descuentoPorAnticipacion;
@@ -34,8 +34,9 @@ public abstract class AgenteTransporte extends Agent{
     
     @Override
     protected void setup() {
-        //myGui= new VentanaTransporteAereo(this);
-        //myGui.showGui();
+        myGui= new VentanaTransporte(this);
+        myGui.setVisible(true);
+
         rutas = new ArrayList<>();
         //Registro en paginas amarillas;
         //Registro en paginas amarillas

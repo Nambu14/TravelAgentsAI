@@ -49,21 +49,21 @@ public class AgenteAgenciaTurismo extends Agent{
             fe.printStackTrace();
         }
         addBehaviour(new ActualizarLugares());
-        //myGui= new VentanaAgencia(this);
-        //myGui.showGui();
+        myGui= new VentanaAgencia(this);
+        myGui.setVisible(true);
     }
     
     //Métodos llamados desde la interfaz
     
     public void definirAgencia(String name, float dtoTransporte, float dtoLugar){
         nombre= name;
-        descuentoTransporte = dtoTransporte;
-        descuentoLugar = dtoLugar;
+        descuentoTransporte = dtoTransporte/100;
+        descuentoLugar = dtoLugar/100;
     }
     
     public void asignarDescuentoPropio(float efectivo, float tarjeta){
-        descuentoPropio[0] = efectivo;
-        descuentoPropio[1] = tarjeta;
+        descuentoPropio[0] = efectivo/100;
+        descuentoPropio[1] = tarjeta/100;
     }
     
     //Quitar registro de las paginas amarillas

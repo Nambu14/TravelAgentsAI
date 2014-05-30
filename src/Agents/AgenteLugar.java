@@ -33,8 +33,8 @@ public class AgenteLugar extends Agent{
     
     @Override
     protected void setup() {
-        //myGui= new VentanaLugar(this);
-        //myGui.showGui();
+        myGui= new VentanaLugar(this);
+        myGui.setVisible(true);
           
         //Registro en paginas amarillas
         DFAgentDescription dfd = new DFAgentDescription();

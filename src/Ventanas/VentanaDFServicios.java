@@ -6,22 +6,22 @@
 
 package Ventanas;
 
-import Agents.AgenteTransporte;
+import Agents.AgenteAgenciaTurismo;
 
 /**
  *
  * @author Torre
  */
-public class VentanaTransporte extends javax.swing.JFrame {
-    
-    private AgenteTransporte miAgente;
+public class VentanaDFServicios extends javax.swing.JFrame {
+
+    AgenteAgenciaTurismo miAgente;
     /**
-     * Creates new form ventanaTransporte
+     * Creates new form VentanaDFServicios
      */
-    public VentanaTransporte(AgenteTransporte a) {
+    public VentanaDFServicios(AgenteAgenciaTurismo a) {
         super(a.getLocalName());
-		
 	miAgente = a;
+        
         initComponents();
     }
 
@@ -67,17 +67,17 @@ public class VentanaTransporte extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaTransporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaDFServicios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaTransporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaDFServicios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaTransporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaDFServicios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaTransporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaDFServicios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -6,16 +6,21 @@
 
 package Ventanas;
 
+import Agents.AgenteLugar;
+
 /**
  *
  * @author Torre
  */
 public class VentanaLugar extends javax.swing.JFrame {
-
+    
+    private AgenteLugar miAgente;
     /**
      * Creates new form ventanaLugarPeor
      */
-    public VentanaLugar() {
+    public VentanaLugar(AgenteLugar a) {
+        super(a.getLocalName());
+	miAgente = a;
         initComponents();
     }
 
@@ -71,12 +76,6 @@ public class VentanaLugar extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VentanaLugar().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

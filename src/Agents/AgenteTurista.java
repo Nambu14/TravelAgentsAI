@@ -7,6 +7,7 @@
 package Agents;
 
 import Things.Paquete;
+import Ventanas.VentanaTurista;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
@@ -30,9 +31,13 @@ public class AgenteTurista extends Agent {
     private Paquete preferencias;
     private AID[] agenciasTurismo;
     private ArrayList<Paquete> ofertas;
+    private VentanaTurista myGui;
 
     @Override
     protected void setup(){
+        myGui= new VentanaTurista(this);
+        myGui.setVisible(true);
+        
         ofertas = new ArrayList<>();
         //Actualiza la lista de Agencias de Turismo.
         addBehaviour(new OneShotBehaviour() {
