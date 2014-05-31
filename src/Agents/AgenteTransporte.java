@@ -9,10 +9,14 @@ package Agents;
 import Things.CronogramaTransporte;
 import Ventanas.VentanaTransporte;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import java.util.ArrayList;
 
 
@@ -34,17 +38,21 @@ public class AgenteTransporte extends Agent{
     
     @Override
     protected void setup() {
-        myGui= new VentanaTransporte(this);
-        myGui.setVisible(true);
+       // myGui= new VentanaTransporte(this);
+       // myGui.setVisible(true);
 
         rutas = new ArrayList<>();
+        
+        
         //Registro en paginas amarillas;
-        //Registro en paginas amarillas
+        
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Transporte");
-        sd.setName(nombre);
+        //sd.setName(nombre);
+        //para probar
+        sd.setName(this.getLocalName());
         dfd.addServices(sd);
         try{
             DFService.register(this, dfd);
@@ -52,6 +60,7 @@ public class AgenteTransporte extends Agent{
         catch (FIPAException fe){
             fe.printStackTrace();
         }
+        addBehaviour(new RecibirPedido());
     
     }
     public void definirTransporte(String name){
@@ -85,4 +94,24 @@ public class AgenteTransporte extends Agent{
    public void addCronograma(CronogramaTransporte ruta){
        rutas.add(ruta);
    }
+   
+       private class RecibirPedido extends Behaviour {
+
+        @Override
+        public void action() {
+            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+            ACLMessage msg = myAgent.receive(mt);
+            if (msg != null) {
+                ACLMessage respuestaT = msg.createReply();
+                respuestaT.setPerformative(ACLMessage.PROPOSE);
+		respuestaT.setContent("Holis");
+                myAgent.send(msg);
+            }
+        }
+        @Override
+        public boolean done() {
+            return true;
+                    }
+        
+    }
 }

@@ -8,10 +8,14 @@ package Agents;
 
 import Ventanas.VentanaLugar;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 /**
  *
@@ -33,15 +37,18 @@ public class AgenteLugar extends Agent{
     
     @Override
     protected void setup() {
-        myGui= new VentanaLugar(this);
-        myGui.setVisible(true);
-          
+       // myGui= new VentanaLugar(this);
+       // myGui.setVisible(true);
+        
+        
         //Registro en paginas amarillas
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Lugar");
-        sd.setName(nombre);
+        //sd.setName(nombre);
+        //para probar
+        sd.setName(this.getLocalName());
         dfd.addServices(sd);
         try{
             DFService.register(this, dfd);
@@ -49,6 +56,7 @@ public class AgenteLugar extends Agent{
         catch (FIPAException fe){
             fe.printStackTrace();
         }
+        addBehaviour(new RecibirPedido());
     }
     
     // Métodos llamados desde la interfaz, donde ya se crean los arreglos
@@ -86,5 +94,29 @@ public class AgenteLugar extends Agent{
         return "AgenteLugar{" + "ciudad=" + ciudad + ", servicios=" + servicios + ", nombre=" + nombre + ", calidad=" + calidad + ", tipo=" + tipo + '}';
     }
    
+    private class RecibirPedido extends Behaviour {
+
+        @Override
+        public void action() {
+            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+            ACLMessage msg = myAgent.receive(mt);
+            if (msg != null) {
+                ACLMessage respuestaLugar = msg.createReply();
+                respuestaLugar.setPerformative(ACLMessage.PROPOSE);
+		respuestaLugar.setContent("Holis");
+                send(msg);
+            }
+            
+                    
+            
+        }
+
+        @Override
+        public boolean done() {
+            return true;
+        }
+        
+        
+    }
 
 }

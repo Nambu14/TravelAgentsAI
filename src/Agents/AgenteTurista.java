@@ -77,7 +77,7 @@ public class AgenteTurista extends Agent {
             for (int i = 0; i < agenciasTurismo.length; ++i) {
                 cfp.addReceiver(agenciasTurismo[i]);
                 } 
-            cfp.setContent(preferencias.toString());
+            cfp.setContent(preferencias.toStringForMessage());
             cfp.setConversationId("Busqueda de Paquete");
             myAgent.send(cfp);
             for(AID agencias: agenciasTurismo){

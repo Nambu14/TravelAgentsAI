@@ -21,7 +21,9 @@ public class IA2014 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Paquete paq = new Paquete();
+        
+        
+        /*Paquete paq = new Paquete();
         paq.setOrigen("Corrientes");
         paq.setDestino("Resistencia");
         paq.setPresupuestoMax((float) 9847.23);
@@ -52,6 +54,7 @@ public class IA2014 {
         paq2.setOrigen("guatemala");
         System.out.println(paq2.toStringForMessage());
         System.out.println(paq.toStringForMessage());
+    */
     }
     
 }
