@@ -94,9 +94,8 @@ public class AgenteLugar extends Agent{
         return "AgenteLugar{" + "ciudad=" + ciudad + ", servicios=" + servicios + ", nombre=" + nombre + ", calidad=" + calidad + ", tipo=" + tipo + '}';
     }
    
-    private class RecibirPedido extends Behaviour {
+    private class RecibirPedido extends CyclicBehaviour {
 
-        @Override
         public void action() {
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
             ACLMessage msg = myAgent.receive(mt);
@@ -104,18 +103,15 @@ public class AgenteLugar extends Agent{
                 ACLMessage respuestaLugar = msg.createReply();
                 respuestaLugar.setPerformative(ACLMessage.PROPOSE);
 		respuestaLugar.setContent("Holis");
-                send(msg);
+                send(respuestaLugar);
             }
-            
+            else {
+                block();
+            }
                     
             
         }
 
-        @Override
-        public boolean done() {
-            return true;
-        }
-        
         
     }
 

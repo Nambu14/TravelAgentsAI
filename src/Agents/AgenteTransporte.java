@@ -95,7 +95,7 @@ public class AgenteTransporte extends Agent{
        rutas.add(ruta);
    }
    
-       private class RecibirPedido extends Behaviour {
+       private class RecibirPedido extends CyclicBehaviour {
 
         @Override
         public void action() {
@@ -105,13 +105,12 @@ public class AgenteTransporte extends Agent{
                 ACLMessage respuestaT = msg.createReply();
                 respuestaT.setPerformative(ACLMessage.PROPOSE);
 		respuestaT.setContent("Holis");
-                myAgent.send(msg);
+                myAgent.send(respuestaT);
+            }
+            else{
+                block();
             }
         }
-        @Override
-        public boolean done() {
-            return true;
-                    }
-        
+                
     }
 }

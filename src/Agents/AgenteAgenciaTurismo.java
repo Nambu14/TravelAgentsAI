@@ -10,7 +10,6 @@ import Things.Paquete;
 import Ventanas.VentanaAgencia;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
@@ -19,8 +18,6 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
 * Clase Agencia de Turismo, es el agente encargado de representar 
@@ -131,7 +128,7 @@ public class AgenteAgenciaTurismo extends Agent{
         
     }
     
-    private class BuscarPaquete extends Behaviour {
+    private class BuscarPaquete extends CyclicBehaviour {
 
         @Override
         public void action() {
@@ -191,12 +188,12 @@ public class AgenteAgenciaTurismo extends Agent{
                 }
                 
             }
+            else{
+                block();
+            }
         }
 
-        @Override
-        public boolean done() {
-            return true;
-                    }
+        
             
         }
 }   
