@@ -38,15 +38,16 @@ public class AgenteAgenciaTurismo extends Agent{
     protected void setup() {
         
         descuentoPropio = new float[2];
+        nombre = this.getLocalName();
         
+        myGui= new VentanaAgencia(this);
+        myGui.setVisible(true);
         //Registro en paginas amarillas
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Agencia de Turismo");
-        //sd.setName(nombre);
-        //para probar
-        sd.setName(this.getLocalName());
+        sd.setName(nombre);
         dfd.addServices(sd);
         try{
             DFService.register(this, dfd);
@@ -55,14 +56,12 @@ public class AgenteAgenciaTurismo extends Agent{
             fe.printStackTrace();
         }
         addBehaviour(new ActualizarLugares());
-       // myGui= new VentanaAgencia(this);
-       // myGui.setVisible(true);
+       
     }
     
     //Métodos llamados desde la interfaz
     
-    public void definirAgencia(String name, float dtoTransporte, float dtoLugar){
-        nombre= name;
+    public void definirAgencia(float dtoTransporte, float dtoLugar){
         descuentoTransporte = dtoTransporte/100;
         descuentoLugar = dtoLugar/100;
         AID id = new AID(nombre, AID.ISLOCALNAME);
@@ -73,6 +72,10 @@ public class AgenteAgenciaTurismo extends Agent{
         descuentoPropio[1] = tarjeta/100;
     }
     
+    public void asignarServicios(AID[] transportes, AID[] lugares){
+        this.transportes = transportes;
+        this.lugares = lugares;
+    }
     //Quitar registro de las paginas amarillas
     protected void takeDown(){
                 try{

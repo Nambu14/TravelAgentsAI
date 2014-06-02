@@ -38,21 +38,19 @@ public class AgenteTransporte extends Agent{
     
     @Override
     protected void setup() {
-       // myGui= new VentanaTransporte(this);
-       // myGui.setVisible(true);
+       myGui= new VentanaTransporte(this);
+       myGui.setVisible(true);
 
         rutas = new ArrayList<>();
-        
-        
+        nombre = getLocalName();
+                
         //Registro en paginas amarillas;
         
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Transporte");
-        //sd.setName(nombre);
-        //para probar
-        sd.setName(this.getLocalName());
+        sd.setName(nombre);
         dfd.addServices(sd);
         try{
             DFService.register(this, dfd);
@@ -63,9 +61,7 @@ public class AgenteTransporte extends Agent{
         addBehaviour(new RecibirPedido());
     
     }
-    public void definirTransporte(String name){
-        nombre = name;
-   }
+    
     //Quitar registro de las paginas amarillas
 
     /**

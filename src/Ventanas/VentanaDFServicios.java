@@ -8,6 +8,7 @@ package Ventanas;
 
 import Agents.AgenteAgenciaTurismo;
 import Agents.AgenteTransporte;
+import jade.core.AID;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -24,6 +25,8 @@ public class VentanaDFServicios extends javax.swing.JFrame {
     AgenteAgenciaTurismo miAgente;
     private String[] lugares;
     private String [] transportes;
+    DFAgentDescription [] resultadosTransporte;
+    DFAgentDescription [] resultadosLugar;
     
     /**
      * Creates new form VentanaDFServicios
@@ -31,6 +34,8 @@ public class VentanaDFServicios extends javax.swing.JFrame {
     public VentanaDFServicios(AgenteAgenciaTurismo a) {
         super(a.getLocalName());
 	miAgente = a;
+        getTransportes();
+        getLugares();
         
         initComponents();
     }
@@ -51,21 +56,19 @@ public class VentanaDFServicios extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        aceptar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         alojamientos.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = getLugares();
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+            public int getSize() { return lugares.length; }
+            public Object getElementAt(int i) { return lugares[i]; }
         });
         jScrollPane1.setViewportView(alojamientos);
 
         empresasTransporte.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = getTransportes();
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+            public int getSize() { return transportes.length; }
+            public Object getElementAt(int i) { return transportes[i]; }
         });
         jScrollPane2.setViewportView(empresasTransporte);
 
@@ -75,10 +78,10 @@ public class VentanaDFServicios extends javax.swing.JFrame {
 
         jLabel3.setText("Empresas de Tranportes");
 
-        jButton1.setText("Aceptar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                aceptarActionPerformed(evt);
             }
         });
 
@@ -90,7 +93,7 @@ public class VentanaDFServicios extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(aceptar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
@@ -123,55 +126,57 @@ public class VentanaDFServicios extends javax.swing.JFrame {
                         .addContainerGap(23, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1))))
+                        .addComponent(aceptar))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+        AID[] lugaresAID = new AID[transportes.length];
+        AID[] transportesAID = new AID[lugares.length];
+        miAgente.asignarServicios(lugaresAID, transportesAID);
+    }//GEN-LAST:event_aceptarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    private String[] getTransportes(){
+    private void getTransportes(){
        ServiceDescription servicio = new ServiceDescription();
        servicio.setType("Transporte");
        DFAgentDescription descripcion = new DFAgentDescription();
        descripcion.addServices(servicio);
        try {
-           DFAgentDescription [] resultados = DFService.search(miAgente, descripcion);
-           transportes = new String [resultados.length];
-           for (int i=0; i < resultados.length; ++i)
+           resultadosTransporte = DFService.search(miAgente, descripcion);
+           transportes = new String [resultadosTransporte.length];
+           for (int i=0; i < resultadosTransporte.length; ++i)
            {
-               transportes [i] = resultados [i].getName().getLocalName();
+               transportes [i] = resultadosTransporte [i].getName().getLocalName();
            }
        } catch (FIPAException ex) {
             Logger.getLogger(VentanaDFServicios.class.getName()).log(Level.SEVERE, null, ex);
         }
-       return transportes;
-        
+               
        
     }
     
-        private String [] getLugares(){
+        private void getLugares(){
        ServiceDescription servicio = new ServiceDescription();
        servicio.setType("Lugar");
        DFAgentDescription descripcion = new DFAgentDescription();
        descripcion.addServices(servicio);
        try {
-           DFAgentDescription [] resultados = DFService.search(miAgente, descripcion);
-           lugares = new String [resultados.length];
-           for (int i=0; i < resultados.length; ++i)
+           resultadosLugar = DFService.search(miAgente, descripcion);
+           lugares = new String [resultadosLugar.length];
+           for (int i=0; i < resultadosLugar.length; ++i)
            {
-               lugares [i] = resultados [i].getName().getLocalName();
+               lugares [i] = resultadosLugar [i].getName().getLocalName();
            }
        } catch (FIPAException ex) {
             Logger.getLogger(VentanaDFServicios.class.getName()).log(Level.SEVERE, null, ex);
         }
-       return lugares;
     }
     
     public static void main(String args[]) {
@@ -202,9 +207,9 @@ public class VentanaDFServicios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aceptar;
     private javax.swing.JList alojamientos;
     private javax.swing.JList empresasTransporte;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

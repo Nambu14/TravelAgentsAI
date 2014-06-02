@@ -37,18 +37,16 @@ public class AgenteLugar extends Agent{
     
     @Override
     protected void setup() {
-       // myGui= new VentanaLugar(this);
-       // myGui.setVisible(true);
-        
+       myGui= new VentanaLugar(this);
+       myGui.setVisible(true);
+       nombre = this.getLocalName();
         
         //Registro en paginas amarillas
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Lugar");
-        //sd.setName(nombre);
-        //para probar
-        sd.setName(this.getLocalName());
+        sd.setName(nombre);
         dfd.addServices(sd);
         try{
             DFService.register(this, dfd);
@@ -60,10 +58,9 @@ public class AgenteLugar extends Agent{
     }
     
     // Métodos llamados desde la interfaz, donde ya se crean los arreglos
-    public void definirLugar(String ciudad, int precio, String nombre, int calidad, Tipo tipo){
+    public void definirLugar(String ciudad, int precio, int calidad, Tipo tipo){
        this.ciudad = ciudad;
        precioPersona = precio;
-       this.nombre = nombre;
        this.calidad = calidad;
        this.tipo = tipo;
    }

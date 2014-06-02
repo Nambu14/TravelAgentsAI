@@ -37,7 +37,6 @@ public class VentanaAgencia extends javax.swing.JFrame {
         accederDF = new javax.swing.JButton();
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -52,7 +51,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        nombre = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,8 +75,6 @@ public class VentanaAgencia extends javax.swing.JFrame {
                 cancelarActionPerformed(evt);
             }
         });
-
-        jLabel1.setText("Nombre");
 
         jLabel2.setText("Descuentos aplicable según forma de pago:");
 
@@ -116,6 +113,8 @@ public class VentanaAgencia extends javax.swing.JFrame {
         jLabel10.setText("%");
 
         jLabel11.setText("%");
+
+        jLabel12.setText("Agencia de Viajes "+miAgente.getLocalName());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -161,20 +160,16 @@ public class VentanaAgencia extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel10))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(28, 28, 28)
-                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(166, 166, 166)
+                        .addComponent(jLabel12)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel12)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel2)
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -233,13 +228,12 @@ public class VentanaAgencia extends javax.swing.JFrame {
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
-        String name = nombre.getText();
-        try { 
+       try { 
             float descuentoTransporte = Float.parseFloat(dtoTransporte.getText());
             float descuentoLugar = Float.parseFloat(dtoLugar.getText());
             float efectivo = Float.parseFloat(dtoEfectivo.getText());
             float tarjeta = Float.parseFloat(dtoTarjeta.getText());
-            miAgente.definirAgencia(name, descuentoTransporte, descuentoLugar);
+            miAgente.definirAgencia(descuentoTransporte, descuentoLugar);
             miAgente.asignarDescuentoPropio(efectivo, tarjeta);
         }
         catch (NumberFormatException e) {
@@ -286,9 +280,9 @@ public class VentanaAgencia extends javax.swing.JFrame {
     private javax.swing.JTextField dtoLugar;
     private javax.swing.JTextField dtoTarjeta;
     private javax.swing.JTextField dtoTransporte;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -297,6 +291,5 @@ public class VentanaAgencia extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField nombre;
     // End of variables declaration//GEN-END:variables
 }
