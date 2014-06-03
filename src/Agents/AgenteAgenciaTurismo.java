@@ -18,6 +18,9 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
 * Clase Agencia de Turismo, es el agente encargado de representar 
@@ -25,6 +28,10 @@ import jade.lang.acl.MessageTemplate;
  */
 public class AgenteAgenciaTurismo extends Agent{
     private String nombre;
+    private ArrayList<Paquete> ofertasLugar;
+    private ArrayList<Paquete> ofertasTransporte;
+    private AID mejorLugar;
+    private AID mejorTransporte;
     //Descuentos máximos a pedir a una empresa de transporte o lugar.
     private float descuentoTransporte;
     private float descuentoLugar;
@@ -62,8 +69,8 @@ public class AgenteAgenciaTurismo extends Agent{
     //Métodos llamados desde la interfaz
     
     public void definirAgencia(float dtoTransporte, float dtoLugar){
-        descuentoTransporte = dtoTransporte/100;
-        descuentoLugar = dtoLugar/100;
+        descuentoTransporte = dtoTransporte;
+        descuentoLugar = dtoLugar;
         AID id = new AID(nombre, AID.ISLOCALNAME);
     }
     
@@ -144,11 +151,13 @@ public class AgenteAgenciaTurismo extends Agent{
                 } catch (Exception ex) {
                     System.out.println("Error en conversión de paquete");
                 }
+                
+                //EMPIEZA LA NEGOCIACION CON LUGARES
                 ACLMessage cfpLugares = new ACLMessage(ACLMessage.CFP);
                 for (AID lugar: lugares){
                     cfpLugares.addReceiver(lugar);
                 }
-                cfpLugares.setContent("hola mi gente");
+                cfpLugares.setContent(pref);
                 cfpLugares.setConversationId("Busqueda de Lugar");
                 myAgent.send(cfpLugares);
                 for(AID lugar: lugares){
@@ -157,21 +166,49 @@ public class AgenteAgenciaTurismo extends Agent{
                             MessageTemplate.MatchSender(lugar));
                     ACLMessage respuestaLugar = myAgent.receive(mtlugar);
                     if (respuestaLugar != null){
-                        if (respuestaLugar.getPerformative() == ACLMessage.PROPOSE){
-                            ACLMessage propuestaLugar = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
-                            propuestaLugar.addReceiver(lugar);
-                            propuestaLugar.setContent("te acepto mi gente");
-                            propuestaLugar.setConversationId("Busqueda de Lugar");
-                            myAgent.send(propuestaLugar);
+                        switch (respuestaLugar.getPerformative()){
+                            case ACLMessage.PROPOSE: {
+                                // presupuestomax va a tomar como el descuento realizado
+                                
+                                try {
+                                    Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
+                                    if(descuentoLugar<=paqLugar.getPresupuestoMax()){
+                                        //guarda paquete ordenado en ofertasLugar
+                                        if(ofertasLugar.indexOf(paqLugar)== 0)
+                                            mejorLugar = lugar;
+                                    }else {
+                                        ACLMessage pedirRebaja = respuestaLugar.createReply();
+                                        pedirRebaja.setPerformative(ACLMessage.CFP);
+                                        pedirRebaja.setContent(respuestaLugar.getContent());
+                                        send(pedirRebaja);
+                                    }
+                                } catch (Exception ex) {
+                                    Logger.getLogger(AgenteAgenciaTurismo.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                
+                            } break;
+                            case ACLMessage.INFORM: {
+                                try{
+                                    Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
+                                    //guarda paquete ordenado en ofertasLugar
+                                    if(ofertasLugar.indexOf(paqLugar)== 0)
+                                        mejorLugar = lugar;
+                                } catch (Exception ex) {
+                                    Logger.getLogger(AgenteAgenciaTurismo.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } break;
+                            default:{}                          
                         }
+                        
                     }    
                 }    
                 
+                // EMPIEZA LA NEGOCIACION CON TRANSPORTES
                 ACLMessage cfpTransportes = new ACLMessage(ACLMessage.CFP);
                 for (AID transporte: transportes){
                     cfpTransportes.addReceiver(transporte);
                 }
-                cfpTransportes.setContent("hola mi gente");
+                cfpTransportes.setContent(pref);
                 cfpTransportes.setConversationId("Busqueda de Transportes");
                 myAgent.send(cfpTransportes);
                 for(AID transporte: transportes){
@@ -180,20 +217,24 @@ public class AgenteAgenciaTurismo extends Agent{
                             MessageTemplate.MatchSender(transporte));
                     ACLMessage respuestaTransporte = myAgent.receive(mttransporte);
                     if (respuestaTransporte != null){
-                        if (respuestaTransporte.getPerformative() == ACLMessage.PROPOSE){
-                            ACLMessage propuestaTransporte = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
-                            propuestaTransporte.addReceiver(transporte);
-                            propuestaTransporte.setContent("te acepto");
-                            propuestaTransporte.setConversationId("Busqueda de Transportes");
-                            myAgent.send(propuestaTransporte);
-                        }
+                        // igual que lugares
                     }    
                 }
+                aceptarPropuestas(mejorLugar, mejorTransporte);
+                armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0));
                 
             }
             else{
                 block();
             }
+        }
+
+        private void aceptarPropuestas(AID mejorLugar, AID mejorTransporte) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        private void armarPaquete(Paquete get, Paquete get0) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         

@@ -31,7 +31,7 @@ public final class Paquete {
     private GregorianCalendar fechaInicialSuperior;
     //Duración del viaje.
     private int duracion;
-    //Información relativa al lugar donde se alojará, calidad y precio.
+    //Información relativa al lugar donde se alojará nombre, tipo(hotel y demas), calidad, servicios.
     private String alojamiento;
     //Ponderaciones que le da el turista a la importancia que tengan
     //a su criterio el confort y el precio a pagar.

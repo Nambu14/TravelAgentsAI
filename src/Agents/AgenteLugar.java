@@ -6,6 +6,7 @@
 
 package Agents;
 
+import Things.Paquete;
 import Ventanas.VentanaLugar;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -16,6 +17,8 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -97,10 +100,19 @@ public class AgenteLugar extends Agent{
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
+                // si ya se aplicaron descuentos los valores en el paquete van a ser 0 (CantPsas, duracion, fecha)
                 ACLMessage respuestaLugar = msg.createReply();
-                respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-		respuestaLugar.setContent("Holis");
-                send(respuestaLugar);
+                Paquete pref;
+                try {
+                    pref = Paquete.stringToPaquete(respuestaLugar.getContent());
+                    if(pref.getCantidadPersonas()!= 0)
+                        respuestaLugar.setPerformative(ACLMessage.PROPOSE);
+                        respuestaLugar.setContent("Holis");
+                        send(respuestaLugar);
+                } catch (Exception ex) {
+                    Logger.getLogger(AgenteLugar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
             else {
                 block();

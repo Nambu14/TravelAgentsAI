@@ -20,6 +20,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
 * Clase Turista, es el agente encargado de representar 
@@ -32,6 +34,8 @@ public class AgenteTurista extends Agent {
     private AID[] agenciasTurismo;
     private ArrayList<Paquete> ofertas;
     private VentanaTurista myGui;
+    private boolean fin;
+    private AID mejorAID;
 
     @Override
     protected void setup(){
@@ -61,6 +65,8 @@ public class AgenteTurista extends Agent {
         });
     }
 
+    
+    
     public void setPreferencias(Paquete preferencias) {
         this.preferencias = preferencias;
     }
@@ -81,22 +87,33 @@ public class AgenteTurista extends Agent {
             cfp.setConversationId("Busqueda de Paquete");
             myAgent.send(cfp);
             for(AID agencias: agenciasTurismo){
-                mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Paquete"),
-                        MessageTemplate.MatchSender(agencias));
+                mt = MessageTemplate.MatchSender(agencias);
                 ACLMessage respuesta = myAgent.receive(mt);
                 if (respuesta != null){
-                    //empieza la negociación
-                    
+                    //ordena las ofertas
+                    if (respuesta.getPerformative() == ACLMessage.PROPOSE){
+                       
+                        try {
+                            Paquete propuesta = Paquete.stringToPaquete(respuesta.getContent());
+                             //Aca agrega el paquete a ofertas, con la porqueria comparable etc
+                            if (ofertas.indexOf(propuesta) == 0)
+                                 mejorAID= agencias;
+                        } catch (Exception ex) {
+                            Logger.getLogger(AgenteTurista.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                       
+                    }
                 }
             }
-        }
+            fin = true;
+        } 
 
         @Override
         public boolean done() {
-            return false;
+            return(fin);
         }
-        
-    } 
 
-    
-}   
+        
+
+    }
+}
