@@ -45,13 +45,21 @@ public class VentanaLugar extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         ciudad = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        descuentos = new javax.swing.JButton();
+        calefaccion = new javax.swing.JCheckBox();
+        pension = new javax.swing.JCheckBox();
+        garage = new javax.swing.JCheckBox();
+        juegos = new javax.swing.JCheckBox();
+        descuentosAplicables = new javax.swing.JButton();
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
+        piscina = new javax.swing.JCheckBox();
+        sauna = new javax.swing.JCheckBox();
+        cable = new javax.swing.JCheckBox();
+        internet = new javax.swing.JCheckBox();
+        limpieza = new javax.swing.JCheckBox();
+        cuarto = new javax.swing.JCheckBox();
+        gimnasio = new javax.swing.JCheckBox();
+        mascotas = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,24 +89,60 @@ public class VentanaLugar extends javax.swing.JFrame {
 
         jLabel5.setText("Servicios Disponibles:");
 
-        jCheckBox1.setText("jCheckBox1");
+        calefaccion.setText("AA/CC - Calefacción");
 
-        jCheckBox2.setText("jCheckBox2");
-
-        jCheckBox3.setText("jCheckBox3");
-
-        jCheckBox4.setText("jCheckBox4");
-
-        descuentos.setText("Definir descuentos aplicables");
-        descuentos.addActionListener(new java.awt.event.ActionListener() {
+        pension.setText("Media Pensión");
+        pension.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                descuentosActionPerformed(evt);
+                pensionActionPerformed(evt);
+            }
+        });
+
+        garage.setText("Garage");
+        garage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                garageActionPerformed(evt);
+            }
+        });
+
+        juegos.setText("Salón de Juegos");
+
+        descuentosAplicables.setText("Definir descuentos aplicables");
+        descuentosAplicables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                descuentosAplicablesActionPerformed(evt);
             }
         });
 
         aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
 
         cancelar.setText("Cancelar");
+
+        piscina.setText("Piscina");
+
+        sauna.setText("Sauna");
+
+        cable.setText("TV con Cable");
+        cable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cableActionPerformed(evt);
+            }
+        });
+
+        internet.setText("Internet WiFi");
+
+        limpieza.setText("Servicio de Limpieza");
+
+        cuarto.setText("Servicio al Cuarto");
+
+        gimnasio.setText("Gimnasio");
+
+        mascotas.setText("Admiten Mascotas");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,30 +160,43 @@ public class VentanaLugar extends javax.swing.JFrame {
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(descuentosAplicables)
+                            .addComponent(jLabel5)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(pension)
+                                            .addComponent(calefaccion)
+                                            .addComponent(garage)
+                                            .addComponent(juegos))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(sauna)
+                                            .addComponent(piscina)
+                                            .addComponent(cable)
+                                            .addComponent(internet)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(60, 60, 60)
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(calidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(32, 32, 32)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBox2)
-                                    .addComponent(jCheckBox1)
-                                    .addComponent(jCheckBox3)
-                                    .addComponent(jCheckBox4)))
-                            .addComponent(descuentos)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(60, 60, 60)
-                                    .addComponent(jLabel3)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(calidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jLabel5))))
+                                    .addComponent(cuarto)
+                                    .addComponent(limpieza)
+                                    .addComponent(gimnasio)
+                                    .addComponent(mascotas)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(110, 110, 110)
                         .addComponent(aceptar)
                         .addGap(69, 69, 69)
                         .addComponent(cancelar)))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,16 +216,34 @@ public class VentanaLugar extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(calefaccion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pension)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(garage)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(juegos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(piscina)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sauna)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(internet))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(limpieza)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cuarto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(gimnasio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(mascotas)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(descuentosAplicables)
                 .addGap(18, 18, 18)
-                .addComponent(descuentos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(aceptar)
                     .addComponent(cancelar)))
@@ -192,11 +267,27 @@ public class VentanaLugar extends javax.swing.JFrame {
         calidad.setEnabled(true);
     }//GEN-LAST:event_tipoActionPerformed
 
-    private void descuentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descuentosActionPerformed
+    private void descuentosAplicablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descuentosAplicablesActionPerformed
         // TODO add your handling code here:
-        DescuentosAplicables descuentos = new DescuentosAplicables();
-        descuentos.obtenerDescuentos();
-    }//GEN-LAST:event_descuentosActionPerformed
+        DescuentosAplicables descuentos = new DescuentosAplicables(miAgente);
+        descuentos.setVisible(true);
+    }//GEN-LAST:event_descuentosAplicablesActionPerformed
+
+    private void garageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_garageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_garageActionPerformed
+
+    private void cableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cableActionPerformed
+
+    private void pensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pensionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pensionActionPerformed
+
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aceptarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,19 +320,27 @@ public class VentanaLugar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
+    private javax.swing.JCheckBox cable;
+    private javax.swing.JCheckBox calefaccion;
     private javax.swing.JComboBox calidad;
     private javax.swing.JButton cancelar;
     private javax.swing.JTextField ciudad;
-    private javax.swing.JButton descuentos;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox cuarto;
+    private javax.swing.JButton descuentosAplicables;
+    private javax.swing.JCheckBox garage;
+    private javax.swing.JCheckBox gimnasio;
+    private javax.swing.JCheckBox internet;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JCheckBox juegos;
+    private javax.swing.JCheckBox limpieza;
+    private javax.swing.JCheckBox mascotas;
+    private javax.swing.JCheckBox pension;
+    private javax.swing.JCheckBox piscina;
+    private javax.swing.JCheckBox sauna;
     private javax.swing.JComboBox tipo;
     // End of variables declaration//GEN-END:variables
 

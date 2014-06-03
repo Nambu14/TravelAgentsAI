@@ -37,6 +37,15 @@ public final class Paquete {
     //a su criterio el confort y el precio a pagar.
     private float ponderacionPrecio;
     private float ponderacionCalidad;
+    private int anticipacion;
+
+    public int getAnticipacion() {
+        return anticipacion;
+    }
+
+    public void setAnticipacion(int i) {
+        anticipacion=i;
+    }
     //Calidades ofrecidas para los tipos de transporte, ya sea aéreo o terrestre.
     public enum Calidad {EJECUTIVO, CAMA, SEMICAMA, PRIMERACLASE, BUSSINES, TURISTA};
     private Calidad calidadTransporte;

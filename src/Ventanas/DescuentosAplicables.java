@@ -24,9 +24,11 @@ public class DescuentosAplicables extends javax.swing.JFrame {
     private float [] anticipacion;
     private float [] cantDias;
     private float[][] descuentos;
+    private AgenteLugar miAgente;
     
-    public DescuentosAplicables() {
-       
+    public DescuentosAplicables(AgenteLugar a) {
+        super(a.getLocalName());
+	miAgente = a;
         initComponents();
     }
 
@@ -448,26 +450,16 @@ public class DescuentosAplicables extends javax.swing.JFrame {
             if(cantDias[i] == 0)
                 cantDias[i] = cantDias[i-1];
         }
-        notify();
+        miAgente.asignarDescuentoPersonas(personas);
+        miAgente.asignarDescuentoDias(cantDias);
+        miAgente.asignarDescuentoAnticipación(anticipacion);
+        this.dispose();
     }//GEN-LAST:event_aceptarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public float [][] obtenerDescuentos(){
-        setVisible(true);
-        try {
-            this.wait();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DescuentosAplicables.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        descuentos = new float[3][];
-        descuentos[0] = personas;
-        descuentos[1] = cantDias;
-        descuentos[2] = anticipacion;
-        
-        return descuentos;
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;

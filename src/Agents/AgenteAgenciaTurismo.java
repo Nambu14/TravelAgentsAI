@@ -69,8 +69,8 @@ public class AgenteAgenciaTurismo extends Agent{
     //Métodos llamados desde la interfaz
     
     public void definirAgencia(float dtoTransporte, float dtoLugar){
-        descuentoTransporte = dtoTransporte;
-        descuentoLugar = dtoLugar;
+        descuentoTransporte = dtoTransporte/100;
+        descuentoLugar = dtoLugar/100;
         AID id = new AID(nombre, AID.ISLOCALNAME);
     }
     

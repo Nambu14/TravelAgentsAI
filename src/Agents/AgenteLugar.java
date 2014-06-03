@@ -105,10 +105,33 @@ public class AgenteLugar extends Agent{
                 Paquete pref;
                 try {
                     pref = Paquete.stringToPaquete(respuestaLugar.getContent());
-                    if(pref.getCantidadPersonas()!= 0)
+                    
+                    //FALTA DEFINIR SI EL ALOJAMIENTO CORRESPONDE
+                    
+                    if(pref.getCantidadPersonas()!= 0){
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                        respuestaLugar.setContent("Holis");
-                        send(respuestaLugar);
+                        float dto = descuentoPorPersonas[pref.getCantidadPersonas()];
+                        pref.setPresupuestoMax(dto);
+                        pref.setCantidadPersonas(0);
+                        
+                    }else{
+                        if(pref.getDuracion() != 0){
+                            respuestaLugar.setPerformative(ACLMessage.PROPOSE);
+                            float dto = pref.getPresupuestoMax()+ descuentoPorCantidadDeDias[pref.getDuracion()];
+                            pref.setPresupuestoMax(dto);
+                            pref.setDuracion(0);
+                        }else{
+                            if(pref.getAnticipacion() != 0){
+                                respuestaLugar.setPerformative(ACLMessage.PROPOSE);
+                                float dto = pref.getPresupuestoMax()+ descuentoPorAnticipacion[pref.getAnticipacion()];
+                                pref.setPresupuestoMax(dto);
+                                pref.setAnticipacion(0);
+                            }else{respuestaLugar.setPerformative(ACLMessage.INFORM);}
+                        }
+                    }
+                    String nuevoPrecio = pref.toStringForMessage();
+                    respuestaLugar.setContent(nuevoPrecio);
+                    send(respuestaLugar);
                 } catch (Exception ex) {
                     Logger.getLogger(AgenteLugar.class.getName()).log(Level.SEVERE, null, ex);
                 }
