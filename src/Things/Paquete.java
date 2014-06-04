@@ -6,7 +6,7 @@
 
 package Things;
 
-import Agents.AgenteLugar;
+import Things.CronogramaTransporte.Calidad;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -32,13 +32,15 @@ public final class Paquete {
     //Duración del viaje.
     private int duracion;
     //Información relativa al lugar donde se alojará nombre, tipo(hotel y demas), calidad, servicios.
-    private String alojamiento;
+    private LugarWrapper alojamiento;
     //Ponderaciones que le da el turista a la importancia que tengan
     //a su criterio el confort y el precio a pagar.
     private float ponderacionPrecio;
     private float ponderacionCalidad;
     private int anticipacion;
-
+    //Calidades ofrecidas para los tipos de transporte, ya sea aéreo o terrestre.
+    private Calidad calidadTransporte;
+    
     public int getAnticipacion() {
         return anticipacion;
     }
@@ -46,14 +48,11 @@ public final class Paquete {
     public void setAnticipacion(int i) {
         anticipacion=i;
     }
-    //Calidades ofrecidas para los tipos de transporte, ya sea aéreo o terrestre.
-    public enum Calidad {EJECUTIVO, CAMA, SEMICAMA, PRIMERACLASE, BUSSINES, TURISTA};
-    private Calidad calidadTransporte;
-
+    
     public Paquete(String origen, String destino, float presupuestoMax,
             int cantidadPersonas, GregorianCalendar fechaInicialInferior, 
             GregorianCalendar fechaInicialSuperior, int duracion, 
-            String alojamiento, float ponderacionPrecio, 
+            LugarWrapper alojamiento, float ponderacionPrecio, 
             float ponderacionCalidad, Calidad calidad) throws Exception {
         this.origen = origen;
         this.destino = destino;
@@ -63,7 +62,7 @@ public final class Paquete {
         this.fechaInicialSuperior = fechaInicialSuperior;
         this.duracion = duracion;
         this.alojamiento = alojamiento;
-        this.setPonderacion(presupuestoMax, ponderacionCalidad);
+        this.setPonderacion(ponderacionPrecio, ponderacionCalidad);
         this.calidadTransporte = calidad;
     }
     
@@ -75,7 +74,7 @@ public final class Paquete {
         this.fechaInicialInferior = new GregorianCalendar();
         this.fechaInicialSuperior = new GregorianCalendar();
         this.duracion = 0;
-        this.alojamiento = new String();
+        this.alojamiento = new LugarWrapper();
         try {
             this.setPonderacion((float)0.5, (float)0.5);
         } catch (Exception ex) {
@@ -130,10 +129,12 @@ public final class Paquete {
             int mes2 = Integer.parseInt(fechaSuperior[1]);
             int dia2 = Integer.parseInt(fechaSuperior[0]);
             fechaSuperiorIncial.set(ano2,mes2,dia2);
-            paquete.setFechaInicialInferior(fechaInferiorIncial);
+            paquete.setFechaInicialSuperior(fechaSuperiorIncial);
             //fin tratamiento fechas
             paquete.setDuracion(Integer.parseInt(str[6]));
-            paquete.setAlojamiento(str[7]);
+            //Tratamiento de alojamiento
+            LugarWrapper lugar = LugarWrapper.stringToLugar(str[7]);
+            paquete.setAlojamiento(lugar);
             paquete.setPonderacionPrecio(Float.parseFloat(str[8]));
             paquete.setPonderacionCalidad(Float.parseFloat(str[9]));
             //Tratamiento calidad
@@ -227,11 +228,11 @@ public final class Paquete {
         this.duracion = duracion;
     }
 
-    public String getAlojamiento() {
+    public LugarWrapper getAlojamiento() {
         return alojamiento;
     }
 
-    public void setAlojamiento(String alojamiento) {
+    public void setAlojamiento(LugarWrapper alojamiento) {
         this.alojamiento = alojamiento;
     }
 
@@ -279,7 +280,7 @@ public final class Paquete {
                 getDiaFechaInicialInferior() + "--" + getMesFechaInicialInferior() +
                 "--"+getAnoFechaInicialInferior() + ",,," + getDiaFechaInicialSuperior() + 
                 "--" + getMesFechaInicialSuperior() + "--" + getAnoFechaInicialSuperior() + 
-                ",,," + duracion + ",,," + alojamiento + ",,," +
+                ",,," + duracion + ",,," + alojamiento.lugarToString() + ",,," +
                 ponderacionPrecio + ",,," + ponderacionCalidad + 
                 ",,," + calidadTransporte);
         /*

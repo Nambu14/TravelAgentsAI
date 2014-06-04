@@ -6,6 +6,9 @@
 
 package ia2014;
 
+import Agents.AgenteLugar;
+import Things.CronogramaTransporte.Calidad;
+import Things.LugarWrapper;
 import Things.Paquete;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -22,8 +25,17 @@ public class IA2014 {
      */
     public static void main(String[] args) {
         
+        String[] service = {"Baño", "sala de estar", "juegos"};
+        LugarWrapper lugarcito = new LugarWrapper("mundo canino", AgenteLugar.Tipo.CABAÑA, 2, service);
+        String temp = lugarcito.lugarToString();
+        System.out.println(temp);
+        LugarWrapper lugarcito2 = LugarWrapper.stringToLugar(temp);
+        System.out.println(lugarcito2.lugarToString());
+        lugarcito2.setNombre("Mundo Felino");
+        System.out.println(lugarcito2.lugarToString());
+        System.out.println(lugarcito.lugarToString());
         
-        /*Paquete paq = new Paquete();
+        Paquete paq = new Paquete();
         paq.setOrigen("Corrientes");
         paq.setDestino("Resistencia");
         paq.setPresupuestoMax((float) 9847.23);
@@ -35,13 +47,13 @@ public class IA2014 {
         cal2.set(2016, 2, 29);
         paq.setFechaInicialSuperior(cal2);
         paq.setDuracion(10);
-        paq.setAlojamiento("Hotel Las Eras");
+        paq.setAlojamiento(lugarcito);
         try {
             paq.setPonderacion((float) 0.5,(float) 0.5);
         } catch (Exception ex) {
             System.out.println("Le erraste en la ponderacion");;
         }
-        paq.setCalidad(Paquete.Calidad.BUSSINES);
+        paq.setCalidad(Calidad.BUSSINES);
         System.out.println(paq.toStringForMessage());
         String str = paq.toStringForMessage();
         Paquete paq2 = new Paquete();
@@ -54,7 +66,7 @@ public class IA2014 {
         paq2.setOrigen("guatemala");
         System.out.println(paq2.toStringForMessage());
         System.out.println(paq.toStringForMessage());
-    */
+    
     }
     
 }
