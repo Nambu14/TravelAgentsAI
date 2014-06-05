@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Lucas
  */
-public final class Paquete {
+public final class Paquete{
     //Ciudad de origen del viaje.
     private String origen;
     //Ciudad de destino del viaje.
@@ -273,7 +273,12 @@ public final class Paquete {
         int var1 = fechaInicialSuperior.get(Calendar.YEAR);
         return var1;
     }
-
+    
+    public void setPonderacion (float ponderacionPrecio){
+        this.setPonderacionCalidad(1 - ponderacionPrecio);
+        this.setPonderacionPrecio(ponderacionPrecio);
+    }
+    
     public String toStringForMessage() {
         String paqueteString = (origen + ",,," + destino + ",,," + presupuestoMax + 
                 ",,," + cantidadPersonas + ",,," + 
@@ -295,6 +300,57 @@ public final class Paquete {
     @Override
     public String toString() {
         return "Paquete{" + "origen=" + origen + ", destino=" + destino + ", presupuestoMax=" + presupuestoMax + ", cantidadPersonas=" + cantidadPersonas + ", fechaInicialInferior=" + fechaInicialInferior + ", fechaInicialSuperior=" + fechaInicialSuperior + ", duracion=" + duracion + ", alojamiento=" + alojamiento + ", ponderacionPrecio=" + ponderacionPrecio + ", ponderacionCalidad=" + ponderacionCalidad + ", calidadTransporte=" + calidadTransporte + '}';
+    }
+    
+    public float getCalidadPaquete(){
+        float calidadGeneral;
+        calidadGeneral = alojamiento.getCalidadGeneral();
+        if ((calidadTransporte == Calidad.PRIMERACLASE) || (calidadTransporte == Calidad.EJECUTIVO)){
+            calidadGeneral = calidadGeneral + 0.3f;
+        } else if ((calidadTransporte == Calidad.BUSSINES) || (calidadTransporte == Calidad.CAMA)){
+            calidadGeneral = calidadGeneral + 0.1f;
+        }
+        return calidadGeneral;
+    }
+
+    public float heuristica(Paquete preferencias) {
+        int puntosPorPrecio = 0;
+        int puntosPorCalidad = 0;
+        
+        if (presupuestoMax >= 1.3f * preferencias.getPresupuestoMax()){
+            puntosPorPrecio = -3;
+        }else if (( presupuestoMax >= (1.2f * preferencias.getPresupuestoMax())) && (presupuestoMax < 1.3f * preferencias.getPresupuestoMax())){
+            puntosPorPrecio = -2;
+        }else if (( presupuestoMax >= (1.1f * preferencias.getPresupuestoMax())) && (presupuestoMax < 1.2f * preferencias.getPresupuestoMax())){
+            puntosPorPrecio = -1;
+        } else if (( presupuestoMax > (0.9f * preferencias.getPresupuestoMax())) && (presupuestoMax < 1.1f * preferencias.getPresupuestoMax())){
+            puntosPorPrecio = 0;
+        } else if (( presupuestoMax > (0.8f * preferencias.getPresupuestoMax())) && (presupuestoMax <= 0.9f * preferencias.getPresupuestoMax())){
+            puntosPorPrecio = 1;
+        } else if (( presupuestoMax > (0.7f * preferencias.getPresupuestoMax())) && (presupuestoMax <= 0.8f * preferencias.getPresupuestoMax())){
+            puntosPorPrecio = 2;
+        } else if (presupuestoMax <= 0.7f * preferencias.getPresupuestoMax()) {
+            puntosPorPrecio = 3;
+        }
+       
+        if (getCalidadPaquete() >= 1.3f * preferencias.getCalidadPaquete()){
+            puntosPorCalidad = 3;
+        }else if (( getCalidadPaquete() >= (1.2f * preferencias.getCalidadPaquete())) && (getCalidadPaquete() < 1.3f * preferencias.getCalidadPaquete())){
+            puntosPorCalidad = 2;
+        }else if (( getCalidadPaquete() >= (1.1f * preferencias.getCalidadPaquete())) && (getCalidadPaquete() < 1.2f * preferencias.getCalidadPaquete())){
+            puntosPorCalidad = 1;
+        } else if (( getCalidadPaquete() > (0.9f * preferencias.getCalidadPaquete())) && (getCalidadPaquete() < 1.1f * preferencias.getCalidadPaquete())){
+            puntosPorCalidad = 0;
+        } else if (( getCalidadPaquete() > (0.8f * preferencias.getCalidadPaquete())) && (getCalidadPaquete() <= 0.9f * preferencias.getCalidadPaquete())){
+            puntosPorCalidad = -1;
+        } else if (( getCalidadPaquete() > (0.7f * preferencias.getCalidadPaquete())) && (getCalidadPaquete() <= 0.8f * preferencias.getCalidadPaquete())){
+            puntosPorCalidad = -2;
+        } else if (getCalidadPaquete() <= 0.7f * preferencias.getCalidadPaquete()) {
+            puntosPorCalidad = -3;
+        }
+        float heuristica;
+        heuristica = puntosPorCalidad*ponderacionCalidad + puntosPorPrecio*ponderacionPrecio;
+        return heuristica;
     }
     
 }

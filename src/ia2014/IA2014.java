@@ -25,8 +25,9 @@ public class IA2014 {
      */
     public static void main(String[] args) {
         
-        String[] service = {"Baño", "sala de estar", "juegos"};
-        LugarWrapper lugarcito = new LugarWrapper("mundo canino", AgenteLugar.Tipo.CABAÑA, 2, service);
+        String[] service = {"Pileta", "Pool", "Baño", "sala de estar", "juegos"};
+        String[] service2 = {"Baño", "sala de estar", "juegos"};
+        LugarWrapper lugarcito = new LugarWrapper("mundo canino", AgenteLugar.Tipo.HOTEL, 5, service);
         String temp = lugarcito.lugarToString();
         System.out.println(temp);
         LugarWrapper lugarcito2 = LugarWrapper.stringToLugar(temp);
@@ -34,7 +35,7 @@ public class IA2014 {
         lugarcito2.setNombre("Mundo Felino");
         System.out.println(lugarcito2.lugarToString());
         System.out.println(lugarcito.lugarToString());
-        
+        lugarcito2.setServicios(service2);
         Paquete paq = new Paquete();
         paq.setOrigen("Corrientes");
         paq.setDestino("Resistencia");
@@ -48,11 +49,7 @@ public class IA2014 {
         paq.setFechaInicialSuperior(cal2);
         paq.setDuracion(10);
         paq.setAlojamiento(lugarcito);
-        try {
-            paq.setPonderacion((float) 0.5,(float) 0.5);
-        } catch (Exception ex) {
-            System.out.println("Le erraste en la ponderacion");;
-        }
+        paq.setPonderacion((float) 0.5);
         paq.setCalidad(Calidad.BUSSINES);
         System.out.println(paq.toStringForMessage());
         String str = paq.toStringForMessage();
@@ -64,9 +61,14 @@ public class IA2014 {
         }
         System.out.println(paq2.toStringForMessage());
         paq2.setOrigen("guatemala");
+        paq2.setAlojamiento(lugarcito2);
+        paq2.setPresupuestoMax(17500);
         System.out.println(paq2.toStringForMessage());
         System.out.println(paq.toStringForMessage());
-    
+        System.out.println((double)lugarcito.getCalidadGeneral());
+        System.out.println(paq.getCalidadPaquete());
+        System.out.println(paq2.getCalidadPaquete());
+        System.out.println(paq2.heuristica(paq));
     }
     
 }

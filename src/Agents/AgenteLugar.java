@@ -6,6 +6,7 @@
 
 package Agents;
 
+import Agents.AgenteLugar.Tipo;
 import Things.Paquete;
 import Ventanas.VentanaLugar;
 import jade.core.Agent;
@@ -37,6 +38,7 @@ public class AgenteLugar extends Agent{
     private int calidad;
     private Tipo tipo;
     private VentanaLugar myGui;
+    
     
     @Override
     protected void setup() {
@@ -147,4 +149,37 @@ public class AgenteLugar extends Agent{
         
     }
 
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+    
+
+    public float getCalidadGeneral(){
+        float calidadTipo;
+        float calidadEstrella = 0;
+        float calidadServicios;
+        if (getTipo() == Tipo.HOTEL){
+            calidadTipo = 0.7f;
+        }else if(getTipo() == Tipo.APART){
+            calidadTipo = 0.7f;
+        }else if(getTipo() == Tipo.CABAÑA){
+            calidadTipo = 0.3f;
+        }else{
+            calidadTipo = 0f;
+        }
+        switch (calidad){
+            case 5: calidadEstrella = 1f; break;
+            case 4: calidadEstrella = 0.6f; break;
+            case 3: calidadEstrella = 0.3f; break;
+            case 2: calidadEstrella = 0.1f; break;
+            case 1: calidadEstrella = 0f; break;
+            default: System.out.println("No se tiene calidad");
+        }
+        calidadServicios = (float) 0.1f * servicios.length;
+        return (calidadEstrella + calidadServicios + calidadTipo);
+    }
 }

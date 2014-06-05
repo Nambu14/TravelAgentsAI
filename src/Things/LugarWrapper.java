@@ -18,12 +18,17 @@ public class LugarWrapper {
     private Tipo tipo;
     private int calidad;
     private String[] servicios;
+    private float calidadGeneral;
 
     public LugarWrapper(String nombre, Tipo tipo, int calidad, String[] servicios) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.calidad = calidad;
         this.servicios = servicios;
+    }
+
+    public void setCalidadGeneral() {
+        this.calidadGeneral = getCalidadGeneral();
     }
     
     public LugarWrapper(){
@@ -61,7 +66,37 @@ public class LugarWrapper {
     public void setServicios(String[] servicios) {
         this.servicios = servicios;
     }
-    
+
+    public float getCalidadGeneral(){
+        /*
+            Este método devuelve la calidad general del alojamiento teniendo
+        en cuenta el tipo de hospedaje que sea, la cantidad de "estrellas"
+        que tenga y la cantidad de servicios que brinde a los clientes.
+        */
+        float calidadTipo;
+        float calidadEstrella = 0;
+        float calidadServicios;
+        if (getTipo() == Tipo.HOTEL){
+            calidadTipo = 0.7f;
+        }else if(getTipo() == Tipo.APART){
+            calidadTipo = 0.7f;
+        }else if(getTipo() == Tipo.CABAÑA){
+            calidadTipo = 0.3f;
+        }else{
+            calidadTipo = 0f;
+        }
+        switch (calidad){
+            case 5: calidadEstrella = 1f; break;
+            case 4: calidadEstrella = 0.6f; break;
+            case 3: calidadEstrella = 0.3f; break;
+            case 2: calidadEstrella = 0.1f; break;
+            case 1: calidadEstrella = 0f; break;
+            default: System.out.println("No se tiene calidad");
+        }
+        calidadServicios = (float) 0.1f * servicios.length;
+        return (calidadEstrella + calidadServicios + calidadTipo);
+    }
+
     public String lugarToString(){
         String str;
         String temp;
