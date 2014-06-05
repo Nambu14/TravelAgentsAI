@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Agents;
 
 import Agents.AgenteLugar.Tipo;
 import Things.Paquete;
 import Ventanas.VentanaLugar;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -25,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author Lucas
  */
-public class AgenteLugar extends Agent{
+public class AgenteLugar extends Agent {
 
     private String ciudad;
     private int precioPersona;
@@ -33,19 +31,22 @@ public class AgenteLugar extends Agent{
     private float[] descuentoPorPersonas;
     private float[] descuentoPorAnticipacion;
     private float[] descuentoPorCantidadDeDias;
-    public enum Tipo{HOTEL, APART, CABAÑA, HOSTAL};
+
+    public enum Tipo {
+
+        HOTEL, APART, CABAÑA, HOSTAL
+    };
     private String nombre;
     private int calidad;
     private Tipo tipo;
     private VentanaLugar myGui;
-    
-    
+
     @Override
     protected void setup() {
-       myGui= new VentanaLugar(this);
-       myGui.setVisible(true);
-       nombre = this.getLocalName();
-        
+        myGui = new VentanaLugar(this);
+        myGui.setVisible(true);
+        nombre = this.getLocalName();
+
         //Registro en paginas amarillas
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -53,40 +54,42 @@ public class AgenteLugar extends Agent{
         sd.setType("Lugar");
         sd.setName(nombre);
         dfd.addServices(sd);
-        try{
+        try {
             DFService.register(this, dfd);
-        }
-        catch (FIPAException fe){
+        } catch (FIPAException fe) {
             fe.printStackTrace();
         }
         addBehaviour(new RecibirPedido());
     }
-    
+
     // Métodos llamados desde la interfaz, donde ya se crean los arreglos
-    public void definirLugar(String ciudad, int precio, int calidad, Tipo tipo){
-       this.ciudad = ciudad;
-       precioPersona = precio;
-       this.calidad = calidad;
-       this.tipo = tipo;
-   }
-   public void asignarServicios(String[] servicios){
-       this.servicios = servicios;
-   }
-   public void asignarDescuentoPersonas(float[] dtoPsas) {
-       descuentoPorPersonas = dtoPsas;
-   }
-   public void asignarDescuentoDias(float[] dtoDias) {
-       descuentoPorCantidadDeDias = dtoDias;
-   }
-   public void asignarDescuentoAnticipación(float[] dtoAnticipacion) {
-       descuentoPorAnticipacion = dtoAnticipacion;
-   }
-   
-   protected void takeDown(){
-                try{
+    public void definirLugar(String ciudad, int precio, int calidad, Tipo tipo) {
+        this.ciudad = ciudad;
+        precioPersona = precio;
+        this.calidad = calidad;
+        this.tipo = tipo;
+    }
+
+    public void asignarServicios(String[] servicios) {
+        this.servicios = servicios;
+    }
+
+    public void asignarDescuentoPersonas(float[] dtoPsas) {
+        descuentoPorPersonas = dtoPsas;
+    }
+
+    public void asignarDescuentoDias(float[] dtoDias) {
+        descuentoPorCantidadDeDias = dtoDias;
+    }
+
+    public void asignarDescuentoAnticipación(float[] dtoAnticipacion) {
+        descuentoPorAnticipacion = dtoAnticipacion;
+    }
+
+    protected void takeDown() {
+        try {
             DFService.deregister(this);
-        }
-        catch (FIPAException fe){
+        } catch (FIPAException fe) {
             fe.printStackTrace();
         }
     }
@@ -95,7 +98,7 @@ public class AgenteLugar extends Agent{
     public String toString() {
         return "AgenteLugar{" + "ciudad=" + ciudad + ", servicios=" + servicios + ", nombre=" + nombre + ", calidad=" + calidad + ", tipo=" + tipo + '}';
     }
-   
+
     private class RecibirPedido extends CyclicBehaviour {
 
         public void action() {
@@ -107,28 +110,29 @@ public class AgenteLugar extends Agent{
                 Paquete pref;
                 try {
                     pref = Paquete.stringToPaquete(respuestaLugar.getContent());
-                    
+
                     //FALTA DEFINIR SI EL ALOJAMIENTO CORRESPONDE
-                    
-                    if(pref.getCantidadPersonas()!= 0){
+                    if (pref.getCantidadPersonas() != 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto = descuentoPorPersonas[pref.getCantidadPersonas()];
                         pref.setPresupuestoMax(dto);
                         pref.setCantidadPersonas(0);
-                        
-                    }else{
-                        if(pref.getDuracion() != 0){
+
+                    } else {
+                        if (pref.getDuracion() != 0) {
                             respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                            float dto = pref.getPresupuestoMax()+ descuentoPorCantidadDeDias[pref.getDuracion()];
+                            float dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
                             pref.setPresupuestoMax(dto);
                             pref.setDuracion(0);
-                        }else{
-                            if(pref.getAnticipacion() != 0){
+                        } else {
+                            if (pref.getAnticipacion() != 0) {
                                 respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                                float dto = pref.getPresupuestoMax()+ descuentoPorAnticipacion[pref.getAnticipacion()];
+                                float dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[pref.getAnticipacion()];
                                 pref.setPresupuestoMax(dto);
                                 pref.setAnticipacion(0);
-                            }else{respuestaLugar.setPerformative(ACLMessage.INFORM);}
+                            } else {
+                                respuestaLugar.setPerformative(ACLMessage.INFORM);
+                            }
                         }
                     }
                     String nuevoPrecio = pref.toStringForMessage();
@@ -137,16 +141,13 @@ public class AgenteLugar extends Agent{
                 } catch (Exception ex) {
                     Logger.getLogger(AgenteLugar.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-            }
-            else {
+
+            } else {
                 block();
             }
-                    
-            
+
         }
 
-        
     }
 
     public Tipo getTipo() {
@@ -156,28 +157,38 @@ public class AgenteLugar extends Agent{
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
-    
 
-    public float getCalidadGeneral(){
+    public float getCalidadGeneral() {
         float calidadTipo;
         float calidadEstrella = 0;
         float calidadServicios;
-        if (getTipo() == Tipo.HOTEL){
+        if (getTipo() == Tipo.HOTEL) {
             calidadTipo = 0.7f;
-        }else if(getTipo() == Tipo.APART){
+        } else if (getTipo() == Tipo.APART) {
             calidadTipo = 0.7f;
-        }else if(getTipo() == Tipo.CABAÑA){
+        } else if (getTipo() == Tipo.CABAÑA) {
             calidadTipo = 0.3f;
-        }else{
+        } else {
             calidadTipo = 0f;
         }
-        switch (calidad){
-            case 5: calidadEstrella = 1f; break;
-            case 4: calidadEstrella = 0.6f; break;
-            case 3: calidadEstrella = 0.3f; break;
-            case 2: calidadEstrella = 0.1f; break;
-            case 1: calidadEstrella = 0f; break;
-            default: System.out.println("No se tiene calidad");
+        switch (calidad) {
+            case 5:
+                calidadEstrella = 1f;
+                break;
+            case 4:
+                calidadEstrella = 0.6f;
+                break;
+            case 3:
+                calidadEstrella = 0.3f;
+                break;
+            case 2:
+                calidadEstrella = 0.1f;
+                break;
+            case 1:
+                calidadEstrella = 0f;
+                break;
+            default:
+                System.out.println("No se tiene calidad");
         }
         calidadServicios = (float) 0.1f * servicios.length;
         return (calidadEstrella + calidadServicios + calidadTipo);

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Agents;
 
 import Things.Paquete;
@@ -20,28 +19,28 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
-* Clase Turista, es el agente encargado de representar 
-* los intereses de un Turista específico.
+ * Clase Turista, es el agente encargado de representar los intereses de un
+ * Turista específico.
  */
-
 public class AgenteTurista extends Agent {
-    
+
     private Paquete preferencias;
     private AID[] agenciasTurismo;
     private ArrayList<Paquete> ofertas;
     private VentanaTurista myGui;
-    private boolean fin;
+    private boolean fin = false;
     private AID mejorAID;
 
     @Override
-    protected void setup(){
-        myGui= new VentanaTurista(this);
+    protected void setup() {
+        myGui = new VentanaTurista(this);
         myGui.setVisible(true);
-        
+
         ofertas = new ArrayList<>();
         //Actualiza la lista de Agencias de Turismo.
         addBehaviour(new OneShotBehaviour() {
@@ -52,68 +51,74 @@ public class AgenteTurista extends Agent {
                 sd.setType("Agencia de Turismo");
                 dfd.addServices(sd);
                 try {
-                    DFAgentDescription[] agencias = DFService.search(myAgent, dfd); 
+                    DFAgentDescription[] agencias = DFService.search(myAgent, dfd);
                     agenciasTurismo = new AID[agencias.length];
                     for (int i = 0; i < agencias.length; ++i) {
                         agenciasTurismo[i] = agencias[i].getName();
                     }
-                }
-                catch (FIPAException fe) {
+                } catch (FIPAException fe) {
                     fe.printStackTrace();
                 }
             }
         });
     }
 
-    
-    
     public void setPreferencias(Paquete preferencias) {
         this.preferencias = preferencias;
     }
 
-    private class SolicitarPaquetes extends SimpleBehaviour{
-        private Object[] paquetePonderado= new Array[3];
+    private class SolicitarPaquetes extends SimpleBehaviour {
+
+        //private Object[] paquetePonderado = new Array[3];
+
         private ArrayList<Array> listaPaquetes;
         private MessageTemplate mt;
-        
+
         @Override
         public void action() {
             // Mandar cfp a todas las agencias
             ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
             for (int i = 0; i < agenciasTurismo.length; ++i) {
                 cfp.addReceiver(agenciasTurismo[i]);
-                } 
+            }
             cfp.setContent(preferencias.toStringForMessage());
             cfp.setConversationId("Busqueda de Paquete");
             myAgent.send(cfp);
-            for(AID agencias: agenciasTurismo){
-                mt = MessageTemplate.MatchSender(agencias);
+            for (AID agencia : agenciasTurismo) {
+                mt = MessageTemplate.MatchSender(agencia);
                 ACLMessage respuesta = myAgent.receive(mt);
-                if (respuesta != null){
-                    //ordena las ofertas
-                    if (respuesta.getPerformative() == ACLMessage.PROPOSE){
-                       
+                if (respuesta != null) {
+                    //Procesar ofertas
+                    if (respuesta.getPerformative() == ACLMessage.PROPOSE) {
                         try {
                             Paquete propuesta = Paquete.stringToPaquete(respuesta.getContent());
-                             //Aca agrega el paquete a ofertas, con la porqueria comparable etc
-                            if (ofertas.indexOf(propuesta) == 0)
-                                 mejorAID= agencias;
+                            //Acá agrega el paquete a ofertas, y ordena la lista.
+                            propuesta.setHeuristica(preferencias);
+                            ofertas.add(propuesta);
+                            Collections.sort(ofertas);
+                            Collections.reverse(ofertas);
+                            if (ofertas.indexOf(propuesta) == 0) {
+                                mejorAID = agencia;
+                            }
                         } catch (Exception ex) {
                             Logger.getLogger(AgenteTurista.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                       
+                    } else {
+                        //No hay posiblidad de formar un paquete con los requerimientos solicitados en esta agencia.
                     }
+                } else {
+                    block();
                 }
             }
+            ACLMessage mensajeAcept = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+            mensajeAcept.addReceiver(mejorAID);
+            myAgent.send(mensajeAcept);
             fin = true;
-        } 
+        }
 
         @Override
         public boolean done() {
-            return(fin);
+            return (fin);
         }
-
-        
-
     }
 }

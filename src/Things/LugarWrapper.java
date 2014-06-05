@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Things;
 
 import Agents.AgenteLugar.Tipo;
@@ -13,6 +12,7 @@ import Agents.AgenteLugar.Tipo;
  * @author Lucas
  */
 public class LugarWrapper {
+
     //Información relativa al lugar donde se alojará nombre, tipo(hotel y demas), calidad, servicios.
     private String nombre;
     private Tipo tipo;
@@ -30,9 +30,9 @@ public class LugarWrapper {
     public void setCalidadGeneral() {
         this.calidadGeneral = getCalidadGeneral();
     }
-    
-    public LugarWrapper(){
-        
+
+    public LugarWrapper() {
+
     }
 
     public String getNombre() {
@@ -67,61 +67,80 @@ public class LugarWrapper {
         this.servicios = servicios;
     }
 
-    public float getCalidadGeneral(){
+    public float getCalidadGeneral() {
         /*
-            Este método devuelve la calidad general del alojamiento teniendo
-        en cuenta el tipo de hospedaje que sea, la cantidad de "estrellas"
-        que tenga y la cantidad de servicios que brinde a los clientes.
-        */
+         Este método devuelve la calidad general del alojamiento teniendo
+         en cuenta el tipo de hospedaje que sea, la cantidad de "estrellas"
+         que tenga y la cantidad de servicios que brinde a los clientes.
+         */
         float calidadTipo;
         float calidadEstrella = 0;
         float calidadServicios;
-        if (getTipo() == Tipo.HOTEL){
+        if (getTipo() == Tipo.HOTEL) {
             calidadTipo = 0.7f;
-        }else if(getTipo() == Tipo.APART){
+        } else if (getTipo() == Tipo.APART) {
             calidadTipo = 0.7f;
-        }else if(getTipo() == Tipo.CABAÑA){
+        } else if (getTipo() == Tipo.CABAÑA) {
             calidadTipo = 0.3f;
-        }else{
+        } else {
             calidadTipo = 0f;
         }
-        switch (calidad){
-            case 5: calidadEstrella = 1f; break;
-            case 4: calidadEstrella = 0.6f; break;
-            case 3: calidadEstrella = 0.3f; break;
-            case 2: calidadEstrella = 0.1f; break;
-            case 1: calidadEstrella = 0f; break;
-            default: System.out.println("No se tiene calidad");
+        switch (calidad) {
+            case 5:
+                calidadEstrella = 1f;
+                break;
+            case 4:
+                calidadEstrella = 0.6f;
+                break;
+            case 3:
+                calidadEstrella = 0.3f;
+                break;
+            case 2:
+                calidadEstrella = 0.1f;
+                break;
+            case 1:
+                calidadEstrella = 0f;
+                break;
+            default:
+                System.out.println("No se tiene calidad");
         }
         calidadServicios = (float) 0.1f * servicios.length;
         return (calidadEstrella + calidadServicios + calidadTipo);
     }
 
-    public String lugarToString(){
+    public String lugarToString() {
         String str;
         String temp;
         temp = servicios[0];
-        for (int i = 1; i < servicios.length; i++){
+        for (int i = 1; i < servicios.length; i++) {
             temp = temp + "-_-" + servicios[i];
         }
-        str = nombre + "--" + tipo + "--" + calidad + "--"  + temp;
+        str = nombre + "--" + tipo + "--" + calidad + "--" + temp;
         return str;
     }
-    
-    public static LugarWrapper stringToLugar(String str){
+
+    public static LugarWrapper stringToLugar(String str) {
         LugarWrapper lugar = new LugarWrapper();
         String[] wrapper = str.split("--");
         lugar.setNombre(wrapper[0]);
-        switch (wrapper[1]){
-            case "HOTEL": lugar.setTipo(Tipo.HOTEL); break;
-            case "APART": lugar.setTipo(Tipo.APART); break;
-            case "CABAÑA": lugar.setTipo(Tipo.CABAÑA); break;
-            case "HOSTAL": lugar.setTipo(Tipo.HOSTAL); break;
+        switch (wrapper[1]) {
+            case "HOTEL":
+                lugar.setTipo(Tipo.HOTEL);
+                break;
+            case "APART":
+                lugar.setTipo(Tipo.APART);
+                break;
+            case "CABAÑA":
+                lugar.setTipo(Tipo.CABAÑA);
+                break;
+            case "HOSTAL":
+                lugar.setTipo(Tipo.HOSTAL);
+                break;
         }
         lugar.setCalidad(Integer.parseInt(wrapper[2]));
         String[] servicios = wrapper[3].split("-_-");
         lugar.setServicios(servicios);
         return lugar;
     }
-    
+
 }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Things;
 
 import java.time.DayOfWeek;
@@ -13,15 +12,20 @@ import java.util.GregorianCalendar;
 
 /**
  *
- * 
+ *
  */
 public abstract class CronogramaTransporte {
+
     private String origen;
     private String destino;
     private float precioPersona;
     private int capacidad;
     private ArrayList<DayOfWeek> salidas;
-    public enum Calidad {EJECUTIVO, CAMA, SEMICAMA, PRIMERACLASE, BUSSINES, TURISTA};
+
+    public enum Calidad {
+
+        EJECUTIVO, CAMA, SEMICAMA, PRIMERACLASE, BUSSINES, TURISTA
+    };
     public Calidad calidad;
 
     /**
@@ -79,15 +83,15 @@ public abstract class CronogramaTransporte {
     public void setSalidas(ArrayList<DayOfWeek> salidas) {
         this.salidas = salidas;
     }
-    
-    public boolean askForDate(GregorianCalendar fecha){
-        for (DayOfWeek estedia: salidas){
-            if (((fecha.get(Calendar.DAY_OF_WEEK)-1)==estedia.getValue())||((fecha.get(Calendar.DAY_OF_WEEK)==0)&&(estedia.getValue()==7))){
+
+    public boolean askForDate(GregorianCalendar fecha) {
+        for (DayOfWeek estedia : salidas) {
+            if (((fecha.get(Calendar.DAY_OF_WEEK) - 1) == estedia.getValue()) || ((fecha.get(Calendar.DAY_OF_WEEK) == 0) && (estedia.getValue() == 7))) {
                 return true;
             }
         }
         return false;
-    
+
     }
-    
+
 }
