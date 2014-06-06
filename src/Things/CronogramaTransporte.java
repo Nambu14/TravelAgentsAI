@@ -26,7 +26,7 @@ public abstract class CronogramaTransporte {
 
         EJECUTIVO, CAMA, SEMICAMA, PRIMERACLASE, BUSSINES, TURISTA
     };
-    public Calidad calidad;
+    private Calidad calidad;
 
     /**
      *

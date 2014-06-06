@@ -40,7 +40,6 @@ public class AgenteTurista extends Agent {
     protected void setup() {
         myGui = new VentanaTurista(this);
         myGui.setVisible(true);
-
         ofertas = new ArrayList<>();
         //Actualiza la lista de Agencias de Turismo.
         addBehaviour(new OneShotBehaviour() {

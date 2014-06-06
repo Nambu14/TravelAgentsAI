@@ -6,6 +6,7 @@
 package ia2014;
 
 import Agents.AgenteLugar;
+import Things.CronogramaTransporte;
 import Things.CronogramaTransporte.Calidad;
 import Things.LugarWrapper;
 import Things.Paquete;
@@ -37,18 +38,18 @@ public class IA2014 {
         Paquete paq = new Paquete();
         paq.setOrigen("Corrientes");
         paq.setDestino("Resistencia");
-        paq.setPresupuestoMax((float) 9847.23);
+        paq.setPrecio((float) 9847.23);
         paq.setCantidadPersonas(5);
         GregorianCalendar cal = new GregorianCalendar();
-        cal.set(2015, 10, 25);
+        cal.set(2012, 2, 1);
         paq.setFechaInicialInferior(cal);
         GregorianCalendar cal2 = new GregorianCalendar();
-        cal2.set(2016, 2, 29);
+        cal2.set(2012, 3, 1);
         paq.setFechaInicialSuperior(cal2);
         paq.setDuracion(10);
         paq.setAlojamiento(lugarcito3);
         paq.setPonderacion((float) 1);
-        paq.setCalidad(Calidad.EJECUTIVO);
+        paq.setCalidadTransporte(Calidad.EJECUTIVO);
         String str = paq.toStringForMessage();
         Paquete paq2 = new Paquete();
         try {
@@ -58,10 +59,10 @@ public class IA2014 {
         }
         paq2.setOrigen("guatemala");
         paq2.setAlojamiento(lugarcito);
-        paq2.setPresupuestoMax(7500);
+        paq2.setPrecio(7500);
         Paquete paq3 = Paquete.stringToPaquete(str);
-        paq3.setPresupuestoMax(4000);
-        paq3.setCalidad(Calidad.SEMICAMA);
+        paq3.setPrecio(4000);
+        paq3.setCalidadTransporte(Calidad.SEMICAMA);
         System.out.println("calidad de paquete pedido: " + paq.getCalidadPaquete());
         System.out.println("calidad de propuesta paq2: " + paq2.getCalidadPaquete());
         System.out.println("calidad de propuesta paq3: " + paq3.getCalidadPaquete());
@@ -83,12 +84,17 @@ public class IA2014 {
         ofertas.add(paq3);
         Collections.sort(ofertas);
         for (Paquete oferta : ofertas) {
-            System.out.println(oferta.getHeuristica() + " " + oferta);
+            System.out.println(oferta.getHeuristica() + " " + oferta.toStringForMessage());
         }
         Collections.reverse(ofertas);
         for (Paquete oferta : ofertas) {
-            System.out.println(oferta.getHeuristica() + " " + oferta);
+            System.out.println(oferta.getHeuristica() + " " + oferta.toStringForMessage());
         }
+        System.out.println(paq.daysBetween());
+        System.out.println(paq2.daysBetween());
+        System.out.println(paq3.daysBetween());
+
+
 
     }
 

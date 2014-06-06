@@ -37,18 +37,12 @@ public final class Paquete implements Comparable {
     //a su criterio el confort y el precio a pagar.
     private float ponderacionPrecio;
     private float ponderacionCalidad;
-    private int anticipacion;
     //Calidades ofrecidas para los tipos de transporte, ya sea aéreo o terrestre.
     private Calidad calidadTransporte;
+    //Precio a pagar por el paquete
+    private float precio;
     private float heuristica = -50f;
-
-    public int getAnticipacion() {
-        return anticipacion;
-    }
-
-    public void setAnticipacion(int i) {
-        anticipacion = i;
-    }
+    private int anticipacion;
 
     public Paquete(String origen, String destino, float presupuestoMax,
             int cantidadPersonas, GregorianCalendar fechaInicialInferior,
@@ -109,6 +103,8 @@ public final class Paquete implements Comparable {
          8: ponderacionPrecio float
          9: ponderacionCalidad float
          10: calidadTransporte Calidad
+         11: precio
+         12: anticipacion
          */
         paquete.setOrigen(str[0]);
         paquete.setDestino(str[1]);
@@ -141,25 +137,43 @@ public final class Paquete implements Comparable {
         String p = str[10];
         switch (p) {
             case "EJECUTIVO":
-                paquete.setCalidad(Calidad.EJECUTIVO);
+                paquete.setCalidadTransporte(Calidad.EJECUTIVO);
                 break;
             case "CAMA":
-                paquete.setCalidad(Calidad.CAMA);
+                paquete.setCalidadTransporte(Calidad.CAMA);
                 break;
             case "SEMICAMA":
-                paquete.setCalidad(Calidad.SEMICAMA);
+                paquete.setCalidadTransporte(Calidad.SEMICAMA);
                 break;
             case "PRIMERACLASE":
-                paquete.setCalidad(Calidad.PRIMERACLASE);
+                paquete.setCalidadTransporte(Calidad.PRIMERACLASE);
                 break;
             case "BUSSINES":
-                paquete.setCalidad(Calidad.BUSSINES);
+                paquete.setCalidadTransporte(Calidad.BUSSINES);
                 break;
             case "TURISTA":
-                paquete.setCalidad(Calidad.TURISTA);
+                paquete.setCalidadTransporte(Calidad.TURISTA);
                 break;
         }
+        paquete.setPrecio(Float.parseFloat(str[11]));
+        paquete.setAnticipacion(Integer.parseInt(str[12]));
         return paquete;
+    }
+
+    public int getAnticipacion() {
+        return anticipacion;
+    }
+
+    public void setAnticipacion(int i) {
+        anticipacion = i;
+    }
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
     }
 
     public float getPonderacionPrecio() {
@@ -248,10 +262,6 @@ public final class Paquete implements Comparable {
         return calidadTransporte;
     }
 
-    public void setCalidad(Calidad calidad) {
-        this.calidadTransporte = calidad;
-    }
-
     public int getDiaFechaInicialInferior() {
         int var1 = fechaInicialInferior.get(Calendar.DAY_OF_MONTH);
         return var1;
@@ -295,7 +305,7 @@ public final class Paquete implements Comparable {
                 + "--" + getMesFechaInicialSuperior() + "--" + getAnoFechaInicialSuperior()
                 + ",,," + duracion + ",,," + alojamiento.lugarToString() + ",,,"
                 + ponderacionPrecio + ",,," + ponderacionCalidad
-                + ",,," + calidadTransporte);
+                + ",,," + calidadTransporte + ",,," + precio + ",,," + anticipacion);
         /*
          String[] paqueteSubString = paqueteString.split(",,,");
          if (paqueteSubString.length <> 11){
@@ -307,7 +317,7 @@ public final class Paquete implements Comparable {
 
     @Override
     public String toString() {
-        return "Paquete{" + "origen=" + origen + ", destino=" + destino + ", presupuestoMax=" + presupuestoMax + ", cantidadPersonas=" + cantidadPersonas + ", fechaInicialInferior=" + fechaInicialInferior + ", fechaInicialSuperior=" + fechaInicialSuperior + ", duracion=" + duracion + ", alojamiento=" + alojamiento + ", ponderacionPrecio=" + ponderacionPrecio + ", ponderacionCalidad=" + ponderacionCalidad + ", calidadTransporte=" + calidadTransporte + '}';
+        return "Paquete{" + "origen=" + origen + ", destino=" + destino + ", presupuestoMax=" + presupuestoMax + ", cantidadPersonas=" + cantidadPersonas + ", fechaInicialInferior=" + fechaInicialInferior + ", fechaInicialSuperior=" + fechaInicialSuperior + ", duracion=" + duracion + ", alojamiento=" + alojamiento + ", ponderacionPrecio=" + ponderacionPrecio + ", ponderacionCalidad=" + ponderacionCalidad + ", calidadTransporte=" + calidadTransporte + ", precio=" + precio + ", heuristica=" + heuristica + ", anticipacion=" + anticipacion + '}';
     }
 
     public float getCalidadPaquete() {
@@ -324,20 +334,19 @@ public final class Paquete implements Comparable {
     public float heuristica(Paquete preferencias) {
         int puntosPorPrecio = 0;
         int puntosPorCalidad = 0;
-
-        if (presupuestoMax >= 1.3f * preferencias.getPresupuestoMax()) {
+        if (precio >= 1.3f * preferencias.getPrecio()) {
             puntosPorPrecio = -3;
-        } else if ((presupuestoMax >= (1.2f * preferencias.getPresupuestoMax())) && (presupuestoMax < 1.3f * preferencias.getPresupuestoMax())) {
+        } else if ((precio >= (1.2f * preferencias.getPrecio())) && (precio < 1.3f * preferencias.getPrecio())) {
             puntosPorPrecio = -2;
-        } else if ((presupuestoMax >= (1.1f * preferencias.getPresupuestoMax())) && (presupuestoMax < 1.2f * preferencias.getPresupuestoMax())) {
+        } else if ((precio >= (1.1f * preferencias.getPrecio())) && (precio < 1.2f * preferencias.getPrecio())) {
             puntosPorPrecio = -1;
-        } else if ((presupuestoMax > (0.9f * preferencias.getPresupuestoMax())) && (presupuestoMax < 1.1f * preferencias.getPresupuestoMax())) {
+        } else if ((precio > (0.9f * preferencias.getPrecio())) && (precio < 1.1f * preferencias.getPrecio())) {
             puntosPorPrecio = 0;
-        } else if ((presupuestoMax > (0.8f * preferencias.getPresupuestoMax())) && (presupuestoMax <= 0.9f * preferencias.getPresupuestoMax())) {
+        } else if ((precio > (0.8f * preferencias.getPrecio())) && (precio <= 0.9f * preferencias.getPrecio())) {
             puntosPorPrecio = 1;
-        } else if ((presupuestoMax > (0.7f * preferencias.getPresupuestoMax())) && (presupuestoMax <= 0.8f * preferencias.getPresupuestoMax())) {
+        } else if ((precio > (0.7f * preferencias.getPrecio())) && (precio <= 0.8f * preferencias.getPrecio())) {
             puntosPorPrecio = 2;
-        } else if (presupuestoMax <= 0.7f * preferencias.getPresupuestoMax()) {
+        } else if (precio <= 0.7f * preferencias.getPrecio()) {
             puntosPorPrecio = 3;
         }
 
@@ -385,4 +394,17 @@ public final class Paquete implements Comparable {
         }
     }
 
+    //Método para calcular la diferencia en dias entre dos fechas
+    //extraído de http://tripoverit.blogspot.com.ar/2007/07/java-calculate-difference-between-two.html
+    public int daysBetween() {
+        GregorianCalendar date = getFechaInicialInferior();
+        long daysBetween = 0;
+        while (date.before(getFechaInicialSuperior())) {
+            date.add(Calendar.DAY_OF_MONTH, 1);
+            daysBetween++;
+        }
+        Long dias;
+        dias = daysBetween;
+        return dias.intValue();
+    }
 }

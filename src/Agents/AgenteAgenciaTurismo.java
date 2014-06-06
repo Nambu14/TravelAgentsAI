@@ -45,7 +45,6 @@ public class AgenteAgenciaTurismo extends Agent {
 
         descuentoPropio = new float[2];
         nombre = this.getLocalName();
-
         myGui = new VentanaAgencia(this);
         myGui.setVisible(true);
         //Registro en paginas amarillas
@@ -61,7 +60,6 @@ public class AgenteAgenciaTurismo extends Agent {
             fe.printStackTrace();
         }
         addBehaviour(new ActualizarLugares());
-
     }
 
     //Métodos llamados desde la interfaz
@@ -110,7 +108,6 @@ public class AgenteAgenciaTurismo extends Agent {
             } catch (FIPAException fe) {
             }
         }
-
     }
 
     private class ActualizarTransportes extends OneShotBehaviour {
@@ -130,7 +127,6 @@ public class AgenteAgenciaTurismo extends Agent {
             } catch (FIPAException fe) {
             }
         }
-
     }
 
     private class BuscarPaquete extends CyclicBehaviour {
@@ -143,7 +139,6 @@ public class AgenteAgenciaTurismo extends Agent {
                 String pref = msg.getContent();
                 Paquete preferencias;
                 preferencias = Paquete.stringToPaquete(pref);
-
                 //EMPIEZA LA NEGOCIACION CON LUGARES
                 ACLMessage cfpLugares = new ACLMessage(ACLMessage.CFP);
                 for (AID lugar : lugares) {
@@ -177,7 +172,6 @@ public class AgenteAgenciaTurismo extends Agent {
                                     pedirRebaja.setContent(respuestaLugar.getContent());
                                     send(pedirRebaja);
                                 }
-
                             }
                             break;
                             case ACLMessage.INFORM: {
@@ -197,7 +191,6 @@ public class AgenteAgenciaTurismo extends Agent {
                         }
                     }
                 }
-
                 // EMPIEZA LA NEGOCIACION CON TRANSPORTES
                 ACLMessage cfpTransportes = new ACLMessage(ACLMessage.CFP);
                 for (AID transporte : transportes) {
@@ -213,7 +206,7 @@ public class AgenteAgenciaTurismo extends Agent {
                     if (respuestaTransporte != null) {
                         switch (respuestaTransporte.getPerformative()) {
                             case ACLMessage.PROPOSE: {
-                                // presupuestomax va a tomar como el descuento realizado. NOTA: HAY QUE VER SI ES REALIZABLE ESO
+                                // presupuestomax va a tomar como el descuento realizado.
                                 Paquete paqTrans = Paquete.stringToPaquete(respuestaTransporte.getContent());
                                 if (descuentoTransporte <= paqTrans.getPresupuestoMax()) {
                                     //guarda paquete ordenado en ofertasTransporte
@@ -231,7 +224,6 @@ public class AgenteAgenciaTurismo extends Agent {
                                     pedirRebaja.setContent(respuestaTransporte.getContent());
                                     send(pedirRebaja);
                                 }
-
                             }
                             break;
                             case ACLMessage.INFORM: {
@@ -252,20 +244,40 @@ public class AgenteAgenciaTurismo extends Agent {
                     }
                 }
                 aceptarPropuestas(mejorLugar, mejorTransporte);
-                armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0));
-
+                Paquete paqueteArmado;
+                paqueteArmado = armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0), preferencias);
+                ACLMessage propuesta = new ACLMessage(ACLMessage.PROPOSE);
+                propuesta.setContent(paqueteArmado.toStringForMessage());
+                propuesta.addReceiver(msg.getSender());
+                myAgent.send(propuesta);
             } else {
                 block();
             }
         }
 
         private void aceptarPropuestas(AID mejorLugar, AID mejorTransporte) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            ACLMessage aceptar = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+            aceptar.addReceiver(mejorLugar);
+            aceptar.addReceiver(mejorTransporte);
+            myAgent.send(aceptar);
         }
 
-        private void armarPaquete(Paquete get, Paquete get0) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        private Paquete armarPaquete(Paquete lugar, Paquete transporte, Paquete preferencias) {
+            Paquete propuesta = new Paquete();
+            propuesta.setOrigen(preferencias.getOrigen());
+            propuesta.setDestino(preferencias.getDestino());
+            propuesta.setPresupuestoMax(preferencias.getPresupuestoMax());
+            propuesta.setCantidadPersonas(preferencias.getCantidadPersonas());
+            propuesta.setFechaInicialInferior(transporte.getFechaInicialInferior());
+            propuesta.setFechaInicialSuperior(transporte.getFechaInicialInferior());
+            propuesta.setDuracion(preferencias.getDuracion());
+            propuesta.setAlojamiento(lugar.getAlojamiento());
+            propuesta.setPonderacion(preferencias.getPonderacionPrecio());
+            propuesta.setCalidadTransporte(transporte.getCalidadTransporte());
+            //Agregar los descuentos por medio de pago
+            //Calcula el precio a pagar por servicio dado los descuentos obtenidos
+            propuesta.setPrecio(lugar.getPrecio()*lugar.getPresupuestoMax() + transporte.getPrecio()*transporte.getPresupuestoMax());
+            return propuesta;
         }
-
     }
 }

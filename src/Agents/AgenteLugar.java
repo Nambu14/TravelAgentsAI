@@ -16,8 +16,6 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -108,46 +106,39 @@ public class AgenteLugar extends Agent {
                 // si ya se aplicaron descuentos los valores en el paquete van a ser 0 (CantPsas, duracion, fecha)
                 ACLMessage respuestaLugar = msg.createReply();
                 Paquete pref;
-                try {
-                    pref = Paquete.stringToPaquete(respuestaLugar.getContent());
-
-                    //FALTA DEFINIR SI EL ALOJAMIENTO CORRESPONDE
-                    if (pref.getCantidadPersonas() != 0) {
+                pref = Paquete.stringToPaquete(msg.getContent());
+                //FALTA DEFINIR SI EL ALOJAMIENTO CORRESPONDE
+                if (pref.getCantidadPersonas() != 0) {
+                    respuestaLugar.setPerformative(ACLMessage.PROPOSE);
+                    float dto = descuentoPorPersonas[pref.getCantidadPersonas()];
+                    pref.setPresupuestoMax(dto);
+                    pref.setCantidadPersonas(0);
+                } else {
+                    if (pref.getDuracion() != 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                        float dto = descuentoPorPersonas[pref.getCantidadPersonas()];
+                        float dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
                         pref.setPresupuestoMax(dto);
-                        pref.setCantidadPersonas(0);
-
+                        pref.setDuracion(0);
                     } else {
-                        if (pref.getDuracion() != 0) {
+                        if (pref.getAnticipacion() != 0) {
                             respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                            float dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
+                            float dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[pref.getAnticipacion()];
                             pref.setPresupuestoMax(dto);
-                            pref.setDuracion(0);
+                            pref.setAnticipacion(0);
                         } else {
-                            if (pref.getAnticipacion() != 0) {
-                                respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                                float dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[pref.getAnticipacion()];
-                                pref.setPresupuestoMax(dto);
-                                pref.setAnticipacion(0);
-                            } else {
-                                respuestaLugar.setPerformative(ACLMessage.INFORM);
-                            }
+                            respuestaLugar.setPerformative(ACLMessage.INFORM);
                         }
                     }
-                    String nuevoPrecio = pref.toStringForMessage();
-                    respuestaLugar.setContent(nuevoPrecio);
-                    send(respuestaLugar);
-                } catch (Exception ex) {
-                    Logger.getLogger(AgenteLugar.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                //Calcula el precio TOTAL a pagar por la cantidad de personas.
+                pref.setPrecio(precioPersona*pref.getCantidadPersonas());
+                String nuevoPrecio = pref.toStringForMessage();
+                respuestaLugar.setContent(nuevoPrecio);
+                send(respuestaLugar);
             } else {
                 block();
             }
-
         }
-
     }
 
     public Tipo getTipo() {
