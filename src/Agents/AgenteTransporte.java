@@ -99,39 +99,17 @@ public class AgenteTransporte extends Agent {
 
         @Override
         public void action() {
-            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
-            ACLMessage msg = myAgent.receive(mt);
+            ACLMessage msg = myAgent.receive();
             if (msg != null) {
                 ACLMessage respuestaT = msg.createReply();
                 Paquete pref;
                 pref = Paquete.stringToPaquete(msg.getContent());
-                //Verificar que existan rutas para los días de salida y vuelta
-                boolean existeRutaIda = false;
-                boolean existeRutaVuelta = false;
-                GregorianCalendar fechaSalida = pref.getFechaInicialInferior();
-                if (pref.daysBetween() == 0) {
-                    for (CronogramaTransporte ruta : rutas) {
-                        if ((ruta.getOrigen() == pref.getOrigen()) && (ruta.getDestino() == pref.getDestino())) {
-                            if (ruta.askForDate(fechaSalida)) {
-                                existeRutaIda = true;
-                            }
-                            GregorianCalendar vuelta;
-                            vuelta = fechaSalida;
-                            vuelta.add(Calendar.DAY_OF_MONTH, pref.getDuracion());
-                            if (ruta.askForDate(vuelta)) {
-                                existeRutaIda = true;
-                            }
-                            if (existeRutaIda && existeRutaVuelta) {
-                                pref.setPresupuestoMax(0);
-                                pref.setCalidadTransporte(ruta.getCalidad());
-                                pref.setFechaInicialInferior(fechaSalida);
-                                pref.setPrecio(ruta.getPrecioPersona()* pref.getCantidadPersonas());
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < pref.daysBetween(); i++) {
+                if (msg.getPerformative() == ACLMessage.CFP) {
+                    //Verificar que existan rutas para los días de salida y vuelta
+                    boolean existeRutaIda = false;
+                    boolean existeRutaVuelta = false;
+                    GregorianCalendar fechaSalida = pref.getFechaInicialInferior();
+                    if (pref.daysBetween() == 0) {
                         for (CronogramaTransporte ruta : rutas) {
                             if ((ruta.getOrigen() == pref.getOrigen()) && (ruta.getDestino() == pref.getDestino())) {
                                 if (ruta.askForDate(fechaSalida)) {
@@ -147,25 +125,63 @@ public class AgenteTransporte extends Agent {
                                     pref.setPresupuestoMax(0);
                                     pref.setCalidadTransporte(ruta.getCalidad());
                                     pref.setFechaInicialInferior(fechaSalida);
-                                    pref.setPrecio(ruta.getPrecioPersona()* pref.getCantidadPersonas());
+                                    pref.setPrecio(ruta.getPrecioPersona() * pref.getCantidadPersonas());
                                     break;
                                 }
                             }
+                        }
+                    } else {
+                        for (int i = 0; i < pref.daysBetween(); i++) {
+                            for (CronogramaTransporte ruta : rutas) {
+                                if ((ruta.getOrigen() == pref.getOrigen()) && (ruta.getDestino() == pref.getDestino())) {
+                                    if (ruta.askForDate(fechaSalida)) {
+                                        existeRutaIda = true;
+                                    }
+                                    GregorianCalendar vuelta;
+                                    vuelta = fechaSalida;
+                                    vuelta.add(Calendar.DAY_OF_MONTH, pref.getDuracion());
+                                    if (ruta.askForDate(vuelta)) {
+                                        existeRutaIda = true;
+                                    }
+                                    if (existeRutaIda && existeRutaVuelta) {
+                                        pref.setPresupuestoMax(0);
+                                        pref.setCalidadTransporte(ruta.getCalidad());
+                                        pref.setFechaInicialInferior(fechaSalida);
+                                        pref.setPrecio(ruta.getPrecioPersona() * pref.getCantidadPersonas());
+                                        break;
+                                    }
+                                }
 
+                            }
+                            if (existeRutaIda && existeRutaVuelta) {
+                                break;
+                            }
+                            fechaSalida.add(Calendar.DAY_OF_MONTH, 1);
                         }
-                        if (existeRutaIda && existeRutaVuelta) {
-                            break;
-                        }
-                        fechaSalida.add(Calendar.DAY_OF_MONTH, 1);
                     }
-                }
-                if (existeRutaIda && existeRutaVuelta){
-                    respuestaT.setPerformative(ACLMessage.PROPOSE);
-                    respuestaT.setContent(pref.toStringForMessage());
-                    myAgent.send(respuestaT);
-                }else{
-                    respuestaT.setPerformative(ACLMessage.REFUSE);
-                    myAgent.send(respuestaT);
+                    if (existeRutaIda && existeRutaVuelta) {
+                        respuestaT.setPerformative(ACLMessage.PROPOSE);
+                        respuestaT.setContent(pref.toStringForMessage());
+                        myAgent.send(respuestaT);
+                    } else {
+                        respuestaT.setPerformative(ACLMessage.REFUSE);
+                        myAgent.send(respuestaT);
+                    }
+                } else if (msg.getPerformative() == ACLMessage.INFORM) {
+                    //Dar descuentos
+                    if (pref.getCantidadPersonas() != 0) {
+
+                    } else {
+                        if (pref.getDuracion() != 0) {
+
+                        } else {
+                            if (pref.getAnticipacion() != 0) {
+
+                            } else {
+                                //setPerformative(ACLMessage.INFORM);
+                            }
+                        }
+                    }
                 }
             } else {
                 block();

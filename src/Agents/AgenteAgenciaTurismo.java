@@ -221,7 +221,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                     }
                                 } else {
                                     ACLMessage pedirRebaja = respuestaTransporte.createReply();
-                                    pedirRebaja.setPerformative(ACLMessage.CFP);
+                                    pedirRebaja.setPerformative(ACLMessage.INFORM);
                                     pedirRebaja.setContent(respuestaTransporte.getContent());
                                     send(pedirRebaja);
                                 }

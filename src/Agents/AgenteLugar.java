@@ -107,7 +107,7 @@ public class AgenteLugar extends Agent {
                 ACLMessage respuestaLugar = msg.createReply();
                 Paquete pref;
                 pref = Paquete.stringToPaquete(msg.getContent());
-                //FALTA DEFINIR SI EL ALOJAMIENTO CORRESPONDE
+                //Si el alojamiento no queda en la ciudad de destino envía un REFUSE
                 if (pref.getDestino() == ciudad) {
                     if (pref.getCantidadPersonas() != 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
