@@ -42,7 +42,7 @@ public final class Paquete implements Comparable {
     //Precio a pagar por el paquete
     private float precio;
     private float heuristica = -50f;
-    private int anticipacion;
+    private int anticipacion = 1;
 
     public Paquete(String origen, String destino, float presupuestoMax,
             int cantidadPersonas, GregorianCalendar fechaInicialInferior,

@@ -60,11 +60,11 @@ public abstract class CronogramaTransporte {
         this.destino = destino;
     }
 
-    public float getPrecio() {
+    public float getPrecioPersona() {
         return precioPersona;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecioPersona(float precio) {
         this.precioPersona = precio;
     }
 
@@ -92,6 +92,14 @@ public abstract class CronogramaTransporte {
         }
         return false;
 
+    }
+
+    public Calidad getCalidad() {
+        return calidad;
+    }
+
+    public void setCalidad(Calidad calidad) {
+        this.calidad = calidad;
     }
 
 }

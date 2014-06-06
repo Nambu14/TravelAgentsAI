@@ -109,8 +109,7 @@ public class AgenteTransporte extends Agent {
                 boolean existeRutaIda = false;
                 boolean existeRutaVuelta = false;
                 GregorianCalendar fechaSalida = pref.getFechaInicialInferior();
-                //Arreglar el tema de que daysBetween == 0
-                for (int i = 0; i < pref.daysBetween(); i++) {
+                if (pref.daysBetween() == 0) {
                     for (CronogramaTransporte ruta : rutas) {
                         if ((ruta.getOrigen() == pref.getOrigen()) && (ruta.getDestino() == pref.getDestino())) {
                             if (ruta.askForDate(fechaSalida)) {
@@ -123,15 +122,50 @@ public class AgenteTransporte extends Agent {
                                 existeRutaIda = true;
                             }
                             if (existeRutaIda && existeRutaVuelta) {
+                                pref.setPresupuestoMax(0);
+                                pref.setCalidadTransporte(ruta.getCalidad());
+                                pref.setFechaInicialInferior(fechaSalida);
+                                pref.setPrecio(ruta.getPrecioPersona()* pref.getCantidadPersonas());
                                 break;
                             }
                         }
-
                     }
-                if (existeRutaIda && existeRutaVuelta){
-                    break;
+                } else {
+                    for (int i = 0; i < pref.daysBetween(); i++) {
+                        for (CronogramaTransporte ruta : rutas) {
+                            if ((ruta.getOrigen() == pref.getOrigen()) && (ruta.getDestino() == pref.getDestino())) {
+                                if (ruta.askForDate(fechaSalida)) {
+                                    existeRutaIda = true;
+                                }
+                                GregorianCalendar vuelta;
+                                vuelta = fechaSalida;
+                                vuelta.add(Calendar.DAY_OF_MONTH, pref.getDuracion());
+                                if (ruta.askForDate(vuelta)) {
+                                    existeRutaIda = true;
+                                }
+                                if (existeRutaIda && existeRutaVuelta) {
+                                    pref.setPresupuestoMax(0);
+                                    pref.setCalidadTransporte(ruta.getCalidad());
+                                    pref.setFechaInicialInferior(fechaSalida);
+                                    pref.setPrecio(ruta.getPrecioPersona()* pref.getCantidadPersonas());
+                                    break;
+                                }
+                            }
+
+                        }
+                        if (existeRutaIda && existeRutaVuelta) {
+                            break;
+                        }
+                        fechaSalida.add(Calendar.DAY_OF_MONTH, 1);
+                    }
                 }
-                fechaSalida.add(Calendar.DAY_OF_MONTH,1);
+                if (existeRutaIda && existeRutaVuelta){
+                    respuestaT.setPerformative(ACLMessage.PROPOSE);
+                    respuestaT.setContent(pref.toStringForMessage());
+                    myAgent.send(respuestaT);
+                }else{
+                    respuestaT.setPerformative(ACLMessage.REFUSE);
+                    myAgent.send(respuestaT);
                 }
             } else {
                 block();
