@@ -141,6 +141,9 @@ public class AgenteAgenciaTurismo extends Agent {
                 String pref = msg.getContent();
                 Paquete preferencias;
                 preferencias = Paquete.stringToPaquete(pref);
+                Paquete prefSemiHeuristica;
+                prefSemiHeuristica = Paquete.stringToPaquete(pref);
+                prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.7f);
                 //EMPIEZA LA NEGOCIACION CON LUGARES
                 ACLMessage cfpLugares = new ACLMessage(ACLMessage.CFP);
                 for (AID lugar : lugares) {
@@ -161,7 +164,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (descuentoLugar <= paqLugar.getPresupuestoMax()) {
                                     //guarda paquete ordenado en ofertasLugar
                                     paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
-                                    paqLugar.setHeuristica(preferencias);
+                                    paqLugar.setHeuristica(prefSemiHeuristica);
                                     ofertasLugar.add(paqLugar);
                                     Collections.sort(ofertasLugar);
                                     Collections.reverse(ofertasLugar);
@@ -181,7 +184,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                 Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
                                 //guarda paquete ordenado en ofertasLugar
                                 paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
-                                paqLugar.setHeuristica(preferencias);
+                                paqLugar.setHeuristica(prefSemiHeuristica);
                                 ofertasLugar.add(paqLugar);
                                 Collections.sort(ofertasLugar);
                                 Collections.reverse(ofertasLugar);
@@ -202,6 +205,7 @@ public class AgenteAgenciaTurismo extends Agent {
                 cfpTransportes.setContent(pref);
                 cfpTransportes.setConversationId("Busqueda de Transportes");
                 myAgent.send(cfpTransportes);
+                prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.3f);
                 for (AID transporte : transportes) {
                     MessageTemplate mttransporte = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Transportes"),
                             MessageTemplate.MatchSender(transporte));
@@ -214,7 +218,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (descuentoTransporte <= paqTrans.getPresupuestoMax()) {
                                     //guarda paquete ordenado en ofertasTransporte
                                     paqTrans.setAlojamiento(preferencias.getAlojamiento());
-                                    paqTrans.setHeuristica(preferencias);
+                                    paqTrans.setHeuristica(prefSemiHeuristica);
                                     ofertasTransporte.add(paqTrans);
                                     Collections.sort(ofertasTransporte);
                                     Collections.reverse(ofertasTransporte);
@@ -234,7 +238,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                 Paquete paqTrans = Paquete.stringToPaquete(respuestaTransporte.getContent());
                                 //guarda paquete ordenado en ofertasTransporte
                                 paqTrans.setAlojamiento(preferencias.getAlojamiento());
-                                paqTrans.setHeuristica(preferencias);
+                                paqTrans.setHeuristica(prefSemiHeuristica);
                                 ofertasTransporte.add(paqTrans);
                                 Collections.sort(ofertasTransporte);
                                 Collections.reverse(ofertasTransporte);
@@ -278,9 +282,7 @@ public class AgenteAgenciaTurismo extends Agent {
             propuesta.setAlojamiento(lugar.getAlojamiento());
             propuesta.setPonderacion(preferencias.getPonderacionPrecio());
             propuesta.setCalidadTransporte(transporte.getCalidadTransporte());
-            //Agregar los descuentos por medio de pago
-            //Calcula el precio a pagar por servicio dado los descuentos obtenidos
-            propuesta.setPrecio((lugar.getPrecio()* lugar.getPresupuestoMax() * preferencias.getCantidadPersonas() + transporte.getPrecio()*transporte.getPresupuestoMax())*comision);
+            propuesta.setPrecio((lugar.getPrecio() * lugar.getPresupuestoMax() + transporte.getPrecio() * transporte.getPresupuestoMax()) * comision);
             return propuesta;
         }
     }
