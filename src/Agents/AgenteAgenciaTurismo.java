@@ -61,6 +61,7 @@ public class AgenteAgenciaTurismo extends Agent {
             fe.printStackTrace();
         }
         addBehaviour(new ActualizarLugares());
+        addBehaviour(new BuscarPaquete());
     }
 
     //Métodos llamados desde la interfaz
