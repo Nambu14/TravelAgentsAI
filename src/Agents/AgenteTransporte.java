@@ -182,10 +182,14 @@ public class AgenteTransporte extends Agent {
                         pref.setDuracion(0);
                     } else if (pref.getAnticipacion() != 0) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
-
+                        float dto = descuentoPorDias[(pref.getFechaInicialInferior().get(Calendar.DAY_OF_WEEK) - 1)];
+                        pref.setPresupuestoMax(pref.getPresupuestoMax() + dto);
+                        pref.setAnticipacion(0);
                     } else {
-                        //setPerformative(ACLMessage.INFORM);
+                        respuestaT.setPerformative(ACLMessage.INFORM);
                     }
+                    respuestaT.setContent(pref.toStringForMessage());
+                    myAgent.send(respuestaT);
                 }
             } else {
                 block();

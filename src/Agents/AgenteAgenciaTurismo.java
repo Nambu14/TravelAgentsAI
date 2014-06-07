@@ -38,6 +38,7 @@ public class AgenteAgenciaTurismo extends Agent {
     private float[] descuentoPropio;
     private AID[] transportes;
     private AID[] lugares;
+    private float comision;
     private VentanaAgencia myGui;
 
     @Override
@@ -278,7 +279,7 @@ public class AgenteAgenciaTurismo extends Agent {
             propuesta.setCalidadTransporte(transporte.getCalidadTransporte());
             //Agregar los descuentos por medio de pago
             //Calcula el precio a pagar por servicio dado los descuentos obtenidos
-            propuesta.setPrecio(lugar.getPrecio()* lugar.getPresupuestoMax() * preferencias.getCantidadPersonas() + transporte.getPrecio()*transporte.getPresupuestoMax());
+            propuesta.setPrecio((lugar.getPrecio()* lugar.getPresupuestoMax() * preferencias.getCantidadPersonas() + transporte.getPrecio()*transporte.getPresupuestoMax())*comision);
             return propuesta;
         }
     }
