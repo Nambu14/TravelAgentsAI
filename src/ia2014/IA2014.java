@@ -41,7 +41,7 @@ public class IA2014 {
         paq.setPrecio((float) 9847.23);
         paq.setCantidadPersonas(5);
         GregorianCalendar cal = new GregorianCalendar();
-        cal.set(2012, 2, 1);
+        cal.set(2015, 6, 7);
         paq.setFechaInicialInferior(cal);
         GregorianCalendar cal2 = new GregorianCalendar();
         cal2.set(2012, 2, 10);
@@ -93,7 +93,8 @@ public class IA2014 {
         System.out.println(paq.daysBetween());
         System.out.println(paq2.daysBetween());
         System.out.println(paq3.daysBetween());
-        System.out.println(Paquete.daysBetween(cal, cal2));
+        GregorianCalendar asd = new GregorianCalendar();
+        System.out.println(Paquete.daysBetween(asd, cal));
 
 
     }
