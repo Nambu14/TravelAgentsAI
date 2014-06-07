@@ -20,16 +20,20 @@ public class DescuentosAplicables extends javax.swing.JFrame {
     /**
      * Creates new form DescuentosAsignados
      */
-    private float [] personas;
-    private float [] anticipacion;
-    private float [] cantDias;
+    private float [] personas = new float[1];
+    private float [] anticipacion = new float[1];
+    private float [] cantDias = new float[1];
     private float[][] descuentos;
     private AgenteLugar miAgente;
+    
     
     public DescuentosAplicables(AgenteLugar a) {
         super(a.getLocalName());
 	miAgente = a;
         initComponents();
+        personas[0] = 0;
+        anticipacion [0] = 0;
+        cantDias [0] = 0;
     }
 
     /**
@@ -406,8 +410,8 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         int dos = Integer.parseInt(psas2.getText());
         int tres = Integer.parseInt(psas3.getText());
         int max = Integer.max(Integer.max(uno, dos), tres);
-        if(max>personas.length)
-            personas = Arrays.copyOf(personas, max);
+        if(personas.length<=max)
+            personas = Arrays.copyOf(personas, max+1);
         
         personas[uno] = Float.parseFloat(dtoPsas1.getText())/100;
         personas[dos] = Float.parseFloat(dtoPsas2.getText())/100;
@@ -423,8 +427,8 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         int dos = Integer.parseInt(anticipacion2.getText());
         int tres = Integer.parseInt(anticipacion3.getText());
         int max = Integer.max(Integer.max(uno, dos), tres);
-        if(max>anticipacion.length)
-            anticipacion = Arrays.copyOf(anticipacion, max);
+        if(max>=anticipacion.length)
+            anticipacion = Arrays.copyOf(anticipacion, max+1);
         
         anticipacion[uno] = Float.parseFloat(dtoPsas1.getText())/100;
         anticipacion[dos] = Float.parseFloat(dtoPsas2.getText())/100;
@@ -438,27 +442,30 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         agregarDiasActionPerformed(null);
         agregarPsasActionPerformed(null);
         agregarAntiActionPerformed(null);
-        personas[0] = 0;
-        anticipacion [0] = 0;
-        cantDias [0] = 0;
-        for(int i = 1; i<personas.length; ++i){
-            if(personas[i] == 0)
-                personas[i] = personas[i-1];
-        }
-        for(int i =1; i<anticipacion.length; ++i){
-            if(anticipacion[i] == 0)
-                anticipacion[i] = anticipacion[i-1];
-        }
-        for(int i = 1; i< cantDias.length; ++i){
-            if(cantDias[i] == 0)
-                cantDias[i] = cantDias[i-1];
-        }
         miAgente.asignarDescuentoPersonas(personas);
         miAgente.asignarDescuentoDias(cantDias);
         miAgente.asignarDescuentoAnticipación(anticipacion);
         dispose();
     }//GEN-LAST:event_aceptarActionPerformed
 
+    private void setearPsas(){
+        for(int i = 1; i<personas.length; ++i){
+            if(personas[i] == 0)
+                personas[i] = personas[i-1];
+        }
+    }
+    private void setearAnticipacion(){
+        for(int i =1; i<anticipacion.length; ++i){
+            if(anticipacion[i] == 0)
+                anticipacion[i] = anticipacion[i-1];
+        }
+    }
+    private void setearDias(){
+        for(int i = 1; i< cantDias.length; ++i){
+            if(cantDias[i] == 0)
+                cantDias[i] = cantDias[i-1];
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -507,6 +514,12 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         dtoPsas1.setText("0");
         dtoPsas2.setText("0");
         dtoPsas3.setText("0");
+        psas1.setVisible(true);
+        psas2.setVisible(true);
+        psas3.setVisible(true);
+        dtoPsas1.setVisible(true);
+        dtoPsas2.setVisible(true);
+        dtoPsas3.setVisible(true);
     }
 
     private void limpiarDias() {
@@ -516,6 +529,12 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         dtoDias1.setText("0");
         dtoDias2.setText("0");
         dtoDias3.setText("0");
+        dias1.setVisible(true);
+        dias2.setVisible(true);
+        dias3.setVisible(true);
+        dtoDias1.setVisible(true);
+        dtoDias2.setVisible(true);
+        dtoDias3.setVisible(true);
     }
 
     private void limpiarAnticipacion() {
@@ -525,6 +544,12 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         dtoA1.setText("0");
         dtoA2.setText("0");
         dtoA3.setText("0");
+        anticipacion1.setVisible(true);
+        anticipacion2.setVisible(true);
+        anticipacion3.setVisible(true);
+        dtoA1.setVisible(true);
+        dtoA2.setVisible(true);
+        dtoA3.setVisible(true);
                 
     }
 }
