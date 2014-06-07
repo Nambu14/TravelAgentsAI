@@ -435,6 +435,9 @@ public class DescuentosAplicables extends javax.swing.JFrame {
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
+        agregarDiasActionPerformed(null);
+        agregarPsasActionPerformed(null);
+        agregarAntiActionPerformed(null);
         personas[0] = 0;
         anticipacion [0] = 0;
         cantDias [0] = 0;
@@ -453,7 +456,7 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         miAgente.asignarDescuentoPersonas(personas);
         miAgente.asignarDescuentoDias(cantDias);
         miAgente.asignarDescuentoAnticipación(anticipacion);
-        this.dispose();
+        dispose();
     }//GEN-LAST:event_aceptarActionPerformed
 
     /**
@@ -498,14 +501,30 @@ public class DescuentosAplicables extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void limpiarPersonas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        psas1.setText("0");
+        psas2.setText("0");
+        psas3.setText("0");
+        dtoPsas1.setText("0");
+        dtoPsas2.setText("0");
+        dtoPsas3.setText("0");
     }
 
     private void limpiarDias() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dias1.setText("0");
+        dias2.setText("0");
+        dias3.setText("0");
+        dtoDias1.setText("0");
+        dtoDias2.setText("0");
+        dtoDias3.setText("0");
     }
 
     private void limpiarAnticipacion() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        anticipacion1.setText("0");
+        anticipacion2.setText("0");
+        anticipacion3.setText("0");
+        dtoA1.setText("0");
+        dtoA2.setText("0");
+        dtoA3.setText("0");
+                
     }
 }

@@ -7,6 +7,8 @@
 package Ventanas;
 
 import Agents.AgenteLugar;
+import Agents.AgenteLugar.Tipo;
+import java.util.ArrayList;
 import javax.swing.Popup;
 
 /**
@@ -17,6 +19,7 @@ public class VentanaLugar extends javax.swing.JFrame {
     
     private AgenteLugar miAgente;
     private String[] tiposLugar = {"HOTEL", "APART", "CABAÑA", "HOSTAL"};
+    private ArrayList<String> servicios;
     
     
     /**
@@ -60,6 +63,8 @@ public class VentanaLugar extends javax.swing.JFrame {
         cuarto = new javax.swing.JCheckBox();
         gimnasio = new javax.swing.JCheckBox();
         mascotas = new javax.swing.JCheckBox();
+        jLabel6 = new javax.swing.JLabel();
+        precio = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +73,11 @@ public class VentanaLugar extends javax.swing.JFrame {
         jLabel2.setText("Tipo");
 
         tipo.setModel(new javax.swing.DefaultComboBoxModel(tiposLugar));
+        tipo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                tipoItemStateChanged(evt);
+            }
+        });
         tipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tipoActionPerformed(evt);
@@ -144,6 +154,8 @@ public class VentanaLugar extends javax.swing.JFrame {
 
         mascotas.setText("Admiten Mascotas");
 
+        jLabel6.setText("Precio por persona");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,7 +171,11 @@ public class VentanaLugar extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(76, 76, 76)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(precio, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(descuentosAplicables)
                             .addComponent(jLabel5)
                             .addGroup(layout.createSequentialGroup()
@@ -206,7 +222,9 @@ public class VentanaLugar extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -259,12 +277,6 @@ public class VentanaLugar extends javax.swing.JFrame {
 
     private void tipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoActionPerformed
         // TODO add your handling code here:
-        if(tipo.getSelectedIndex()<3){
-            calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5"}));
-        } else { calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3"}));;
-        }
-        
-        calidad.setEnabled(true);
     }//GEN-LAST:event_tipoActionPerformed
 
     private void descuentosAplicablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descuentosAplicablesActionPerformed
@@ -287,36 +299,23 @@ public class VentanaLugar extends javax.swing.JFrame {
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
+        int precioPersona= Integer.parseInt(precio.getText());
+        int cal= Integer.parseInt((String) calidad.getSelectedItem());
+        miAgente.asignarServicios(definirServicios());
+        miAgente.definirLugar(ciudad.getText(),precioPersona, cal,definirTipo(tipo.getSelectedItem()));
     }//GEN-LAST:event_aceptarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaLugar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaLugar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaLugar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaLugar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void tipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoItemStateChanged
+        // TODO add your handling code here:
+        if(tipo.getSelectedIndex()<2){
+            calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5"}));
+        } else { calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3"}));;
         }
-        //</editor-fold>
+        
+        calidad.setEnabled(true);
+        
+    }//GEN-LAST:event_tipoItemStateChanged
 
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
@@ -335,14 +334,66 @@ public class VentanaLugar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JCheckBox juegos;
     private javax.swing.JCheckBox limpieza;
     private javax.swing.JCheckBox mascotas;
     private javax.swing.JCheckBox pension;
     private javax.swing.JCheckBox piscina;
+    private javax.swing.JTextField precio;
     private javax.swing.JCheckBox sauna;
     private javax.swing.JComboBox tipo;
     // End of variables declaration//GEN-END:variables
+
+    private Tipo definirTipo(Object a) {
+        String b = (String) a;
+        Tipo tipoD = null;
+        switch(b){
+            case "HOTEL":
+                tipoD= Tipo.HOTEL;
+                break;
+            case "APART":
+                tipoD= Tipo.APART;
+                break;
+            case "HOSTAL":
+                tipoD= Tipo.HOSTAL;
+                break;
+            case "CABAÑA":
+                tipoD= Tipo.CABAÑA;
+                break;
+        }
+        return tipoD;
+    }
+
+    private String[] definirServicios() {
+        if (calefaccion.isSelected())
+            servicios.add(calefaccion.getText());
+        if(pension.isSelected())
+            servicios.add(pension.getText());
+        if(garage.isSelected())
+            servicios.add(garage.getText());
+        if(juegos.isSelected())
+            servicios.add(juegos.getText());
+        if(piscina.isSelected())
+            servicios.add(piscina.getText());
+        if(sauna.isSelected())
+            servicios.add(sauna.getText());
+        if(cable.isSelected())
+            servicios.add(cable.getText());
+        if(internet.isSelected())
+            servicios.add(internet.getText());
+        if(limpieza.isSelected())
+            servicios.add(limpieza.getText());
+        if(cuarto.isSelected())
+            servicios.add(cuarto.getText());
+        if(gimnasio.isSelected())
+            servicios.add(gimnasio.getText());
+        if(mascotas.isSelected())
+            servicios.add(mascotas.getText());
+        String[] services = new String[servicios.size()];
+        services = servicios.toArray(services);
+        return services;
+    }
 
     
 }
