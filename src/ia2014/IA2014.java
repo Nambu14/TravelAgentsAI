@@ -44,7 +44,7 @@ public class IA2014 {
         cal.set(2012, 2, 1);
         paq.setFechaInicialInferior(cal);
         GregorianCalendar cal2 = new GregorianCalendar();
-        cal2.set(2012, 3, 1);
+        cal2.set(2012, 2, 10);
         paq.setFechaInicialSuperior(cal2);
         paq.setDuracion(10);
         paq.setAlojamiento(lugarcito3);
@@ -93,7 +93,7 @@ public class IA2014 {
         System.out.println(paq.daysBetween());
         System.out.println(paq2.daysBetween());
         System.out.println(paq3.daysBetween());
-
+        System.out.println(Paquete.daysBetween(cal, cal2));
 
 
     }

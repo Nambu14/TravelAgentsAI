@@ -170,17 +170,21 @@ public class AgenteTransporte extends Agent {
                 } else if (msg.getPerformative() == ACLMessage.INFORM) {
                     //Dar descuentos
                     if (pref.getCantidadPersonas() != 0) {
+                        respuestaT.setPerformative(ACLMessage.PROPOSE);
+                        float dbt = descuentoPorPersonas[pref.getCantidadPersonas()];
+                        pref.setPresupuestoMax(dbt);
+                        pref.setCantidadPersonas(0);
+                    } else if (pref.getDuracion() != 0) {
+                        respuestaT.setPerformative(ACLMessage.PROPOSE);
+                        GregorianCalendar cal = new GregorianCalendar();
+                        float dbt = descuentoPorAnticipacion[Paquete.daysBetween(cal, pref.getFechaInicialInferior())];
+                        pref.setPresupuestoMax(pref.getPresupuestoMax() + dbt);
+                        pref.setDuracion(0);
+                    } else if (pref.getAnticipacion() != 0) {
+                        respuestaT.setPerformative(ACLMessage.PROPOSE);
 
                     } else {
-                        if (pref.getDuracion() != 0) {
-
-                        } else {
-                            if (pref.getAnticipacion() != 0) {
-
-                            } else {
-                                //setPerformative(ACLMessage.INFORM);
-                            }
-                        }
+                        //setPerformative(ACLMessage.INFORM);
                     }
                 }
             } else {

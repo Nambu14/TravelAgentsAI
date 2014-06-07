@@ -407,4 +407,15 @@ public final class Paquete implements Comparable {
         dias = daysBetween;
         return dias.intValue();
     }
+    
+    public static int daysBetween(GregorianCalendar cal1, GregorianCalendar cal2) {
+        long daysBetween = 0;
+        while (cal1.before(cal2)) {
+            cal1.add(Calendar.DAY_OF_MONTH, 1);
+            daysBetween++;
+        }
+        Long dias;
+        dias = daysBetween;
+        return dias.intValue();
+    }
 }
