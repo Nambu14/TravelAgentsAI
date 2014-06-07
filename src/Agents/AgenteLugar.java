@@ -109,34 +109,31 @@ public class AgenteLugar extends Agent {
                 pref = Paquete.stringToPaquete(msg.getContent());
                 //Si el alojamiento no queda en la ciudad de destino envía un REFUSE
                 if (pref.getDestino() == ciudad) {
-                    if (pref.getCantidadPersonas() != 0) {
+                    if (pref.getCantidadPersonas() > 0) {
+                        pref.setPrecio(precioPersona * pref.getCantidadPersonas());
+                        pref.setCantidadPersonas(-1);
+                    } else if (pref.getCantidadPersonas() < 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto = descuentoPorPersonas[pref.getCantidadPersonas()];
                         pref.setPresupuestoMax(dto);
                         pref.setCantidadPersonas(0);
+                    } else if (pref.getDuracion() != 0) {
+                        respuestaLugar.setPerformative(ACLMessage.PROPOSE);
+                        float dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
+                        pref.setPresupuestoMax(dto);
+                        pref.setDuracion(0);
+                    } else if (pref.getAnticipacion() != 0) {
+                        respuestaLugar.setPerformative(ACLMessage.PROPOSE);
+                        float dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[pref.getAnticipacion()];
+                        pref.setPresupuestoMax(dto);
+                        pref.setAnticipacion(0);
                     } else {
-                        if (pref.getDuracion() != 0) {
-                            respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                            float dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
-                            pref.setPresupuestoMax(dto);
-                            pref.setDuracion(0);
-                        } else {
-                            if (pref.getAnticipacion() != 0) {
-                                respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                                float dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[pref.getAnticipacion()];
-                                pref.setPresupuestoMax(dto);
-                                pref.setAnticipacion(0);
-                            } else {
-                                respuestaLugar.setPerformative(ACLMessage.INFORM);
-                            }
-                        }
+                        respuestaLugar.setPerformative(ACLMessage.INFORM);
                     }
-                    //Calcula el precio TOTAL a pagar por la cantidad de personas.
-                    pref.setPrecio(precioPersona);
                     String nuevoPrecio = pref.toStringForMessage();
                     respuestaLugar.setContent(nuevoPrecio);
                     send(respuestaLugar);
-                }else{
+                } else {
                     respuestaLugar.setPerformative(ACLMessage.REFUSE);
                     respuestaLugar.setContent(ciudad);
                     myAgent.send(respuestaLugar);
@@ -144,6 +141,7 @@ public class AgenteLugar extends Agent {
             } else {
                 block();
             }
+
         }
     }
 

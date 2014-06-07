@@ -262,32 +262,32 @@ public final class Paquete implements Comparable {
         return calidadTransporte;
     }
 
-    public int getDiaFechaInicialInferior() {
+    private int getDiaFechaInicialInferior() {
         int var1 = fechaInicialInferior.get(Calendar.DAY_OF_MONTH);
         return var1;
     }
 
-    public int getMesFechaInicialInferior() {
+    private int getMesFechaInicialInferior() {
         int var1 = fechaInicialInferior.get(Calendar.MONTH);
         return var1;
     }
 
-    public int getAnoFechaInicialInferior() {
+    private int getAnoFechaInicialInferior() {
         int var1 = fechaInicialInferior.get(Calendar.YEAR);
         return var1;
     }
 
-    public int getDiaFechaInicialSuperior() {
+    private int getDiaFechaInicialSuperior() {
         int var1 = fechaInicialSuperior.get(Calendar.DAY_OF_MONTH);
         return var1;
     }
 
-    public int getMesFechaInicialSuperior() {
+    private int getMesFechaInicialSuperior() {
         int var1 = fechaInicialSuperior.get(Calendar.MONTH);
         return var1;
     }
 
-    public int getAnoFechaInicialSuperior() {
+    private int getAnoFechaInicialSuperior() {
         int var1 = fechaInicialSuperior.get(Calendar.YEAR);
         return var1;
     }
