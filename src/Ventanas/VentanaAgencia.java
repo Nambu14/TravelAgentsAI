@@ -198,7 +198,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
 
     private void accederDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accederDFActionPerformed
         // TODO add your handling code here:
-        VentanaDFServicios servicios = new VentanaDFServicios();
+        VentanaAgencia.VentanaDFServicios servicios = this.new VentanaDFServicios();
         servicios.setVisible(true);
         
     }//GEN-LAST:event_accederDFActionPerformed

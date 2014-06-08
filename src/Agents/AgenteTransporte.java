@@ -38,6 +38,7 @@ public class AgenteTransporte extends Agent {
         TERRESTRE, AEREA
     };
     private TipoEmpresa tipo;
+
     private ArrayList<CronogramaTransporte> rutas;
     private VentanaTransporte myGui;
 
@@ -93,6 +94,11 @@ public class AgenteTransporte extends Agent {
 
     public void addCronograma(CronogramaTransporte ruta) {
         rutas.add(ruta);
+    }
+        
+    public void setTransporte(TipoEmpresa tipo){
+        nombre = this.getLocalName();
+        this.tipo = tipo; 
     }
 
     private class RecibirPedido extends CyclicBehaviour {

@@ -6,7 +6,10 @@
 
 package Ventanas;
 
+import Agents.AgenteLugar;
 import Agents.AgenteTransporte;
+import Agents.AgenteTransporte.TipoEmpresa;
+import java.util.Arrays;
 
 /**
  *
@@ -20,7 +23,6 @@ public class VentanaTransporte extends javax.swing.JFrame {
      */
     public VentanaTransporte(AgenteTransporte a) {
         super(a.getLocalName());
-		
 	miAgente = a;
         initComponents();
     }
@@ -34,26 +36,673 @@ public class VentanaTransporte extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        tipoEmpresa = new javax.swing.JComboBox();
+        dtoAplicables = new javax.swing.JButton();
+        definirRutas = new javax.swing.JButton();
+        aceptar = new javax.swing.JButton();
+        cancelar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jLabel1.setText("Empresa de Transporte: "+miAgente.getLocalName());
+
+        jLabel2.setText("Tipo de Empresa");
+
+        tipoEmpresa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Terrestre", "Aerea" }));
+
+        dtoAplicables.setText("Definir Descuentos Aplicables");
+
+        definirRutas.setText("Definir nuevas Rutas");
+
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
+
+        cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(aceptar)
+                        .addGap(37, 37, 37)
+                        .addComponent(cancelar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dtoAplicables)
+                            .addComponent(definirRutas)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(tipoEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(tipoEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(dtoAplicables)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(definirRutas)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aceptar)
+                    .addComponent(cancelar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
+        // TODO add your handling code here:
+        TipoEmpresa tipo = null;
+        String a = (String) tipoEmpresa.getSelectedItem();
+        switch(a){
+            case "Terrestre":
+                tipo= TipoEmpresa.TERRESTRE;
+                break;
+            case "Aerea":
+                tipo= TipoEmpresa.AEREA;
+                break;
+        }
+        miAgente.setTransporte(tipo);
+        dispose();
+    }//GEN-LAST:event_aceptarActionPerformed
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+        // TODO add your handling code here:
+        miAgente.doDelete();
+        dispose();
+    }//GEN-LAST:event_cancelarActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aceptar;
+    private javax.swing.JButton cancelar;
+    private javax.swing.JButton definirRutas;
+    private javax.swing.JButton dtoAplicables;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox tipoEmpresa;
     // End of variables declaration//GEN-END:variables
+   
+    public class DescuentosAplicablesTransporte extends javax.swing.JFrame {
+
+    /**
+     * Creates new form DescuentosAsignados
+     */
+    private float [] personas = new float[1];
+    private float [] anticipacion = new float[1];
+    private float[][] descuentos;
+    private AgenteLugar miAgente;
+    
+    
+    public DescuentosAplicablesTransporte(AgenteLugar a) {
+        super(a.getLocalName());
+	miAgente = a;
+        initComponents();
+        personas[0] = 0;
+        anticipacion [0] = 0;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        psas1 = new javax.swing.JTextField();
+        psas2 = new javax.swing.JTextField();
+        psas3 = new javax.swing.JTextField();
+        dtoPsas1 = new javax.swing.JTextField();
+        dtoPsas2 = new javax.swing.JTextField();
+        dtoPsas3 = new javax.swing.JTextField();
+        anticipacion2 = new javax.swing.JTextField();
+        anticipacion3 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        dtoA1 = new javax.swing.JTextField();
+        dtoA2 = new javax.swing.JTextField();
+        dtoA3 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        anticipacion1 = new javax.swing.JTextField();
+        agregarPsas = new javax.swing.JButton();
+        agregarAnti = new javax.swing.JButton();
+        aceptar = new javax.swing.JButton();
+        cancelar = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        lunes = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        martes = new javax.swing.JTextField();
+        miercoles = new javax.swing.JTextField();
+        jueves = new javax.swing.JTextField();
+        viernes = new javax.swing.JTextField();
+        sabado = new javax.swing.JTextField();
+        domingo = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jLabel1.setText("Descuentos Asignables");
+
+        jLabel2.setText("Según cantidad de personas");
+
+        jLabel3.setText("Cantidad Mínima");
+
+        jLabel4.setText("Descuento (%)");
+
+        psas1.setText("0");
+        psas1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                psas1ActionPerformed(evt);
+            }
+        });
+
+        psas2.setText("0");
+
+        psas3.setText("0");
+
+        dtoPsas1.setText("0");
+        dtoPsas1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dtoPsas1ActionPerformed(evt);
+            }
+        });
+
+        dtoPsas2.setText("0");
+
+        dtoPsas3.setText("0");
+
+        anticipacion2.setText("0");
+
+        anticipacion3.setText("0");
+
+        jLabel8.setText("Según cantidad de días de anticipación de reserva");
+
+        dtoA1.setText("0");
+        dtoA1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dtoA1ActionPerformed(evt);
+            }
+        });
+
+        dtoA2.setText("0");
+
+        dtoA3.setText("0");
+
+        jLabel9.setText("Cantidad Mínima");
+
+        jLabel10.setText("Descuento (%)");
+
+        anticipacion1.setText("0");
+        anticipacion1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anticipacion1ActionPerformed(evt);
+            }
+        });
+
+        agregarPsas.setText("Agregar");
+        agregarPsas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarPsasActionPerformed(evt);
+            }
+        });
+
+        agregarAnti.setText("Agregar");
+        agregarAnti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarAntiActionPerformed(evt);
+            }
+        });
+
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
+
+        cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Según día de Compra");
+
+        jLabel12.setText("Día");
+
+        lunes.setText("0");
+
+        jLabel13.setText("Descuento (%)");
+
+        jLabel14.setText("Lunes");
+
+        jLabel15.setText("Martes");
+
+        jLabel16.setText("Miércoles");
+
+        jLabel17.setText("Jueves");
+
+        jLabel18.setText("Viernes");
+
+        jLabel19.setText("Sábado");
+
+        jLabel20.setText("Domingo");
+
+        martes.setText("0");
+        martes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                martesActionPerformed(evt);
+            }
+        });
+
+        miercoles.setText("0");
+
+        jueves.setText("0");
+        jueves.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                juevesActionPerformed(evt);
+            }
+        });
+
+        viernes.setText("0");
+
+        sabado.setText("0");
+
+        domingo.setText("0");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(111, 111, 111)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(aceptar)
+                        .addGap(54, 54, 54)
+                        .addComponent(cancelar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel8)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel9)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(28, 28, 28)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(anticipacion1)
+                                                .addComponent(anticipacion2)
+                                                .addComponent(anticipacion3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(23, 23, 23)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel15)
+                                                .addComponent(jLabel14)
+                                                .addComponent(jLabel16)
+                                                .addComponent(jLabel17)
+                                                .addComponent(jLabel18)
+                                                .addComponent(jLabel19)
+                                                .addComponent(jLabel20))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(59, 59, 59)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(dtoA1)
+                                                .addComponent(dtoA2)
+                                                .addComponent(dtoA3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(agregarAnti))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(31, 31, 31)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel10)
+                                                .addComponent(jLabel13)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                    .addGap(21, 21, 21)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                            .addComponent(domingo, javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(sabado, javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(viernes, javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(jueves, javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(miercoles, javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(martes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(lunes, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addGap(0, 0, Short.MAX_VALUE)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(28, 28, 28)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(psas1)
+                                            .addComponent(psas2)
+                                            .addComponent(psas3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(37, 37, 37)
+                                        .addComponent(jLabel4))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(59, 59, 59)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(dtoPsas1)
+                                            .addComponent(dtoPsas2)
+                                            .addComponent(dtoPsas3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(64, 64, 64)
+                                        .addComponent(agregarPsas)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jLabel12)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(psas1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(psas2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(psas3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(dtoPsas1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dtoPsas2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dtoPsas3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(agregarPsas, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(anticipacion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(anticipacion2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(anticipacion3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(dtoA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dtoA2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dtoA3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(agregarAnti))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lunes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(martes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(miercoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(jueves, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(viernes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
+                    .addComponent(sabado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
+                    .addComponent(domingo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aceptar)
+                    .addComponent(cancelar))
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>                        
+
+    private void psas1ActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        // TODO add your handling code here:
+    }                                     
+
+    private void dtoPsas1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+    }                                        
+
+    private void dtoA1ActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        // TODO add your handling code here:
+    }                                     
+
+    private void anticipacion1ActionPerformed(java.awt.event.ActionEvent evt) {                                              
+        // TODO add your handling code here:
+    }                                             
+
+    private void agregarPsasActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        // TODO add your handling code here:
+        int uno = Integer.parseInt(psas1.getText());
+        int dos = Integer.parseInt(psas2.getText());
+        int tres = Integer.parseInt(psas3.getText());
+        int max = Integer.max(Integer.max(uno, dos), tres);
+        if(personas.length<=max)
+            personas = Arrays.copyOf(personas, max+1);
+        
+        personas[uno] = Float.parseFloat(dtoPsas1.getText())/100;
+        personas[dos] = Float.parseFloat(dtoPsas2.getText())/100;
+        personas[tres] = Float.parseFloat(dtoPsas3.getText())/100;
+        
+        limpiarPersonas();
+        
+    }                                           
+
+    private void agregarAntiActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        // TODO add your handling code here:
+        int uno = Integer.parseInt(anticipacion1.getText());
+        int dos = Integer.parseInt(anticipacion2.getText());
+        int tres = Integer.parseInt(anticipacion3.getText());
+        int max = Integer.max(Integer.max(uno, dos), tres);
+        if(max>=anticipacion.length)
+            anticipacion = Arrays.copyOf(anticipacion, max+1);
+        
+        anticipacion[uno] = Float.parseFloat(dtoPsas1.getText())/100;
+        anticipacion[dos] = Float.parseFloat(dtoPsas2.getText())/100;
+        anticipacion[tres] = Float.parseFloat(dtoPsas3.getText())/100;
+        
+        limpiarAnticipacion();
+    }                                           
+
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+        agregarPsasActionPerformed(null);
+        agregarAntiActionPerformed(null);
+        for(int i = 1; i<personas.length; ++i){
+            if(personas[i] == 0)
+                personas[i] = personas[i-1];
+        }
+        for(int i =1; i<anticipacion.length; ++i){
+            if(anticipacion[i] == 0)
+                anticipacion[i] = anticipacion[i-1];
+        }
+        
+        VentanaTransporte.this.miAgente.asignarDescuentoPersonas(personas);
+        VentanaTransporte.this.miAgente.asignarDescuentoDias(descuentoDias());
+        VentanaTransporte.this.miAgente.asignarDescuentoAnticipación(anticipacion);
+        VentanaTransporte.this.setEnabled(true);
+    }                                       
+
+    private void martesActionPerformed(java.awt.event.ActionEvent evt) {                                       
+        // TODO add your handling code here:
+    }                                      
+
+    private void juevesActionPerformed(java.awt.event.ActionEvent evt) {                                       
+        // TODO add your handling code here:
+    }                                      
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        VentanaTransporte.this.setEnabled(true);
+        dispose();
+    }                                        
+    
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton aceptar;
+    private javax.swing.JButton agregarAnti;
+    private javax.swing.JButton agregarPsas;
+    private javax.swing.JTextField anticipacion1;
+    private javax.swing.JTextField anticipacion2;
+    private javax.swing.JTextField anticipacion3;
+    private javax.swing.JButton cancelar;
+    private javax.swing.JTextField domingo;
+    private javax.swing.JTextField dtoA1;
+    private javax.swing.JTextField dtoA2;
+    private javax.swing.JTextField dtoA3;
+    private javax.swing.JTextField dtoPsas1;
+    private javax.swing.JTextField dtoPsas2;
+    private javax.swing.JTextField dtoPsas3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jueves;
+    private javax.swing.JTextField lunes;
+    private javax.swing.JTextField martes;
+    private javax.swing.JTextField miercoles;
+    private javax.swing.JTextField psas1;
+    private javax.swing.JTextField psas2;
+    private javax.swing.JTextField psas3;
+    private javax.swing.JTextField sabado;
+    private javax.swing.JTextField viernes;
+    // End of variables declaration                   
+
+    private void limpiarPersonas() {
+        psas1.setText("0");
+        psas2.setText("0");
+        psas3.setText("0");
+        dtoPsas1.setText("0");
+        dtoPsas2.setText("0");
+        dtoPsas3.setText("0");
+        
+    }
+
+    private void limpiarAnticipacion() {
+        anticipacion1.setText("0");
+        anticipacion2.setText("0");
+        anticipacion3.setText("0");
+        dtoA1.setText("0");
+        dtoA2.setText("0");
+        dtoA3.setText("0");
+        
+                
+    }
+
+    private float[] descuentoDias() {
+        float[] dias= new float[7];
+        dias[0] = Float.parseFloat(lunes.getText());
+        dias[1] = Float.parseFloat(martes.getText());
+        dias[2] = Float.parseFloat(miercoles.getText());
+        dias[3] = Float.parseFloat(jueves.getText());
+        dias[4] = Float.parseFloat(viernes.getText());
+        dias[5] = Float.parseFloat(sabado.getText());
+        dias[6] = Float.parseFloat(domingo.getText());
+        return dias;   
+    }
+}
+
 }
