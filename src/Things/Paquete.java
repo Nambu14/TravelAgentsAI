@@ -5,6 +5,7 @@
  */
 package Things;
 
+import Agents.AgenteTransporte.TipoEmpresa;
 import Things.CronogramaTransporte.Calidad;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -43,6 +44,7 @@ public final class Paquete implements Comparable {
     private float precio;
     private float heuristica = -50f;
     private int anticipacion = 1;
+    private TipoEmpresa tipoTransporte;
 
     public Paquete(String origen, String destino, float presupuestoMax,
             int cantidadPersonas, GregorianCalendar fechaInicialInferior,
@@ -105,6 +107,7 @@ public final class Paquete implements Comparable {
          10: calidadTransporte Calidad
          11: precio
          12: anticipacion
+         13: tipoTransporte
          */
         paquete.setOrigen(str[0]);
         paquete.setDestino(str[1]);
@@ -157,6 +160,15 @@ public final class Paquete implements Comparable {
         }
         paquete.setPrecio(Float.parseFloat(str[11]));
         paquete.setAnticipacion(Integer.parseInt(str[12]));
+        p = str[13];
+        switch (p) {
+            case "AEREA":
+                paquete.setTipoTransporte(TipoEmpresa.AEREA);
+                break;
+            case "TERRESTRE":
+                paquete.setTipoTransporte(TipoEmpresa.TERRESTRE);
+                break;
+        }
         return paquete;
     }
 
@@ -178,6 +190,14 @@ public final class Paquete implements Comparable {
 
     public float getPonderacionPrecio() {
         return ponderacionPrecio;
+    }
+
+    public TipoEmpresa getTipoTransporte() {
+        return tipoTransporte;
+    }
+
+    public void setTipoTransporte(TipoEmpresa tipoTransporte) {
+        this.tipoTransporte = tipoTransporte;
     }
 
     private void setPonderacionPrecio(float ponderacionPrecio) {
@@ -305,7 +325,8 @@ public final class Paquete implements Comparable {
                 + "--" + getMesFechaInicialSuperior() + "--" + getAnoFechaInicialSuperior()
                 + ",,," + duracion + ",,," + alojamiento.lugarToString() + ",,,"
                 + ponderacionPrecio + ",,," + ponderacionCalidad
-                + ",,," + calidadTransporte + ",,," + precio + ",,," + anticipacion);
+                + ",,," + calidadTransporte + ",,," + precio + ",,," + anticipacion + ",,,"
+                + tipoTransporte);
         /*
          String[] paqueteSubString = paqueteString.split(",,,");
          if (paqueteSubString.length <> 11){
@@ -317,7 +338,7 @@ public final class Paquete implements Comparable {
 
     @Override
     public String toString() {
-        return "Paquete{" + "origen=" + origen + ", destino=" + destino + ", presupuestoMax=" + presupuestoMax + ", cantidadPersonas=" + cantidadPersonas + ", fechaInicialInferior=" + fechaInicialInferior + ", fechaInicialSuperior=" + fechaInicialSuperior + ", duracion=" + duracion + ", alojamiento=" + alojamiento + ", ponderacionPrecio=" + ponderacionPrecio + ", ponderacionCalidad=" + ponderacionCalidad + ", calidadTransporte=" + calidadTransporte + ", precio=" + precio + ", heuristica=" + heuristica + ", anticipacion=" + anticipacion + '}';
+        return "Paquete{" + "origen=" + origen + ", destino=" + destino + ", presupuestoMax=" + presupuestoMax + ", cantidadPersonas=" + cantidadPersonas + ", fechaInicialInferior=" + fechaInicialInferior + ", fechaInicialSuperior=" + fechaInicialSuperior + ", duracion=" + duracion + ", alojamiento=" + alojamiento + ", ponderacionPrecio=" + ponderacionPrecio + ", ponderacionCalidad=" + ponderacionCalidad + ", calidadTransporte=" + calidadTransporte + ", precio=" + precio + ", heuristica=" + heuristica + ", anticipacion=" + anticipacion + ", tipoTransporte=" + tipoTransporte + '}';
     }
 
     public float getCalidadPaquete() {
@@ -395,7 +416,6 @@ public final class Paquete implements Comparable {
     }
 
     //Método para calcular la diferencia en dias entre dos fechas
-    //extraído de http://tripoverit.blogspot.com.ar/2007/07/java-calculate-difference-between-two.html
     public int daysBetween() {
         GregorianCalendar date = getFechaInicialInferior();
         long daysBetween = 0;
@@ -407,7 +427,7 @@ public final class Paquete implements Comparable {
         dias = daysBetween;
         return dias.intValue();
     }
-    
+
     public static int daysBetween(GregorianCalendar cal1, GregorianCalendar cal2) {
         long daysBetween = 0;
         while (cal1.before(cal2)) {

@@ -6,7 +6,7 @@
 package ia2014;
 
 import Agents.AgenteLugar;
-import Things.CronogramaTransporte;
+import Agents.AgenteTransporte;
 import Things.CronogramaTransporte.Calidad;
 import Things.LugarWrapper;
 import Things.Paquete;
@@ -50,6 +50,8 @@ public class IA2014 {
         paq.setAlojamiento(lugarcito3);
         paq.setPonderacion((float) 1);
         paq.setCalidadTransporte(Calidad.EJECUTIVO);
+        paq.setTipoTransporte(AgenteTransporte.TipoEmpresa.TERRESTRE);
+        System.out.println(paq.toStringForMessage());
         String str = paq.toStringForMessage();
         Paquete paq2 = new Paquete();
         try {
@@ -63,6 +65,7 @@ public class IA2014 {
         Paquete paq3 = Paquete.stringToPaquete(str);
         paq3.setPrecio(4000);
         paq3.setCalidadTransporte(Calidad.SEMICAMA);
+        System.out.println(paq2.toStringForMessage());
         System.out.println("calidad de paquete pedido: " + paq.getCalidadPaquete());
         System.out.println("calidad de propuesta paq2: " + paq2.getCalidadPaquete());
         System.out.println("calidad de propuesta paq3: " + paq3.getCalidadPaquete());
