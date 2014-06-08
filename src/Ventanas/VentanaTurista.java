@@ -6,7 +6,19 @@
 
 package Ventanas;
 
+import Agents.AgenteLugar;
+import Agents.AgenteLugar.Tipo;
+import Agents.AgenteTransporte;
+import Agents.AgenteTransporte.TipoEmpresa;
 import Agents.AgenteTurista;
+import Things.CronogramaTransporte.Calidad;
+import Things.LugarWrapper;
+import Things.Paquete;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,6 +27,9 @@ import Agents.AgenteTurista;
 public class VentanaTurista extends javax.swing.JFrame {
 
     private AgenteTurista miAgente;
+    private LugarWrapper alojamiento = new LugarWrapper();
+    private Calendar fecha = Calendar.getInstance();
+    
     /**
      * Creates new form VentanaTurista
      */
@@ -166,6 +181,11 @@ public class VentanaTurista extends javax.swing.JFrame {
         });
 
         fechaMax.setEnabled(false);
+        fechaMax.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                fechaMaxPropertyChange(evt);
+            }
+        });
 
         aceptar.setText("Aceptar");
         aceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -363,16 +383,63 @@ public class VentanaTurista extends javax.swing.JFrame {
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
         // TODO add your handling code here:
+        miAgente.doDelete();
+        dispose();
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
+        
+        //alojamiento
+        alojamiento.setTipo(setearTipoLugar());
+        alojamiento.setCalidad(Integer.parseInt(calidadLugar.getSelectedItem().toString()));
+        
+        //cantidad de personas
+        int personas = Integer.parseInt(cantPsas.getValue().toString());
+        
+        //presupuesto maximo
+        float presu;
+        if (presupuesto.getText()==null){
+            presu=(float)personas*10000;
+        } else {
+            presu=Float.parseFloat(presupuesto.getText());
+        }
+        
+        //fechas
+        fechaMinPropertyChange(null);
+        fechaMaxPropertyChange(null);
+        GregorianCalendar fechaInicial = new GregorianCalendar();
+        fechaInicial.setTime(fechaMin.getDate());
+        GregorianCalendar fechaFinal = new GregorianCalendar();
+        fechaFinal.setTime(fechaMax.getDate());
+        
+        //duracion
+        int dias = Integer.parseInt(duracion.getText());
+        
+        //Ponderaciones 
+        float ponderacionP = Float.parseFloat(pondPrecio.getValue().toString());
+        float ponderacionS = Float.parseFloat(pondServicio.getText());
+        try {
+            Paquete preferencias = new Paquete(origen.getText(), destino.getText(), presu, personas,fechaInicial, fechaFinal, dias, alojamiento, ponderacionP, ponderacionS, setearCalidadTransporte());
+            preferencias.setTipoTransporte(setearTipoEmpresa());
+            miAgente.setPreferencias(preferencias);
+        } catch (Exception ex) {
+            Logger.getLogger(VentanaTurista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        miAgente.agregarComportamiento();
     }//GEN-LAST:event_aceptarActionPerformed
 
     private void fechaMinPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_fechaMinPropertyChange
         // TODO add your handling code here:
-        fechaMax.setDate(fechaMin.getDate());
-        fechaMax.setEnabled(true);
+        if(fechaMin != null){
+        Calendar fechaViaje = fechaMin.getCalendar();
+        if( fechaValida(fecha,fechaViaje)){
+            fechaMax.setDate(fechaMin.getDate());
+            fechaMax.setEnabled(true);
+        } else {
+            //Mostrar error
+        }
+        }
     }//GEN-LAST:event_fechaMinPropertyChange
 
     private void tipoTransporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoTransporteItemStateChanged
@@ -419,6 +486,18 @@ public class VentanaTurista extends javax.swing.JFrame {
         pondServicio.setText(Integer.toString(100-valor));
     }//GEN-LAST:event_pondPrecioStateChanged
 
+    private void fechaMaxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_fechaMaxPropertyChange
+        // TODO add your handling code here:
+        if(fechaMax != null){
+        Calendar fechaViajeInicial = fechaMin.getCalendar();
+        Calendar fechaViaje = fechaMax.getCalendar();
+        if( fechaValida(fechaViajeInicial,fechaViaje)) {
+        } else {
+            System.out.println("Error");
+        }
+        }   
+    }//GEN-LAST:event_fechaMaxPropertyChange
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
@@ -457,4 +536,99 @@ public class VentanaTurista extends javax.swing.JFrame {
     private javax.swing.JComboBox tipoLugar;
     private javax.swing.JComboBox tipoTransporte;
     // End of variables declaration//GEN-END:variables
+
+    private boolean fechaValida(Calendar fechaActual, Calendar fechaViaje) {
+        if (fechaViaje != null && fechaActual != null){
+        int diaActual = fechaActual.get(Calendar.DATE);
+        int mesActual = fechaActual.get(Calendar.MONTH);
+        int añoActual = fechaActual.get(Calendar.YEAR);
+        int diaViaje = fechaViaje.get(Calendar.DATE);
+        int mesViaje = fechaViaje.get(Calendar.MONTH);
+        int añoViaje = fechaViaje.get(Calendar.YEAR);
+        
+        if(añoActual<añoViaje){
+            return true;
+        }else { 
+            if(añoActual==añoViaje){
+                if(mesActual<mesViaje){
+                    return true;
+                }else{
+                    if(mesActual == mesViaje){
+                        return diaActual<=diaViaje;
+                    } else { 
+                        return false;
+                    }
+                }
+            } else { 
+                return false;
+            }
+        }
+        } else{
+            return false;
+        }
+    } 
+
+    private AgenteLugar.Tipo setearTipoLugar() {
+        Tipo lugarTipo;
+        switch(tipoLugar.getSelectedIndex()){
+            case 1:
+                lugarTipo = Tipo.HOTEL;
+                break;
+            case 2:
+                lugarTipo = Tipo.APART;
+                break;
+            case 3:
+                lugarTipo = Tipo.HOSTAL;
+                break;
+            case 4:
+                lugarTipo = Tipo.CABAÑA;
+                break;
+            default:
+                lugarTipo= null;
+                
+        }
+        return lugarTipo;
+    }
+
+    private Calidad setearCalidadTransporte() {
+        Calidad transpCalidad;
+        switch(tipoTransporte.getSelectedItem().toString()){
+            case "EJECUTIVO":
+                transpCalidad = Calidad.EJECUTIVO;
+                break;
+            case "CAMA":
+                transpCalidad = Calidad.CAMA;
+                break;
+            case "SEMICAMA":
+                transpCalidad = Calidad.SEMICAMA;
+                break;
+            case "BUSSINES":
+                transpCalidad = Calidad.BUSSINES;
+                break;
+            case "PRIMERA CLASE":
+                transpCalidad = Calidad.PRIMERACLASE;
+                break;
+            case "TURISTA":
+                transpCalidad = Calidad.TURISTA;
+                break;
+            default:
+                transpCalidad = null;
+        }
+        return transpCalidad;
+    }
+
+    private AgenteTransporte.TipoEmpresa setearTipoEmpresa() {
+        TipoEmpresa tipoEmpresa;
+        switch (tipoTransporte.getSelectedIndex()){
+            case 1:
+                tipoEmpresa= TipoEmpresa.TERRESTRE;
+                break;
+            case 2:
+                tipoEmpresa = TipoEmpresa.AEREA;
+                break;
+            default:
+                tipoEmpresa = null;
+        }
+        return tipoEmpresa;       
+    }
 }

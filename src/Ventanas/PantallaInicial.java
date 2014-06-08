@@ -158,7 +158,7 @@ public class PantallaInicial extends javax.swing.JFrame {
     private void crearTuristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearTuristaActionPerformed
         // TODO add your handling code here:
         try {
-           ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteTurista", null);
+           ac= mainContainer.createNewAgent("Turista", "Agents.AgenteTurista", null);
            ac.start();
         } catch (StaleProxyException ex) {
 	   Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);

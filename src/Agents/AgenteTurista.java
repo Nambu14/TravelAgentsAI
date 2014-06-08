@@ -60,11 +60,15 @@ public class AgenteTurista extends Agent {
                 }
             }
         });
-        addBehaviour(new SolicitarPaquetes());
+        //addBehaviour(new SolicitarPaquetes());
     }
 
     public void setPreferencias(Paquete preferencias) {
         this.preferencias = preferencias;
+    }
+
+    public void agregarComportamiento() {
+        addBehaviour(new SolicitarPaquetes());
     }
 
     private class SolicitarPaquetes extends SimpleBehaviour {
