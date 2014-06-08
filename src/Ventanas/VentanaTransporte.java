@@ -838,8 +838,6 @@ public class VentanaTransporte extends javax.swing.JFrame {
 
         jLabel6.setText("Calidad");
 
-        calidad.setModel(null);
-
         jLabel7.setText("Días con salidas");
 
         lunes.setText("Lunes");
