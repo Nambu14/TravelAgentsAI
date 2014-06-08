@@ -7,6 +7,7 @@ package Agents;
 
 import Agents.AgenteLugar.Tipo;
 import Things.Paquete;
+import Ventanas.PantallaInicial;
 import Ventanas.VentanaLugar;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;

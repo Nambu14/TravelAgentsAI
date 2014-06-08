@@ -79,7 +79,7 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Descuentos Asignables");
 
@@ -514,12 +514,7 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         dtoPsas1.setText("0");
         dtoPsas2.setText("0");
         dtoPsas3.setText("0");
-        psas1.setVisible(true);
-        psas2.setVisible(true);
-        psas3.setVisible(true);
-        dtoPsas1.setVisible(true);
-        dtoPsas2.setVisible(true);
-        dtoPsas3.setVisible(true);
+        
     }
 
     private void limpiarDias() {
@@ -529,12 +524,7 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         dtoDias1.setText("0");
         dtoDias2.setText("0");
         dtoDias3.setText("0");
-        dias1.setVisible(true);
-        dias2.setVisible(true);
-        dias3.setVisible(true);
-        dtoDias1.setVisible(true);
-        dtoDias2.setVisible(true);
-        dtoDias3.setVisible(true);
+       
     }
 
     private void limpiarAnticipacion() {
@@ -544,12 +534,7 @@ public class DescuentosAplicables extends javax.swing.JFrame {
         dtoA1.setText("0");
         dtoA2.setText("0");
         dtoA3.setText("0");
-        anticipacion1.setVisible(true);
-        anticipacion2.setVisible(true);
-        anticipacion3.setVisible(true);
-        dtoA1.setVisible(true);
-        dtoA2.setVisible(true);
-        dtoA3.setVisible(true);
+        
                 
     }
 }

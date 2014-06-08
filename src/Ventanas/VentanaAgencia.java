@@ -7,6 +7,13 @@
 package Ventanas;
 
 import Agents.AgenteAgenciaTurismo;
+import jade.core.AID;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,21 +46,17 @@ public class VentanaAgencia extends javax.swing.JFrame {
         cancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        dtoEfectivo = new javax.swing.JTextField();
-        dtoTarjeta = new javax.swing.JTextField();
+        comisionAgencia = new javax.swing.JTextField();
         dtoTransporte = new javax.swing.JTextField();
         dtoLugar = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         accederDF.setText("Asignar Transportes y Alojamientos");
         accederDF.addActionListener(new java.awt.event.ActionListener() {
@@ -76,29 +79,18 @@ public class VentanaAgencia extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Descuentos aplicable según forma de pago:");
+        jLabel2.setText("Comisón de la agencia sobre el precio total");
 
         jLabel3.setText("Transportes");
-
-        jLabel4.setText("Efectivo");
-
-        jLabel5.setText("Tarjeta de Crédito");
 
         jLabel6.setText("Alojamientos");
 
         jLabel7.setText("Descuentos mínimo esperado por servicios:");
 
-        dtoEfectivo.setText("0");
-        dtoEfectivo.addActionListener(new java.awt.event.ActionListener() {
+        comisionAgencia.setText("0");
+        comisionAgencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dtoEfectivoActionPerformed(evt);
-            }
-        });
-
-        dtoTarjeta.setText("0");
-        dtoTarjeta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dtoTarjetaActionPerformed(evt);
+                comisionAgenciaActionPerformed(evt);
             }
         });
 
@@ -107,8 +99,6 @@ public class VentanaAgencia extends javax.swing.JFrame {
         dtoLugar.setText("0");
 
         jLabel8.setText("%");
-
-        jLabel9.setText("%");
 
         jLabel10.setText("%");
 
@@ -123,65 +113,55 @@ public class VentanaAgencia extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(238, 238, 238)
-                        .addComponent(accederDF))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(270, 270, 270)
-                        .addComponent(aceptar)
-                        .addGap(23, 23, 23)
-                        .addComponent(cancelar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(dtoEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8))
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(comisionAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel8))
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel11))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(dtoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel10))))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel11))
+                                .addGap(166, 166, 166)
+                                .addComponent(jLabel12)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(accederDF)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(dtoTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel9))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(dtoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel10))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(166, 166, 166)
-                        .addComponent(jLabel12)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(32, 32, 32)
+                                .addComponent(aceptar)
+                                .addGap(23, 23, 23)
+                                .addComponent(cancelar)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel12)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel2)
-                .addGap(6, 6, 6)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(dtoEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(comisionAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(dtoTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -200,7 +180,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(aceptar)
                     .addComponent(cancelar))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -209,19 +189,16 @@ public class VentanaAgencia extends javax.swing.JFrame {
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
         // TODO add your handling code here:
         miAgente.doDelete();
+        dispose();
     }//GEN-LAST:event_cancelarActionPerformed
 
-    private void dtoEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtoEfectivoActionPerformed
+    private void comisionAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comisionAgenciaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_dtoEfectivoActionPerformed
-
-    private void dtoTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtoTarjetaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dtoTarjetaActionPerformed
+    }//GEN-LAST:event_comisionAgenciaActionPerformed
 
     private void accederDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accederDFActionPerformed
         // TODO add your handling code here:
-        VentanaDFServicios servicios = new VentanaDFServicios(miAgente);
+        VentanaDFServicios servicios = new VentanaDFServicios();
         servicios.setVisible(true);
         
     }//GEN-LAST:event_accederDFActionPerformed
@@ -231,65 +208,227 @@ public class VentanaAgencia extends javax.swing.JFrame {
        try { 
             float descuentoTransporte = Float.parseFloat(dtoTransporte.getText());
             float descuentoLugar = Float.parseFloat(dtoLugar.getText());
-            float efectivo = Float.parseFloat(dtoEfectivo.getText());
-            float tarjeta = Float.parseFloat(dtoTarjeta.getText());
-            miAgente.definirAgencia(descuentoTransporte, descuentoLugar);
-            miAgente.asignarDescuentoPropio(efectivo, tarjeta);
+            float comision= Float.parseFloat(comisionAgencia.getText());
+            miAgente.definirAgencia(descuentoTransporte, descuentoLugar,comision);
+            
         }
         catch (NumberFormatException e) {
 		JOptionPane.showMessageDialog(VentanaAgencia.this, "Valores inválidos"+e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); 
 		}
-                
+        dispose();        
         
     }//GEN-LAST:event_aceptarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaAgencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaAgencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaAgencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaAgencia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accederDF;
     private javax.swing.JButton aceptar;
     private javax.swing.JButton cancelar;
-    private javax.swing.JTextField dtoEfectivo;
+    private javax.swing.JTextField comisionAgencia;
     private javax.swing.JTextField dtoLugar;
-    private javax.swing.JTextField dtoTarjeta;
     private javax.swing.JTextField dtoTransporte;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
+
+    public class VentanaDFServicios extends javax.swing.JFrame {
+
+    private String[] lugares;
+    private String [] transportes;
+    DFAgentDescription [] resultadosTransporte;
+    DFAgentDescription [] resultadosLugar;
+    
+    /**
+     * Creates new form VentanaDFServicios
+     */
+    public VentanaDFServicios() {
+        getTransportes();
+        getLugares();
+        
+        initComponents();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        alojamientos = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        empresasTransporte = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        aceptar = new javax.swing.JButton();
+        cancelar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        alojamientos.setModel(new javax.swing.AbstractListModel() {
+            public int getSize() { return lugares.length; }
+            public Object getElementAt(int i) { return lugares[i]; }
+        });
+        jScrollPane1.setViewportView(alojamientos);
+
+        empresasTransporte.setModel(new javax.swing.AbstractListModel() {
+            public int getSize() { return transportes.length; }
+            public Object getElementAt(int i) { return transportes[i]; }
+        });
+        jScrollPane2.setViewportView(empresasTransporte);
+
+        jLabel1.setText("Asignar Servicios");
+
+        jLabel2.setText("Alojamientos");
+
+        jLabel3.setText("Empresas de Tranportes");
+
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
+
+        cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(154, 154, 154))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(44, 44, 44))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(116, 116, 116)
+                .addComponent(aceptar)
+                .addGap(30, 30, 30)
+                .addComponent(cancelar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aceptar)
+                    .addComponent(cancelar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>                        
+
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+        int[] seleccionLugar = alojamientos.getSelectedIndices();
+        int[] seleccionTransporte = empresasTransporte.getSelectedIndices();
+        AID[] lugaresAID = new AID[seleccionLugar.length];
+        AID[] transportesAID = new AID[seleccionTransporte.length];
+        for(int index: seleccionLugar){
+            lugaresAID[index]=resultadosLugar[seleccionLugar[index]].getName();
+        }
+        for(int index: seleccionTransporte){
+            transportesAID[index]= resultadosTransporte[seleccionLugar[index]].getName();
+        }
+        VentanaAgencia.this.miAgente.asignarServicios(lugaresAID, transportesAID);
+        dispose();
+    }                                       
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        dispose();
+    }                                        
+
+    /**
+     * @param args the command line arguments
+     */
+    private void getTransportes(){
+       ServiceDescription servicio = new ServiceDescription();
+       servicio.setType("Transporte");
+       DFAgentDescription descripcion = new DFAgentDescription();
+       descripcion.addServices(servicio);
+       try {
+           resultadosTransporte = DFService.search(VentanaAgencia.this.miAgente, descripcion);
+           transportes = new String [resultadosTransporte.length];
+           for (int i=0; i < resultadosTransporte.length; ++i)
+           {
+               transportes [i] = resultadosTransporte [i].getName().getLocalName();
+           }
+       } catch (FIPAException ex) {
+            Logger.getLogger(VentanaDFServicios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+               
+       
+        }
+    
+        private void getLugares(){
+       ServiceDescription servicio = new ServiceDescription();
+       servicio.setType("Lugar");
+       DFAgentDescription descripcion = new DFAgentDescription();
+       descripcion.addServices(servicio);
+       try {
+           resultadosLugar = DFService.search(VentanaAgencia.this.miAgente, descripcion);
+           lugares = new String [resultadosLugar.length];
+           for (int i=0; i < resultadosLugar.length; ++i)
+           {
+               lugares [i] = resultadosLugar [i].getName().getLocalName();
+           }
+       } catch (FIPAException ex) {
+            Logger.getLogger(VentanaDFServicios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton aceptar;
+    private javax.swing.JList alojamientos;
+    private javax.swing.JButton cancelar;
+    private javax.swing.JList empresasTransporte;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    // End of variables declaration                   
+    }
+
 }

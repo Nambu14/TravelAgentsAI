@@ -35,7 +35,6 @@ public class AgenteAgenciaTurismo extends Agent {
     private float descuentoTransporte;
     private float descuentoLugar;
     //Descuentos por pago con efectivo o tarjeta.
-    private float[] descuentoPropio;
     private AID[] transportes;
     private AID[] lugares;
     private float comision;
@@ -43,8 +42,6 @@ public class AgenteAgenciaTurismo extends Agent {
 
     @Override
     protected void setup() {
-
-        descuentoPropio = new float[2];
         nombre = this.getLocalName();
         myGui = new VentanaAgencia(this);
         myGui.setVisible(true);
@@ -65,15 +62,11 @@ public class AgenteAgenciaTurismo extends Agent {
     }
 
     //Métodos llamados desde la interfaz
-    public void definirAgencia(float dtoTransporte, float dtoLugar) {
-        descuentoTransporte = dtoTransporte / 100;
-        descuentoLugar = dtoLugar / 100;
+    public void definirAgencia(float dtoTransporte, float dtoLugar, float comision) {
         AID id = new AID(nombre, AID.ISLOCALNAME);
-    }
-
-    public void asignarDescuentoPropio(float efectivo, float tarjeta) {
-        descuentoPropio[0] = efectivo / 100;
-        descuentoPropio[1] = tarjeta / 100;
+        this.descuentoLugar = dtoLugar/100;
+        this.comision= 1+ (comision/100);
+        this.descuentoTransporte = dtoTransporte/100;
     }
 
     public void asignarServicios(AID[] transportes, AID[] lugares) {

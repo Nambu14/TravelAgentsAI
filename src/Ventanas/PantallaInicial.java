@@ -26,12 +26,13 @@ public class PantallaInicial extends javax.swing.JFrame {
     private VentanaTransporte ventanaTransporte;
     private final ContainerController mainContainer;
     private AgentController ac;
+    private jade.core.Runtime rt;
     /**
      * Creates new form PantallaInicial
      */
     public PantallaInicial() {
         initComponents();
-        jade.core.Runtime rt = jade.core.Runtime.instance(); 
+        rt = jade.core.Runtime.instance(); 
         Profile p = new ProfileImpl();
         mainContainer = rt.createMainContainer(p);
     }
@@ -52,8 +53,9 @@ public class PantallaInicial extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         nombreServicio = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        cerrar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         crearTurista.setText("Comprar Paquete Turístico");
         crearTurista.addActionListener(new java.awt.event.ActionListener() {
@@ -94,6 +96,13 @@ public class PantallaInicial extends javax.swing.JFrame {
 
         jLabel2.setText("Ingrese el nombre del servicio, y luego seleccione el tipo");
 
+        cerrar.setText("Cerrar");
+        cerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,13 +118,18 @@ public class PantallaInicial extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(crearAgencia)
                                 .addGap(6, 6, 6)
-                                .addComponent(crearLugar)
-                                .addGap(10, 10, 10)
-                                .addComponent(crearTransporte))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(crearLugar)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(crearTransporte))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(19, 19, 19)
+                                        .addComponent(cerrar))))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
+                        .addGap(121, 121, 121)
                         .addComponent(crearTurista)))
-                .addGap(10, 10, 10))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +146,10 @@ public class PantallaInicial extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(crearAgencia)
                     .addComponent(crearLugar)
-                    .addComponent(crearTransporte)))
+                    .addComponent(crearTransporte))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(cerrar)
+                .addContainerGap())
         );
 
         pack();
@@ -146,13 +163,13 @@ public class PantallaInicial extends javax.swing.JFrame {
         } catch (StaleProxyException ex) {
 	   Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+                
     }//GEN-LAST:event_crearTuristaActionPerformed
 
     private void crearAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearAgenciaActionPerformed
         // TODO add your handling code here:
         try {
-           ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenciaTurismo", null);
+           ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteAgenciaTurismo", null);
            ac.start();
         } catch (StaleProxyException ex) {
 	   Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
@@ -167,6 +184,7 @@ public class PantallaInicial extends javax.swing.JFrame {
         } catch (StaleProxyException ex) {
 	   Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_crearLugarActionPerformed
 
     private void crearTransporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearTransporteActionPerformed
@@ -182,6 +200,12 @@ public class PantallaInicial extends javax.swing.JFrame {
     private void nombreServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreServicioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreServicioActionPerformed
+
+    private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
+        // TODO add your handling code here:
+        rt.shutDown();
+        dispose();
+    }//GEN-LAST:event_cerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,6 +244,7 @@ public class PantallaInicial extends javax.swing.JFrame {
     
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cerrar;
     private javax.swing.JButton crearAgencia;
     private javax.swing.JButton crearLugar;
     private javax.swing.JButton crearTransporte;
@@ -228,4 +253,5 @@ public class PantallaInicial extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField nombreServicio;
     // End of variables declaration//GEN-END:variables
+    
 }
