@@ -35,8 +35,8 @@ public class AgenteAgenciaTurismo extends Agent {
     private float descuentoTransporte;
     private float descuentoLugar;
     //Descuentos por pago con efectivo o tarjeta.
-    private AID[] transportes;
-    private AID[] lugares;
+    private ArrayList<AID>transportes;
+    private ArrayList<AID> lugares;
     private float comision;
     private VentanaAgencia myGui;
 
@@ -45,7 +45,9 @@ public class AgenteAgenciaTurismo extends Agent {
         nombre = this.getLocalName();
         myGui = new VentanaAgencia(this);
         myGui.setVisible(true);
+        
         //Registro en paginas amarillas
+        
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
@@ -57,8 +59,9 @@ public class AgenteAgenciaTurismo extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        addBehaviour(new ActualizarLugares());
+        //addBehaviour(new ActualizarLugares());
         addBehaviour(new BuscarPaquete());
+        addBehaviour(new AsociarServicio());
     }
 
     //Métodos llamados desde la interfaz
@@ -69,7 +72,7 @@ public class AgenteAgenciaTurismo extends Agent {
         this.descuentoTransporte = dtoTransporte/100;
     }
 
-    public void asignarServicios(AID[] transportes, AID[] lugares) {
+    public void asignarServicios(ArrayList<AID> transportes, ArrayList<AID> lugares) {
         this.transportes = transportes;
         this.lugares = lugares;
     }
@@ -86,6 +89,7 @@ public class AgenteAgenciaTurismo extends Agent {
     //Falta lugares y transportes que deberían ser dinámicos
     //Behaviour para actualizar la lista con todos las empresas de Transportes y Lugares,
     //para luego ser mostradas en la GUI.
+    /*
     private class ActualizarLugares extends OneShotBehaviour {
 
         @Override
@@ -122,7 +126,7 @@ public class AgenteAgenciaTurismo extends Agent {
             } catch (FIPAException fe) {
             }
         }
-    }
+    } */
 
     private class BuscarPaquete extends CyclicBehaviour {
 
@@ -277,6 +281,26 @@ public class AgenteAgenciaTurismo extends Agent {
             propuesta.setCalidadTransporte(transporte.getCalidadTransporte());
             propuesta.setPrecio((lugar.getPrecio() * lugar.getPresupuestoMax() + transporte.getPrecio() * transporte.getPresupuestoMax()) * comision);
             return propuesta;
+        }
+    }
+    
+    
+    //Nuevos transportes o lugares que se quieren asociar
+    
+    private class AsociarServicio extends CyclicBehaviour{
+        @Override
+        public void action() {
+            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.SUBSCRIBE);
+            ACLMessage msg = myAgent.receive(mt);
+            if (msg != null) {
+                String contenido= msg.getContent();
+                if (contenido == "Transporte"){
+                   transportes.add(msg.getSender());
+                } else {
+                   lugares.add(msg.getSender()); 
+                }
+                
+            }
         }
     }
 }

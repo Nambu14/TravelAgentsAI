@@ -12,6 +12,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -237,6 +238,9 @@ public class VentanaAgencia extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     // End of variables declaration//GEN-END:variables
 
+    
+    // Asignar transportes y alojamientos asociados
+    
     public class VentanaDFServicios extends javax.swing.JFrame {
 
     private String[] lugares;
@@ -362,13 +366,13 @@ public class VentanaAgencia extends javax.swing.JFrame {
         // TODO add your handling code here:
         int[] seleccionLugar = alojamientos.getSelectedIndices();
         int[] seleccionTransporte = empresasTransporte.getSelectedIndices();
-        AID[] lugaresAID = new AID[seleccionLugar.length];
-        AID[] transportesAID = new AID[seleccionTransporte.length];
+        ArrayList<AID> lugaresAID = new ArrayList<>();
+        ArrayList<AID> transportesAID = new ArrayList<>();
         for(int index: seleccionLugar){
-            lugaresAID[index]=resultadosLugar[seleccionLugar[index]].getName();
+            lugaresAID.add(resultadosLugar[seleccionLugar[index]].getName());
         }
         for(int index: seleccionTransporte){
-            transportesAID[index]= resultadosTransporte[seleccionLugar[index]].getName();
+            transportesAID.add(resultadosTransporte[seleccionLugar[index]].getName());
         }
         VentanaAgencia.this.miAgente.asignarServicios(lugaresAID, transportesAID);
         dispose();

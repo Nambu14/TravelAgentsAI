@@ -85,7 +85,10 @@
                       <EmptySpace min="-2" pref="110" max="-2" attributes="0"/>
                       <Component id="aceptar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                      <Component id="cancelar" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="selAgencias" min="-2" max="-2" attributes="0"/>
+                          <Component id="cancelar" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace pref="28" max="32767" attributes="0"/>
@@ -144,7 +147,10 @@
                   </Group>
               </Group>
               <EmptySpace pref="32" max="32767" attributes="0"/>
-              <Component id="descuentosAplicables" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="descuentosAplicables" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="selAgencias" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="aceptar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -305,6 +311,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="precio">
+    </Component>
+    <Component class="javax.swing.JButton" name="selAgencias">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Agregar Agencias"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selAgenciasActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

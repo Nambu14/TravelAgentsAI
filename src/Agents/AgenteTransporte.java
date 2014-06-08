@@ -92,8 +92,8 @@ public class AgenteTransporte extends Agent {
         descuentoPorAnticipacion = dtoAnticipacion;
     }
 
-    public void addCronograma(CronogramaTransporte ruta) {
-        rutas.add(ruta);
+    public void addCronogramas(ArrayList<CronogramaTransporte> rutas) {
+        this.rutas = rutas;
     }
         
     public void setTransporte(TipoEmpresa tipo){

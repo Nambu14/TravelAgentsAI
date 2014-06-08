@@ -9,7 +9,18 @@ package Ventanas;
 import Agents.AgenteLugar;
 import Agents.AgenteTransporte;
 import Agents.AgenteTransporte.TipoEmpresa;
+import Things.CronogramaTransporte;
+import jade.core.AID;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
+import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +31,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
     private AgenteTransporte miAgente;
     /**
      * Creates new form ventanaTransporte
+     * @param a
      */
     public VentanaTransporte(AgenteTransporte a) {
         super(a.getLocalName());
@@ -43,6 +55,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
         definirRutas = new javax.swing.JButton();
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
+        selAgencias = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -53,8 +66,18 @@ public class VentanaTransporte extends javax.swing.JFrame {
         tipoEmpresa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Terrestre", "Aerea" }));
 
         dtoAplicables.setText("Definir Descuentos Aplicables");
+        dtoAplicables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dtoAplicablesActionPerformed(evt);
+            }
+        });
 
         definirRutas.setText("Definir nuevas Rutas");
+        definirRutas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                definirRutasActionPerformed(evt);
+            }
+        });
 
         aceptar.setText("Aceptar");
         aceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -70,29 +93,36 @@ public class VentanaTransporte extends javax.swing.JFrame {
             }
         });
 
+        selAgencias.setText("Seleccionar Agencias Asociadas");
+        selAgencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selAgenciasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(72, Short.MAX_VALUE)
+                .addComponent(aceptar)
+                .addGap(37, 37, 37)
+                .addComponent(cancelar)
+                .addGap(55, 55, 55))
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dtoAplicables)
+                    .addComponent(definirRutas)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(aceptar)
-                        .addGap(37, 37, 37)
-                        .addComponent(cancelar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dtoAplicables)
-                            .addComponent(definirRutas)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(tipoEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(56, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(tipoEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(selAgencias))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,11 +137,13 @@ public class VentanaTransporte extends javax.swing.JFrame {
                 .addComponent(dtoAplicables)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(definirRutas)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(selAgencias)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(aceptar)
                     .addComponent(cancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -139,6 +171,28 @@ public class VentanaTransporte extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_cancelarActionPerformed
 
+    private void dtoAplicablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtoAplicablesActionPerformed
+        // TODO add your handling code here:
+        DescuentosAplicablesTransporte guiDto = this.new DescuentosAplicablesTransporte();
+        guiDto.setVisible(true);
+        this.setEnabled(false);
+    }//GEN-LAST:event_dtoAplicablesActionPerformed
+
+    private void definirRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_definirRutasActionPerformed
+        // TODO add your handling code here:
+        Rutas guiRutas = this.new Rutas((String) tipoEmpresa.getSelectedItem());
+        guiRutas.setVisible(true);
+        this.setEnabled(false);
+    }//GEN-LAST:event_definirRutasActionPerformed
+
+    private void selAgenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selAgenciasActionPerformed
+        // TODO add your handling code here:
+        DFAgencias guiAgencia = this.new DFAgencias();
+        guiAgencia.setVisible(true);
+        this.setEnabled(false);
+        
+    }//GEN-LAST:event_selAgenciasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -150,6 +204,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
     private javax.swing.JButton dtoAplicables;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton selAgencias;
     private javax.swing.JComboBox tipoEmpresa;
     // End of variables declaration//GEN-END:variables
    
@@ -161,12 +216,8 @@ public class VentanaTransporte extends javax.swing.JFrame {
     private float [] personas = new float[1];
     private float [] anticipacion = new float[1];
     private float[][] descuentos;
-    private AgenteLugar miAgente;
-    
-    
-    public DescuentosAplicablesTransporte(AgenteLugar a) {
-        super(a.getLocalName());
-	miAgente = a;
+
+    public DescuentosAplicablesTransporte() {
         initComponents();
         personas[0] = 0;
         anticipacion [0] = 0;
@@ -703,6 +754,567 @@ public class VentanaTransporte extends javax.swing.JFrame {
         dias[6] = Float.parseFloat(domingo.getText());
         return dias;   
     }
+    }
+    
+    
+    
+    // Creacion de cronogramas
+    
+    public class Rutas extends javax.swing.JFrame {
+    private String tipo;
+    private CronogramaTransporte.Calidad cal;
+    private ArrayList<CronogramaTransporte> rutas = new ArrayList<>();
+
+    /**
+     * Creates new form Rutas
+         * @param tipo
+     */
+    public Rutas(String tipo) {
+        this.tipo =  tipo;
+        initComponents();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        origen = new javax.swing.JTextField();
+        destino = new javax.swing.JTextField();
+        precioPersona = new javax.swing.JTextField();
+        capacidad = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        calidad = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
+        lunes = new javax.swing.JCheckBox();
+        martes = new javax.swing.JCheckBox();
+        miercoles = new javax.swing.JCheckBox();
+        jueves = new javax.swing.JCheckBox();
+        viernes = new javax.swing.JCheckBox();
+        sabado = new javax.swing.JCheckBox();
+        domingo = new javax.swing.JCheckBox();
+        agregar = new javax.swing.JButton();
+        aceptar = new javax.swing.JButton();
+        cancelar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Nuevo cronograma de transporte");
+
+        jLabel2.setText("Orgien");
+
+        jLabel3.setText("Precio por Persona");
+
+        jLabel4.setText("Capacidad");
+
+        jLabel5.setText("Destino");
+
+        origen.setText(" ");
+
+        destino.setText(" ");
+
+        precioPersona.setText("0");
+        precioPersona.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                precioPersonaActionPerformed(evt);
+            }
+        });
+
+        capacidad.setText("0");
+        capacidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                capacidadActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Calidad");
+
+        calidad.setModel(null);
+
+        jLabel7.setText("Días con salidas");
+
+        lunes.setText("Lunes");
+        lunes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunesActionPerformed(evt);
+            }
+        });
+
+        martes.setText("Martes");
+        martes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                martesActionPerformed(evt);
+            }
+        });
+
+        miercoles.setText("Miércoles");
+
+        jueves.setText("Jueves");
+
+        viernes.setText("Viernes");
+        viernes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viernesActionPerformed(evt);
+            }
+        });
+
+        sabado.setText("Sábado");
+        sabado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sabadoActionPerformed(evt);
+            }
+        });
+
+        domingo.setText("Domingo");
+
+        agregar.setText("Agregar");
+        agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarActionPerformed(evt);
+            }
+        });
+
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
+
+        cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sabado)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(agregar)
+                                .addGap(23, 23, 23))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(viernes)
+                                    .addComponent(domingo)
+                                    .addComponent(aceptar))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(26, 26, 26)
+                                .addComponent(origen, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(precioPersona))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(58, 58, 58)
+                                    .addComponent(capacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(destino))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cancelar)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(calidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(116, 116, 116)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(martes)
+                            .addComponent(lunes)
+                            .addComponent(miercoles)
+                            .addComponent(jueves)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel7)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5)
+                    .addComponent(origen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(destino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(precioPersona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(capacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(calidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lunes)
+                    .addComponent(viernes))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sabado)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(martes)
+                        .addComponent(agregar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(miercoles)
+                    .addComponent(domingo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jueves)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aceptar)
+                    .addComponent(cancelar)))
+        );
+
+        setearCalidad(tipo);
+
+        pack();
+    }// </editor-fold>                        
+
+    private void lunesActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        // TODO add your handling code here:
+    }                                     
+
+    private void martesActionPerformed(java.awt.event.ActionEvent evt) {                                       
+        // TODO add your handling code here:
+    }                                      
+
+    private void viernesActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+    }                                       
+
+    private void sabadoActionPerformed(java.awt.event.ActionEvent evt) {                                       
+        // TODO add your handling code here:
+    }                                      
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        VentanaTransporte.this.setEnabled(true);
+        this.dispose();
+    }                                        
+
+    private void precioPersonaActionPerformed(java.awt.event.ActionEvent evt) {                                              
+        // TODO add your handling code here:
+    }                                             
+
+    private void capacidadActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        // TODO add your handling code here:
+    }                                         
+
+    private void agregarActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+        float precio = Float.parseFloat(precioPersona.getText());
+        int capac = Integer.parseInt(capacidad.getText());
+        CronogramaTransporte cronograma = new CronogramaTransporte(origen.getText(), destino.getText(), precio, capac, definirSalidas(), definirCalidad() );
+        rutas.add(cronograma);
+        limpiarCronograma();
+    }                                       
+
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+        agregarActionPerformed(null);
+        VentanaTransporte.this.miAgente.addCronogramas(rutas);
+        VentanaTransporte.this.setEnabled(true);
+        this.dispose();
+    }                                       
+
+    
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton aceptar;
+    private javax.swing.JButton agregar;
+    private javax.swing.JComboBox calidad;
+    private javax.swing.JButton cancelar;
+    private javax.swing.JTextField capacidad;
+    private javax.swing.JTextField destino;
+    private javax.swing.JCheckBox domingo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JCheckBox jueves;
+    private javax.swing.JCheckBox lunes;
+    private javax.swing.JCheckBox martes;
+    private javax.swing.JCheckBox miercoles;
+    private javax.swing.JTextField origen;
+    private javax.swing.JTextField precioPersona;
+    private javax.swing.JCheckBox sabado;
+    private javax.swing.JCheckBox viernes;
+    // End of variables declaration                   
+
+    private void setearCalidad(String tipo) {
+        if(tipo == "Terrestre"){
+            calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "EJECUTIVO", "CAMA", "SEMICAMA"}));
+        } else {calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PRIMERA CLASE", "BUSSINES", "TURISTA"}));;
+        }
+    }
+    private ArrayList<DayOfWeek> definirSalidas(){
+        ArrayList<DayOfWeek> salidas = new ArrayList<>();
+        if(lunes.isSelected())
+            salidas.add(DayOfWeek.MONDAY);
+        if(martes.isSelected())
+            salidas.add(DayOfWeek.TUESDAY);
+        if(miercoles.isSelected())
+            salidas.add(DayOfWeek.WEDNESDAY);
+        if(jueves.isSelected())
+            salidas.add(DayOfWeek.THURSDAY);
+        if(viernes.isSelected())
+            salidas.add(DayOfWeek.FRIDAY);
+        if(sabado.isSelected())
+            salidas.add(DayOfWeek.SATURDAY);
+        if(domingo.isSelected())
+            salidas.add(DayOfWeek.SUNDAY);
+            
+                    
+        return salidas;
+    }
+
+    private CronogramaTransporte.Calidad definirCalidad() {
+        String a = (String) calidad.getSelectedItem();
+        switch(a){
+            case "EJECUTIVO":
+                cal= CronogramaTransporte.Calidad.EJECUTIVO;
+                break;
+            case "BUSSINES":
+                cal= CronogramaTransporte.Calidad.BUSSINES;
+                break;
+            case "CAMA":
+                cal= CronogramaTransporte.Calidad.CAMA;
+                break;
+            case "SEMICAMA":
+                cal= CronogramaTransporte.Calidad.SEMICAMA;
+                break;
+            case "PRIMERA CLASE":
+                cal= CronogramaTransporte.Calidad.PRIMERACLASE;
+                break;
+            case "TURISTA":
+                cal= CronogramaTransporte.Calidad.TURISTA;
+                break;
+        }
+        return cal;
+    }
+
+    private void limpiarCronograma() {
+        origen.setText("");
+        destino.setText("");
+        precioPersona.setText("0");
+        capacidad.setText("0");
+        lunes.setSelected(false);
+        martes.setSelected(false);
+        miercoles.setSelected(false);
+        jueves.setSelected(false);
+        viernes.setSelected(false);
+        sabado.setSelected(false);
+        domingo.setSelected(false);
+        
+    }
+    }
+    
+    // Seleccionar Agencias Asociadas
+    
+    public class DFAgencias extends javax.swing.JFrame {
+    
+    private String [] agencias;
+    DFAgentDescription [] resultados;
+
+    /**
+     * Creates new form DFAgencias
+     */
+    public DFAgencias() {
+        getAgencias();
+        initComponents();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaAgencias = new javax.swing.JList();
+        jLabel3 = new javax.swing.JLabel();
+        aceptar = new javax.swing.JButton();
+        cancelar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Seleccionar Agencias Asociadas");
+
+        jLabel2.setText("Agencias Disponibles");
+
+        listaAgencias.setModel(new javax.swing.AbstractListModel() {
+            public int getSize() { return agencias.length; }
+            public Object getElementAt(int i) { return agencias[i]; }
+        });
+        jScrollPane1.setViewportView(listaAgencias);
+
+        jLabel3.setText("Para seleccionar mas de una agencia mantenga presionada la tecla Ctrl");
+
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
+
+        cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(130, 130, 130)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(103, 103, 103)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(aceptar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cancelar)
+                .addGap(69, 69, 69))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(23, 23, 23)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aceptar)
+                    .addComponent(cancelar))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>                        
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        VentanaTransporte.this.setEnabled(true);
+        dispose();
+    }                                        
+
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+        int[] seleccion = listaAgencias.getSelectedIndices();
+        AID[] agenciasAID = new AID[seleccion.length];
+        for(int index: seleccion){
+            agenciasAID[index]=resultados[seleccion[index]].getName();
+        }
+        ACLMessage suscribir = new ACLMessage(ACLMessage.SUBSCRIBE);
+        for(AID ag: agenciasAID){
+            suscribir.addReceiver(ag);
+        }
+        suscribir.setContent("Transporte");
+        VentanaTransporte.this.miAgente.send(suscribir);
+        VentanaTransporte.this.setEnabled(true);
+        dispose();
+    }                                       
+
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton aceptar;
+    private javax.swing.JButton cancelar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList listaAgencias;
+    // End of variables declaration                   
+
+    private void getAgencias() {
+       ServiceDescription servicio = new ServiceDescription();
+       servicio.setType("Agencia de Turismo");
+       DFAgentDescription descripcion = new DFAgentDescription();
+       descripcion.addServices(servicio);
+       try {
+           resultados = DFService.search(VentanaTransporte.this.miAgente, descripcion);
+           agencias = new String [resultados.length];
+           for (int i=0; i < resultados.length; ++i)
+           {
+               agencias [i] = resultados[i].getName().getLocalName();
+           }
+       } catch (FIPAException ex) {
+            Logger.getLogger(DFAgencias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+               
+    }
+    
 }
 
 }
