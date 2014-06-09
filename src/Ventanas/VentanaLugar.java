@@ -26,7 +26,7 @@ public class VentanaLugar extends javax.swing.JFrame {
     
     private AgenteLugar miAgente;
     private String[] tiposLugar = {"HOTEL", "APART", "CABAÑA", "HOSTAL"};
-    private ArrayList<String> servicios;
+    private ArrayList<String> servicios = new ArrayList<>();
     
     /**
      * Creates new form ventanaLugarPeor
