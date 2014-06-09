@@ -35,7 +35,7 @@ public class AgenteAgenciaTurismo extends Agent {
     private float descuentoTransporte;
     private float descuentoLugar;
     //Descuentos por pago con efectivo o tarjeta.
-    private ArrayList<AID>transportes;
+    private ArrayList<AID> transportes;
     private ArrayList<AID> lugares;
     private float comision;
     private VentanaAgencia myGui;
@@ -45,9 +45,8 @@ public class AgenteAgenciaTurismo extends Agent {
         nombre = this.getLocalName();
         myGui = new VentanaAgencia(this);
         myGui.setVisible(true);
-        
+
         //Registro en paginas amarillas
-        
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
@@ -67,9 +66,9 @@ public class AgenteAgenciaTurismo extends Agent {
     //Métodos llamados desde la interfaz
     public void definirAgencia(float dtoTransporte, float dtoLugar, float comision) {
         AID id = new AID(nombre, AID.ISLOCALNAME);
-        this.descuentoLugar = dtoLugar/100;
-        this.comision= 1+ (comision/100);
-        this.descuentoTransporte = dtoTransporte/100;
+        this.descuentoLugar = dtoLugar / 100;
+        this.comision = 1 + (comision / 100);
+        this.descuentoTransporte = dtoTransporte / 100;
     }
 
     public void asignarServicios(ArrayList<AID> transportes, ArrayList<AID> lugares) {
@@ -85,48 +84,6 @@ public class AgenteAgenciaTurismo extends Agent {
             fe.printStackTrace();
         }
     }
-
-    //Falta lugares y transportes que deberían ser dinámicos
-    //Behaviour para actualizar la lista con todos las empresas de Transportes y Lugares,
-    //para luego ser mostradas en la GUI.
-    /*
-    private class ActualizarLugares extends OneShotBehaviour {
-
-        @Override
-        public void action() {
-            DFAgentDescription dfd = new DFAgentDescription();
-            ServiceDescription sd = new ServiceDescription();
-            sd.setType("Lugar");
-            dfd.addServices(sd);
-            try {
-                DFAgentDescription[] lugarcitos = DFService.search(myAgent, dfd);
-                lugares = new AID[lugarcitos.length];
-                for (int i = 0; i < lugarcitos.length; ++i) {
-                    lugares[i] = lugarcitos[i].getName();
-                }
-            } catch (FIPAException fe) {
-            }
-        }
-    }
-
-    private class ActualizarTransportes extends OneShotBehaviour {
-
-        @Override
-        public void action() {
-            DFAgentDescription dfd = new DFAgentDescription();
-            ServiceDescription sd = new ServiceDescription();
-            sd.setType("Empresa de Transporte");
-            dfd.addServices(sd);
-            try {
-                DFAgentDescription[] transportitos = DFService.search(myAgent, dfd);
-                transportes = new AID[transportitos.length];
-                for (int i = 0; i < transportitos.length; ++i) {
-                    transportes[i] = transportitos[i].getName();
-                }
-            } catch (FIPAException fe) {
-            }
-        }
-    } */
 
     private class BuscarPaquete extends CyclicBehaviour {
 
@@ -190,7 +147,8 @@ public class AgenteAgenciaTurismo extends Agent {
                                 }
                             }
                             break;
-                            default: break;
+                            default:
+                                break;
                         }
                     }
                 }
@@ -248,11 +206,17 @@ public class AgenteAgenciaTurismo extends Agent {
                         }
                     }
                 }
-                aceptarPropuestas(mejorLugar, mejorTransporte);
-                Paquete paqueteArmado;
-                paqueteArmado = armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0), preferencias);
-                ACLMessage propuesta = new ACLMessage(ACLMessage.PROPOSE);
-                propuesta.setContent(paqueteArmado.toStringForMessage());
+                ACLMessage propuesta;
+                propuesta = new ACLMessage();
+                if (!ofertasLugar.isEmpty() && !ofertasTransporte.isEmpty()) {
+                    aceptarPropuestas(mejorLugar, mejorTransporte);
+                    Paquete paqueteArmado;
+                    paqueteArmado = armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0), preferencias);
+                    propuesta.setPerformative(ACLMessage.PROPOSE);
+                    propuesta.setContent(paqueteArmado.toStringForMessage());
+                } else {
+                    propuesta.setPerformative(ACLMessage.REFUSE);
+                }
                 propuesta.addReceiver(msg.getSender());
                 myAgent.send(propuesta);
             } else {
@@ -283,23 +247,22 @@ public class AgenteAgenciaTurismo extends Agent {
             return propuesta;
         }
     }
-    
-    
+
     //Nuevos transportes o lugares que se quieren asociar
-    
-    private class AsociarServicio extends CyclicBehaviour{
+    private class AsociarServicio extends CyclicBehaviour {
+
         @Override
         public void action() {
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.SUBSCRIBE);
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
-                String contenido= msg.getContent();
-                if (contenido == "Transporte"){
-                   transportes.add(msg.getSender());
+                String contenido = msg.getContent();
+                if (contenido == "Transporte") {
+                    transportes.add(msg.getSender());
                 } else {
-                   lugares.add(msg.getSender()); 
+                    lugares.add(msg.getSender());
                 }
-                
+
             }
         }
     }
