@@ -17,6 +17,7 @@ import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 import java.util.*;
 import java.util.logging.Level;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -167,6 +168,12 @@ public class VentanaLugar extends javax.swing.JFrame {
         mascotas.setText("Admiten Mascotas");
 
         jLabel6.setText("Precio por persona");
+
+        precio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precioKeyTyped(evt);
+            }
+        });
 
         selAgencias.setText("Agregar Agencias");
         selAgencias.addActionListener(new java.awt.event.ActionListener() {
@@ -322,12 +329,13 @@ public class VentanaLugar extends javax.swing.JFrame {
     }//GEN-LAST:event_pensionActionPerformed
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-        // TODO add your handling code here:
+      if(precio.getText() != null && ciudad.getText() != null){
         int precioPersona= Integer.parseInt(precio.getText());
         int cal= Integer.parseInt((String) calidad.getSelectedItem());
         miAgente.asignarServicios(definirServicios());
         miAgente.definirLugar(ciudad.getText(),precioPersona, cal,definirTipo(tipo.getSelectedItem()));
         this.dispose();
+      } else { JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}  
     }//GEN-LAST:event_aceptarActionPerformed
 
     private void tipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoItemStateChanged
@@ -353,6 +361,12 @@ public class VentanaLugar extends javax.swing.JFrame {
         guiAgencia.setVisible(true);
         this.setEnabled(false);
     }//GEN-LAST:event_selAgenciasActionPerformed
+
+    private void precioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioKeyTyped
+        // TODO add your handling code here:
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }//GEN-LAST:event_precioKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -781,6 +795,114 @@ public class VentanaLugar extends javax.swing.JFrame {
                     .addComponent(cancelar))
                 .addContainerGap())
         );
+        
+                anticipacion1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                anticipacion1KeyTyped(evt);
+                }
+        });
+        
+        anticipacion2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                anticipacion2KeyTyped(evt);
+                }
+        });
+        
+        anticipacion3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                anticipacion3KeyTyped(evt);
+                }
+        });
+        
+        dtoA1.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                dtoA1KeyTyped(evt);
+            }
+        });
+        
+        dtoA2.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                dtoA2KeyTyped(evt);
+            }
+        });
+        
+        dtoA3.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                dtoA3KeyTyped(evt);
+            }
+        });
+        
+        dtoPsas1.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoPsas1KeyTyped(evt);
+             }
+        });
+        
+        dtoPsas2.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoPsas2KeyTyped(evt);
+             }
+        });
+        
+        dtoPsas3.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoPsas3KeyTyped(evt);
+             }
+        });
+        
+        psas1.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 psas1KeyTyped(evt);
+             }
+        });
+        
+        psas2.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 psas2KeyTyped(evt);
+             }
+        });
+        
+        psas3.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 psas3KeyTyped(evt);
+             }
+        });
+        
+        dias1.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dias1KeyTyped(evt);
+             }
+        });
+        
+        dias2.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dias2KeyTyped(evt);
+             }
+        });
+        
+        dias3.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dias3KeyTyped(evt);
+             }
+        });
+        
+        dtoDias1.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoDias1KeyTyped(evt);
+             }
+        });
+        
+        dtoDias2.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoDias2KeyTyped(evt);
+             }
+        });
+        
+        dtoDias3.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoDias3KeyTyped(evt);
+             }
+        });
 
         pack();
     }// </editor-fold>                        
@@ -811,51 +933,69 @@ public class VentanaLugar extends javax.swing.JFrame {
 
     private void agregarDiasActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
-        int uno = Integer.parseInt(dias1.getText());
-        int dos = Integer.parseInt(dias2.getText());
-        int tres = Integer.parseInt(dias3.getText());
-        int max = Integer.max(Integer.max(uno, dos), tres);
-        if(max>cantDias.length)
+     if(dias1.getText()!=null && dias2.getText()!=null && dias3.getText()!=null &&
+           dtoDias1.getText()!=null && dtoDias2.getText()!=null && dtoDias3.getText()!=null ){  
+       if(Integer.parseInt(dtoDias1.getText())<=100 && Integer.parseInt(dtoDias2.getText())<=100 && Integer.parseInt(dtoDias3.getText())<=100){ 
+         int uno = Integer.parseInt(dias1.getText());
+         int dos = Integer.parseInt(dias2.getText());
+         int tres = Integer.parseInt(dias3.getText());
+         int max = Integer.max(Integer.max(uno, dos), tres);
+         if(max>cantDias.length)
             cantDias = Arrays.copyOf(cantDias, max+1);
         
-        cantDias[uno] = Float.parseFloat(dtoDias1.getText())/100;
-        cantDias[dos] = Float.parseFloat(dtoDias2.getText())/100;
-        cantDias[tres] = Float.parseFloat(dtoDias3.getText())/100;
+         cantDias[uno] = Float.parseFloat(dtoDias1.getText())/100;
+         cantDias[dos] = Float.parseFloat(dtoDias2.getText())/100;
+         cantDias[tres] = Float.parseFloat(dtoDias3.getText())/100;
         
-        limpiarDias();
+         limpiarDias();
+       } else { JOptionPane.showMessageDialog(this, "Error: Descuento no puede ser mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);}
+     } else {JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}
+     
     }                                           
 
     private void agregarPsasActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
-        int uno = Integer.parseInt(psas1.getText());
-        int dos = Integer.parseInt(psas2.getText());
-        int tres = Integer.parseInt(psas3.getText());
-        int max = Integer.max(Integer.max(uno, dos), tres);
-        if(personas.length<=max)
-            personas = Arrays.copyOf(personas, max+1);
+      if(psas1.getText()!=null && psas2.getText()!=null && psas3.getText()!=null &&
+           dtoPsas1.getText()!=null && dtoPsas2.getText()!=null && dtoPsas3.getText()!=null ){  
+        if(Integer.parseInt(dtoPsas1.getText())<=100 && Integer.parseInt(dtoPsas2.getText())<=100 && Integer.parseInt(dtoPsas3.getText())<=100){ 
+            int uno = Integer.parseInt(psas1.getText());
+            int dos = Integer.parseInt(psas2.getText());
+            int tres = Integer.parseInt(psas3.getText());
+            int max = Integer.max(Integer.max(uno, dos), tres);
+            if(personas.length<=max)
+                personas = Arrays.copyOf(personas, max+1);
         
-        personas[uno] = Float.parseFloat(dtoPsas1.getText())/100;
-        personas[dos] = Float.parseFloat(dtoPsas2.getText())/100;
-        personas[tres] = Float.parseFloat(dtoPsas3.getText())/100;
+            personas[uno] = Float.parseFloat(dtoPsas1.getText())/100;
+            personas[dos] = Float.parseFloat(dtoPsas2.getText())/100;
+            personas[tres] = Float.parseFloat(dtoPsas3.getText())/100;
         
-        limpiarPersonas();
-        
+            limpiarPersonas();
+      } else { JOptionPane.showMessageDialog(this, "Error: Descuento no puede ser mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);}
+     } else {JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}
+       
     }                                           
 
     private void agregarAntiActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
-        int uno = Integer.parseInt(anticipacion1.getText());
-        int dos = Integer.parseInt(anticipacion2.getText());
-        int tres = Integer.parseInt(anticipacion3.getText());
-        int max = Integer.max(Integer.max(uno, dos), tres);
-        if(anticipacion.length<=max)
+     if(anticipacion1.getText()!= null && anticipacion2.getText()!= null && anticipacion3.getText()!= null 
+                && dtoA1.getText()!= null && dtoA2.getText()!= null && dtoA3.getText()!= null){
+         
+       if(Integer.parseInt(dtoA1.getText())<=100 && Integer.parseInt(dtoA2.getText())<=100 && Integer.parseInt(dtoA3.getText())<=100){
+         int uno = Integer.parseInt(anticipacion1.getText());
+         int dos = Integer.parseInt(anticipacion2.getText());
+         int tres = Integer.parseInt(anticipacion3.getText());
+         int max = Integer.max(Integer.max(uno, dos), tres);
+         if(anticipacion.length<=max)
             anticipacion = Arrays.copyOf(anticipacion, max+1);
         
-        anticipacion[uno] = Float.parseFloat(dtoPsas1.getText())/100;
-        anticipacion[dos] = Float.parseFloat(dtoPsas2.getText())/100;
-        anticipacion[tres] = Float.parseFloat(dtoPsas3.getText())/100;
+         anticipacion[uno] = Float.parseFloat(dtoA1.getText())/100;
+         anticipacion[dos] = Float.parseFloat(dtoA2.getText())/100;
+         anticipacion[tres] = Float.parseFloat(dtoA3.getText())/100;
         
-        limpiarAnticipacion();
+         limpiarAnticipacion();
+       } else { JOptionPane.showMessageDialog(this, "Error: Descuento no puede ser mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);}
+     } else {JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}
+     
     }
     
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -887,7 +1027,116 @@ public class VentanaLugar extends javax.swing.JFrame {
         VentanaLugar.this.miAgente.asignarDescuentoAnticipación(anticipacion);
         VentanaLugar.this.setEnabled(true);
         dispose();
-    }                                       
+    }  
+    
+    private void anticipacion1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void anticipacion2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void anticipacion3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoA1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoA2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoA3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoPsas1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoPsas2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoPsas3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void psas1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void psas2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void psas3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dias1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dias2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dias3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoDias1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoDias2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoDias3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton aceptar;

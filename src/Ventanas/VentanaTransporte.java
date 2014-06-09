@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -592,6 +593,120 @@ public class VentanaTransporte extends javax.swing.JFrame {
                     .addComponent(cancelar))
                 .addContainerGap())
         );
+        
+        anticipacion1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                anticipacion1KeyTyped(evt);
+                }
+        });
+        
+        anticipacion2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                anticipacion2KeyTyped(evt);
+                }
+        });
+        
+        anticipacion3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                anticipacion3KeyTyped(evt);
+                }
+        });
+        
+        dtoA1.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                dtoA1KeyTyped(evt);
+            }
+        });
+        
+        dtoA2.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                dtoA2KeyTyped(evt);
+            }
+        });
+        
+        dtoA3.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                dtoA3KeyTyped(evt);
+            }
+        });
+        
+        dtoPsas1.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoPsas1KeyTyped(evt);
+             }
+        });
+        
+        dtoPsas2.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoPsas2KeyTyped(evt);
+             }
+        });
+        
+        dtoPsas3.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 dtoPsas3KeyTyped(evt);
+             }
+        });
+        
+        psas1.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 psas1KeyTyped(evt);
+             }
+        });
+        
+        psas2.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 psas2KeyTyped(evt);
+             }
+        });
+        
+        psas3.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 psas3KeyTyped(evt);
+             }
+        });
+        
+        lunes.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 lunesKeyTyped(evt);
+             }
+        });
+        
+        martes.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 martesKeyTyped(evt);
+             }
+        });
+        
+        miercoles.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 miercolesKeyTyped(evt);
+             }
+        });
+        
+        jueves.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 juevesKeyTyped(evt);
+             }
+        });
+        
+        viernes.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 viernesKeyTyped(evt);
+             }
+        });
+        
+        sabado.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 sabadoKeyTyped(evt);
+             }
+        });
+        
+        domingo.addKeyListener(new java.awt.event.KeyAdapter() {
+             public void keyTyped(java.awt.event.KeyEvent evt) {
+                 domingoKeyTyped(evt);
+             }
+        });
 
         pack();
     }// </editor-fold>                        
@@ -613,7 +728,10 @@ public class VentanaTransporte extends javax.swing.JFrame {
     }                                             
 
     private void agregarPsasActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
+     if(psas1.getText()!=null && psas2.getText()!=null && psas3.getText()!=null &&
+           dtoPsas1.getText()!=null && dtoPsas2.getText()!=null && dtoPsas3.getText()!=null ){  
+      if(Integer.parseInt(dtoPsas1.getText())<=100 && Integer.parseInt(dtoPsas2.getText())<=100 && Integer.parseInt(dtoPsas3.getText())<=100){ 
+           
         int uno = Integer.parseInt(psas1.getText());
         int dos = Integer.parseInt(psas2.getText());
         int tres = Integer.parseInt(psas3.getText());
@@ -626,11 +744,17 @@ public class VentanaTransporte extends javax.swing.JFrame {
         personas[tres] = Float.parseFloat(dtoPsas3.getText())/100;
         
         limpiarPersonas();
+       } else { JOptionPane.showMessageDialog(this, "Error: Descuento no puede ser mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);}
+     } else {JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}
         
     }                                           
 
     private void agregarAntiActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
+     if(anticipacion1.getText()!= null && anticipacion2.getText()!= null && anticipacion3.getText()!= null 
+                && dtoA1.getText()!= null && dtoA2.getText()!= null && dtoA3.getText()!= null){
+         
+       if(Integer.parseInt(dtoA1.getText())<=100 && Integer.parseInt(dtoA2.getText())<=100 && Integer.parseInt(dtoA3.getText())<=100){
+         
         int uno = Integer.parseInt(anticipacion1.getText());
         int dos = Integer.parseInt(anticipacion2.getText());
         int tres = Integer.parseInt(anticipacion3.getText());
@@ -643,12 +767,19 @@ public class VentanaTransporte extends javax.swing.JFrame {
         anticipacion[tres] = Float.parseFloat(dtoPsas3.getText())/100;
         
         limpiarAnticipacion();
+       } else { JOptionPane.showMessageDialog(this, "Error: Descuento no puede ser mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);}
+     } else {JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}
+        
     }                                           
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        // TODO add your handling code here:
+     if(lunes.getText()!= null && martes.getText()!= null && miercoles.getText()!= null && jueves.getText()!= null && 
+             viernes.getText()!= null && sabado.getText()!= null && domingo.getText()!= null ){
+      if(Integer.parseInt(lunes.getText())<=100 && Integer.parseInt(martes.getText())<=100  && Integer.parseInt(miercoles.getText())<=100 
+              &&Integer.parseInt(jueves.getText())<=100 && Integer.parseInt(viernes.getText())<=100 && Integer.parseInt(sabado.getText())<=100 && Integer.parseInt(domingo.getText())<=100 ){
         agregarPsasActionPerformed(null);
         agregarAntiActionPerformed(null);
+        
         for(int i = 1; i<personas.length; ++i){
             if(personas[i] == 0)
                 personas[i] = personas[i-1];
@@ -662,6 +793,10 @@ public class VentanaTransporte extends javax.swing.JFrame {
         VentanaTransporte.this.miAgente.asignarDescuentoDias(descuentoDias());
         VentanaTransporte.this.miAgente.asignarDescuentoAnticipación(anticipacion);
         VentanaTransporte.this.setEnabled(true);
+        this.dispose();
+      } else { JOptionPane.showMessageDialog(this, "Error: Descuento no puede ser mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);}
+     } else {JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}
+         
     }                                       
 
     private void martesActionPerformed(java.awt.event.ActionEvent evt) {                                       
@@ -676,9 +811,123 @@ public class VentanaTransporte extends javax.swing.JFrame {
         // TODO add your handling code here:
         VentanaTransporte.this.setEnabled(true);
         dispose();
-    }                                        
+    }
     
-
+    private void anticipacion1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void anticipacion2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void anticipacion3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoA1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoA2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoA3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoPsas1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoPsas2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void dtoPsas3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void psas1KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void psas2KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void psas3KeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void lunesKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void martesKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void miercolesKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void juevesKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void viernesKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void sabadoKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    private void domingoKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
+    
+    
     // Variables declaration - do not modify                     
     private javax.swing.JButton aceptar;
     private javax.swing.JButton agregarAnti;
@@ -810,7 +1059,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
 
         jLabel1.setText("Nuevo cronograma de transporte");
 
-        jLabel2.setText("Orgien");
+        jLabel2.setText("Origen");
 
         jLabel3.setText("Precio por Persona");
 
@@ -828,11 +1077,21 @@ public class VentanaTransporte extends javax.swing.JFrame {
                 precioPersonaActionPerformed(evt);
             }
         });
+        precioPersona.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                  precioPersonaKeyTyped(evt);
+            }
+        });
 
-        capacidad.setText("0");
+        capacidad.setText("1");
         capacidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 capacidadActionPerformed(evt);
+            }
+        });
+        capacidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                  capacidadKeyTyped(evt);
             }
         });
 
@@ -1043,12 +1302,13 @@ public class VentanaTransporte extends javax.swing.JFrame {
     }                                         
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        // TODO add your handling code here:
+      if(precioPersona.getText() != null && capacidad.getText() != null && origen.getText() != null && destino.getText()!= null){
         float precio = Float.parseFloat(precioPersona.getText());
         int capac = Integer.parseInt(capacidad.getText());
         CronogramaTransporte cronograma = new CronogramaTransporte(origen.getText(), destino.getText(), precio, capac, definirSalidas(), definirCalidad() );
         rutas.add(cronograma);
         limpiarCronograma();
+      } else {JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}  
     }                                       
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {                                        
@@ -1057,7 +1317,17 @@ public class VentanaTransporte extends javax.swing.JFrame {
         VentanaTransporte.this.miAgente.addCronogramas(rutas);
         VentanaTransporte.this.setEnabled(true);
         this.dispose();
-    }                                       
+    }
+    private void capacidadKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        // TODO add your handling code here:
+        char car = evt.getKeyChar();
+        if((car<'1' || car>'9')) evt.consume();
+    }
+    private void precioPersonaKeyTyped(java.awt.event.KeyEvent evt) {                                     
+        // TODO add your handling code here:
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }
 
     
     // Variables declaration - do not modify                     
