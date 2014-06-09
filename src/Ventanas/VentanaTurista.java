@@ -103,10 +103,26 @@ public class VentanaTurista extends javax.swing.JFrame {
         jLabel7.setText("Duración (*)");
 
         duracion.setText("1");
+        duracion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                duracionKeyTyped(evt);
+            }
+        });
 
         jLabel8.setText("Cantidad de Personas (*)");
 
         jLabel9.setText("Presupuesto máximo ($)");
+
+        presupuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                presupuestoActionPerformed(evt);
+            }
+        });
+        presupuesto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                presupuestoKeyTyped(evt);
+            }
+        });
 
         jLabel10.setText("Preferencias del usuario");
 
@@ -451,7 +467,7 @@ public class VentanaTurista extends javax.swing.JFrame {
 
     private void tipoTransporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoTransporteItemStateChanged
         // TODO add your handling code here:
-        switch(calidadTransporte.getSelectedIndex()){
+        switch(tipoTransporte.getSelectedIndex()){
             case 0:
                 calidadTransporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { ""}));
                 break;
@@ -505,6 +521,22 @@ public class VentanaTurista extends javax.swing.JFrame {
         }
         }   
     }//GEN-LAST:event_fechaMaxPropertyChange
+
+    private void duracionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_duracionKeyTyped
+        // TODO add your handling code here:
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }//GEN-LAST:event_duracionKeyTyped
+
+    private void presupuestoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_presupuestoKeyTyped
+        // TODO add your handling code here:
+        char car = evt.getKeyChar();
+        if((car<'0' || car>'9')) evt.consume();
+    }//GEN-LAST:event_presupuestoKeyTyped
+
+    private void presupuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presupuestoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_presupuestoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
