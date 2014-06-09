@@ -113,7 +113,7 @@ public class AgenteTransporte extends Agent {
                 if (msg.getPerformative() == ACLMessage.CFP) {
                     //Verificar que existan rutas para los días de salida y vuelta
                     boolean existeRutaIda = false;
-                    boolean existeRutaVuelta = false;
+                    boolean existeRutaVuelta = true;
                     GregorianCalendar fechaSalida = pref.getFechaInicialInferior();
                     if (pref.daysBetween() == 0) {
                         for (CronogramaTransporte ruta : rutas) {

@@ -6,6 +6,7 @@
 package Agents;
 
 import Things.Paquete;
+import Ventanas.PantallaResultado;
 import Ventanas.VentanaTurista;
 import jade.core.AID;
 import jade.core.Agent;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  * Clase Turista, es el agente encargado de representar los intereses de un
@@ -35,6 +37,7 @@ public class AgenteTurista extends Agent {
     private VentanaTurista myGui;
     private boolean fin = false;
     private AID mejorAID;
+    PantallaResultado pr = new PantallaResultado();
 
     @Override
     protected void setup() {
@@ -56,11 +59,14 @@ public class AgenteTurista extends Agent {
                         agenciasTurismo[i] = agencias[i].getName();
                     }
                 } catch (FIPAException fe) {
-                    fe.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "No existen Agencias de Turismo registradas", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-        //addBehaviour(new SolicitarPaquetes());
+    }
+
+    public boolean isFin() {
+        return fin;
     }
 
     public void setPreferencias(Paquete preferencias) {
@@ -74,7 +80,6 @@ public class AgenteTurista extends Agent {
     private class SolicitarPaquetes extends SimpleBehaviour {
 
         //private Object[] paquetePonderado = new Array[3];
-
         private ArrayList<Array> listaPaquetes;
         private MessageTemplate mt;
 
@@ -114,9 +119,15 @@ public class AgenteTurista extends Agent {
                     block();
                 }
             }
-            ACLMessage mensajeAcept = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
-            mensajeAcept.addReceiver(mejorAID);
-            myAgent.send(mensajeAcept);
+            if (!ofertas.isEmpty()) {
+                ACLMessage mensajeAcept = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+                mensajeAcept.addReceiver(mejorAID);
+                myAgent.send(mensajeAcept);
+                pr.setResultado(ofertas.get(0));
+                pr.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No hay servicios disponibles para el viaje que desea realizar.", ":-(", JOptionPane.ERROR_MESSAGE);
+            }
             fin = true;
         }
 
@@ -124,5 +135,9 @@ public class AgenteTurista extends Agent {
         public boolean done() {
             return (fin);
         }
+    }
+
+    public Paquete getMejorPaquete() {
+        return ofertas.get(0);
     }
 }
