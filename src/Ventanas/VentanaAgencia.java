@@ -382,7 +382,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
             for (int index : seleccionTransporte) {
                 transportesAID.add(resultadosTransporte[seleccionTransporte[index]].getName());
             }
-            VentanaAgencia.this.miAgente.asignarServicios(lugaresAID, transportesAID);
+            VentanaAgencia.this.miAgente.asignarServicios(transportesAID, lugaresAID);
             dispose();
             
             
