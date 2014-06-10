@@ -99,7 +99,6 @@ public class VentanaLugar extends javax.swing.JFrame {
 
         jLabel4.setText("Ciudad");
 
-        ciudad.setText(" ");
         ciudad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ciudadActionPerformed(evt);

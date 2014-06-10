@@ -437,7 +437,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                 .addComponent(anticipacion1)
                                                 .addComponent(anticipacion2)
-                                                .addComponent(anticipacion3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(anticipacion3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(layout.createSequentialGroup()
                                             .addGap(23, 23, 23)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -454,7 +454,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                 .addComponent(dtoA1)
                                                 .addComponent(dtoA2)
-                                                .addComponent(dtoA3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(dtoA3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(agregarAnti))
                                         .addGroup(layout.createSequentialGroup()
@@ -482,7 +482,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(psas1)
                                             .addComponent(psas2)
-                                            .addComponent(psas3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(psas3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(37, 37, 37)
@@ -492,7 +492,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(dtoPsas1)
                                             .addComponent(dtoPsas2)
-                                            .addComponent(dtoPsas3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(dtoPsas3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(64, 64, 64)
                                         .addComponent(agregarPsas)))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1068,9 +1068,9 @@ public class VentanaTransporte extends javax.swing.JFrame {
 
         jLabel5.setText("Destino");
 
-        origen.setText(" ");
+        origen.setText("");
 
-        destino.setText(" ");
+        destino.setText("");
 
         precioPersona.setText("0");
         precioPersona.addActionListener(new java.awt.event.ActionListener() {
