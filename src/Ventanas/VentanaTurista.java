@@ -218,8 +218,8 @@ public class VentanaTurista extends javax.swing.JFrame {
 
         jLabel20.setText("(*) Campos Obligatorios");
 
-        pondServicio.setText(" ");
-        pondServicio.setEnabled(false);
+        pondServicio.setEditable(false);
+        pondServicio.setText("50");
 
         cantPsas.setModel(new javax.swing.SpinnerNumberModel(1, 1, 20, 1));
 
@@ -461,6 +461,7 @@ public class VentanaTurista extends javax.swing.JFrame {
             fechaMax.setEnabled(true);
         } else {
             JOptionPane.showMessageDialog(this, "Error: La fecha de salida debe ser posterior a la fecha actual", "Error", JOptionPane.ERROR_MESSAGE);
+            fechaMin.setDate(fechaViaje.getTime());
         }
         }
     }//GEN-LAST:event_fechaMinPropertyChange
@@ -518,6 +519,7 @@ public class VentanaTurista extends javax.swing.JFrame {
         if( fechaValida(fechaViajeInicial,fechaViaje)) {
         } else {
             JOptionPane.showMessageDialog(this, "Error: La fecha de salida máxima debe ser posterior a la fecha de salida mínima", "Error", JOptionPane.ERROR_MESSAGE);
+            fechaMax.setDate(fechaMin.getDate());
         }
         }   
     }//GEN-LAST:event_fechaMaxPropertyChange

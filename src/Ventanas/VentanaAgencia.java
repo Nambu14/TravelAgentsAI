@@ -49,13 +49,13 @@ public class VentanaAgencia extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        comisionAgencia = new javax.swing.JTextField();
-        dtoTransporte = new javax.swing.JTextField();
-        dtoLugar = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        dtoTransporte = new javax.swing.JSpinner();
+        comisionAgencia = new javax.swing.JSpinner();
+        dtoLugar = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -88,17 +88,6 @@ public class VentanaAgencia extends javax.swing.JFrame {
 
         jLabel7.setText("Descuentos mínimo esperado por servicios:");
 
-        comisionAgencia.setText("0");
-        comisionAgencia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comisionAgenciaActionPerformed(evt);
-            }
-        });
-
-        dtoTransporte.setText("0");
-
-        dtoLugar.setText("0");
-
         jLabel8.setText("%");
 
         jLabel10.setText("%");
@@ -106,6 +95,12 @@ public class VentanaAgencia extends javax.swing.JFrame {
         jLabel11.setText("%");
 
         jLabel12.setText("Agencia de Viajes "+miAgente.getLocalName());
+
+        dtoTransporte.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+
+        comisionAgencia.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+
+        dtoLugar.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,23 +115,24 @@ public class VentanaAgencia extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(comisionAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(comisionAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel8))
                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel11))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(dtoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel10))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel6)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel11))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel3)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(dtoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jLabel10)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(166, 166, 166)
                                 .addComponent(jLabel12)))
@@ -160,21 +156,20 @@ public class VentanaAgencia extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(comisionAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                    .addComponent(jLabel8)
+                    .addComponent(comisionAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(dtoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
+                    .addComponent(jLabel10)
+                    .addComponent(dtoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
                     .addComponent(jLabel11)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addComponent(accederDF)
                 .addGap(11, 11, 11)
@@ -193,10 +188,6 @@ public class VentanaAgencia extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_cancelarActionPerformed
 
-    private void comisionAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comisionAgenciaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comisionAgenciaActionPerformed
-
     private void accederDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accederDFActionPerformed
         // TODO add your handling code here:
         VentanaAgencia.VentanaDFServicios servicios = this.new VentanaDFServicios();
@@ -207,9 +198,9 @@ public class VentanaAgencia extends javax.swing.JFrame {
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
         try {
-            float descuentoTransporte = Float.parseFloat(dtoTransporte.getText());
-            float descuentoLugar = Float.parseFloat(dtoLugar.getText());
-            float comision = Float.parseFloat(comisionAgencia.getText());
+            float descuentoTransporte = Float.parseFloat(dtoTransporte.getValue().toString());
+            float descuentoLugar = Float.parseFloat(dtoLugar.getValue().toString());
+            float comision = Float.parseFloat(comisionAgencia.getValue().toString());
             miAgente.definirAgencia(descuentoTransporte, descuentoLugar, comision);
             miAgente.agregarComportamiento();
 
@@ -225,9 +216,9 @@ public class VentanaAgencia extends javax.swing.JFrame {
     private javax.swing.JButton accederDF;
     private javax.swing.JButton aceptar;
     private javax.swing.JButton cancelar;
-    private javax.swing.JTextField comisionAgencia;
-    private javax.swing.JTextField dtoLugar;
-    private javax.swing.JTextField dtoTransporte;
+    private javax.swing.JSpinner comisionAgencia;
+    private javax.swing.JSpinner dtoLugar;
+    private javax.swing.JSpinner dtoTransporte;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
