@@ -38,6 +38,7 @@ public class AgenteTurista extends Agent {
     private boolean fin = false;
     private AID mejorAID;
     PantallaResultado pr = new PantallaResultado();
+    int step = 0;
 
     @Override
     protected void setup() {
@@ -82,24 +83,31 @@ public class AgenteTurista extends Agent {
         //private Object[] paquetePonderado = new Array[3];
         private ArrayList<Array> listaPaquetes;
         private MessageTemplate mt;
+        int contadorRespuesta = 0;
 
         @Override
         public void action() {
             // Mandar cfp a todas las agencias
-            ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
-            for (int i = 0; i < agenciasTurismo.length; ++i) {
-                cfp.addReceiver(agenciasTurismo[i]);
-            }
-            cfp.setContent(preferencias.toStringForMessage());
-            cfp.setConversationId("Busqueda de Paquete");
-            myAgent.send(cfp);
-            for (AID agencia : agenciasTurismo) {
-                mt = MessageTemplate.MatchSender(agencia);
-                ACLMessage respuesta = myAgent.receive(mt);
-                if (respuesta != null) {
-                    //Procesar ofertas
-                    if (respuesta.getPerformative() == ACLMessage.PROPOSE) {
-                        try {
+            switch (step) {
+                case 0: {
+                    ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
+                    for (int i = 0; i < agenciasTurismo.length; ++i) {
+                        cfp.addReceiver(agenciasTurismo[i]);
+                    }
+                    cfp.setContent(preferencias.toStringForMessage());
+                    cfp.setConversationId("Busqueda de Paquete");
+                    myAgent.send(cfp);
+                    step = 1;
+                }
+                ;
+                break;
+                case 1: {
+                    MessageTemplate mt = MessageTemplate.MatchConversationId("Busqueda de Paquete");
+                    ACLMessage respuesta = myAgent.receive(mt);
+                    if (respuesta != null) {
+                        
+                        //Procesar ofertas
+                        if (respuesta.getPerformative() == ACLMessage.PROPOSE) {
                             Paquete propuesta = Paquete.stringToPaquete(respuesta.getContent());
                             //Acá agrega el paquete a ofertas, y ordena la lista.
                             propuesta.setHeuristica(preferencias);
@@ -107,33 +115,39 @@ public class AgenteTurista extends Agent {
                             Collections.sort(ofertas);
                             Collections.reverse(ofertas);
                             if (ofertas.indexOf(propuesta) == 0) {
-                                mejorAID = agencia;
+                                mejorAID = respuesta.getSender();
                             }
-                        } catch (Exception ex) {
-                            Logger.getLogger(AgenteTurista.class.getName()).log(Level.SEVERE, null, ex);
+
+                        } else {
+                            //No hay posiblidad de formar un paquete con los requerimientos solicitados en esta agencia.
                         }
+                        
+                        contadorRespuesta++;
                     } else {
-                        //No hay posiblidad de formar un paquete con los requerimientos solicitados en esta agencia.
+                        block();
                     }
-                } else {
-                    block();
+
                 }
             }
-            if (!ofertas.isEmpty()) {
-                ACLMessage mensajeAcept = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
-                mensajeAcept.addReceiver(mejorAID);
-                myAgent.send(mensajeAcept);
-                pr.setResultado(ofertas.get(0));
-                pr.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "No hay servicios disponibles para el viaje que desea realizar.", ":-(", JOptionPane.ERROR_MESSAGE);
-            }
-            fin = true;
+
         }
 
         @Override
         public boolean done() {
-            return (fin);
+            if (contadorRespuesta == agenciasTurismo.length) {
+                if (!ofertas.isEmpty()) {
+                    ACLMessage mensajeAcept = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+                    mensajeAcept.addReceiver(mejorAID);
+                    myAgent.send(mensajeAcept);
+                    pr.setResultado(ofertas.get(0));
+                    pr.setVisible(true);
+                    
+                } else {
+                    JOptionPane.showMessageDialog(null, "No hay servicios disponibles para el viaje que desea realizar.", ":-(", JOptionPane.ERROR_MESSAGE);
+                }
+                return true;
+            }
+            return false;
         }
     }
 

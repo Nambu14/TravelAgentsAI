@@ -312,6 +312,7 @@ public class AgenteAgenciaTurismo extends Agent {
                     propuesta = new ACLMessage(ACLMessage.REFUSE);
                 }
                 propuesta.addReceiver(msg.getSender());
+                propuesta.setConversationId("Busqueda de Paquete");
                 myAgent.send(propuesta);
                 ofertasLugar = new ArrayList<>();
                 ofertasTransporte = new ArrayList<>();
