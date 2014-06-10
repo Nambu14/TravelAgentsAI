@@ -180,18 +180,18 @@ public class AgenteTransporte extends Agent {
                     }
                 } else if (msg.getPerformative() == ACLMessage.INFORM) {
                     //Dar descuentos
-                    if (pref.getCantidadPersonas() != 0) {
+                    if (pref.getCantidadPersonas() != 0 && pref.getCantidadPersonas()<descuentoPorPersonas.length) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
                         float dbt = descuentoPorPersonas[pref.getCantidadPersonas()];
                         pref.setPresupuestoMax(dbt);
                         pref.setCantidadPersonas(0);
-                    } else if (pref.getDuracion() != 0) {
+                    } else if (pref.getDuracion() != 0 && pref.getDuracion()< descuentoPorAnticipacion.length) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
                         GregorianCalendar cal = new GregorianCalendar();
                         float dbt = descuentoPorAnticipacion[Paquete.daysBetween(cal, pref.getFechaInicialInferior())];
                         pref.setPresupuestoMax(pref.getPresupuestoMax() + dbt);
                         pref.setDuracion(0);
-                    } else if (pref.getAnticipacion() != 0) {
+                    } else if (pref.getAnticipacion() != 0 && pref.getAnticipacion()<descuentoPorDias.length) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
                         float dto = descuentoPorDias[(pref.getFechaInicialInferior().get(Calendar.DAY_OF_WEEK) - 1)];
                         pref.setPresupuestoMax(pref.getPresupuestoMax() + dto);

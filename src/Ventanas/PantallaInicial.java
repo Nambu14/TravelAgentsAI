@@ -29,6 +29,7 @@ public class PantallaInicial extends javax.swing.JFrame {
     private final ContainerController mainContainer;
     private AgentController ac;
     private jade.core.Runtime rt;
+    private int turista=0;
     /**
      * Creates new form PantallaInicial
      */
@@ -160,11 +161,12 @@ public class PantallaInicial extends javax.swing.JFrame {
     private void crearTuristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearTuristaActionPerformed
         // TODO add your handling code here:
         try {
-           ac= mainContainer.createNewAgent("Turista", "Agents.AgenteTurista", null);
+           ac= mainContainer.createNewAgent("Turista"+turista, "Agents.AgenteTurista", null);
            ac.start();
         } catch (StaleProxyException ex) {
-	   Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
+	   JOptionPane.showMessageDialog(this, "Debe elegir otro nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        turista= turista+1;
                 
     }//GEN-LAST:event_crearTuristaActionPerformed
 
@@ -174,7 +176,7 @@ public class PantallaInicial extends javax.swing.JFrame {
            ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteAgenciaTurismo", null);
            ac.start();
         } catch (StaleProxyException ex) {
-	   Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
+	   JOptionPane.showMessageDialog(this, "Debe elegir otro nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_crearAgenciaActionPerformed
 
@@ -184,7 +186,7 @@ public class PantallaInicial extends javax.swing.JFrame {
            ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteLugar", null);
            ac.start();
         } catch (StaleProxyException ex) {
-	   Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
+	   JOptionPane.showMessageDialog(this, "Debe elegir otro nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_crearLugarActionPerformed
@@ -195,7 +197,7 @@ public class PantallaInicial extends javax.swing.JFrame {
            ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteTransporte", null);
            ac.start();
         } catch (StaleProxyException ex) {
-	   Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
+	   JOptionPane.showMessageDialog(this, "Debe elegir otro nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_crearTransporteActionPerformed
 
