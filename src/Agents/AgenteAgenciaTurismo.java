@@ -93,7 +93,7 @@ public class AgenteAgenciaTurismo extends Agent {
 
         @Override
         public void action() {
-            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+            MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Paquete"),MessageTemplate.MatchPerformative(ACLMessage.CFP));
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
                 String pref = msg.getContent();
@@ -104,13 +104,19 @@ public class AgenteAgenciaTurismo extends Agent {
                 prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.7f);
                 //EMPIEZA LA NEGOCIACION CON LUGARES
                 ACLMessage cfpLugares = new ACLMessage(ACLMessage.CFP);
+                
+                // Acá debe hacer control de que no haya lugares
+                
                 for (AID lugar : lugares) {
                     cfpLugares.addReceiver(lugar);
                 }
                 cfpLugares.setContent(pref);
                 cfpLugares.setConversationId("Busqueda de Lugar");
                 myAgent.send(cfpLugares);
+                
                 for (AID lugar : lugares) {
+                  Boolean boolLugar = true;
+                  do{
                     MessageTemplate mtlugar = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Lugar"),
                             MessageTemplate.MatchSender(lugar));
                     ACLMessage respuestaLugar = myAgent.receive(mtlugar);
@@ -129,6 +135,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                     if (ofertasLugar.indexOf(paqLugar) == 0) {
                                         mejorLugar = lugar;
                                     }
+                                    boolLugar = false;
                                 } else {
                                     ACLMessage pedirRebaja = respuestaLugar.createReply();
                                     pedirRebaja.setPerformative(ACLMessage.CFP);
@@ -149,12 +156,14 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (ofertasLugar.indexOf(paqLugar) == 0) {
                                     mejorLugar = lugar;
                                 }
+                                boolLugar = false;
                             }
                             break;
                             default:
                                 break;
                         }
                     }
+                  } while(boolLugar); 
                 }
                 // EMPIEZA LA NEGOCIACION CON TRANSPORTES
                 ACLMessage cfpTransportes = new ACLMessage(ACLMessage.CFP);
@@ -166,6 +175,9 @@ public class AgenteAgenciaTurismo extends Agent {
                 myAgent.send(cfpTransportes);
                 prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.3f);
                 for (AID transporte : transportes) {
+                  Boolean boolTransporte = true;
+                  do{  
+                    
                     MessageTemplate mttransporte = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Transportes"),
                             MessageTemplate.MatchSender(transporte));
                     ACLMessage respuestaTransporte = myAgent.receive(mttransporte);
@@ -184,6 +196,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                     if (ofertasTransporte.indexOf(paqTrans) == 0) {
                                         mejorTransporte = transporte;
                                     }
+                                    boolTransporte = false;
                                 } else {
                                     ACLMessage pedirRebaja = respuestaTransporte.createReply();
                                     pedirRebaja.setPerformative(ACLMessage.INFORM);
@@ -204,22 +217,24 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (ofertasTransporte.indexOf(paqTrans) == 0) {
                                     mejorTransporte = transporte;
                                 }
+                                boolTransporte = false;
                             }
                             break;
                             default:
                         }
                     }
+                  }while(boolTransporte);
                 }
                 ACLMessage propuesta;
-                propuesta = new ACLMessage();
+                
                 if (!ofertasLugar.isEmpty() && !ofertasTransporte.isEmpty()) {
                     aceptarPropuestas(mejorLugar, mejorTransporte);
                     Paquete paqueteArmado;
                     paqueteArmado = armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0), preferencias);
-                    propuesta.setPerformative(ACLMessage.PROPOSE);
+                    propuesta = new ACLMessage(ACLMessage.PROPOSE);
                     propuesta.setContent(paqueteArmado.toStringForMessage());
                 } else {
-                    propuesta.setPerformative(ACLMessage.REFUSE);
+                    propuesta = new ACLMessage(ACLMessage.REFUSE);
                 }
                 propuesta.addReceiver(msg.getSender());
                 myAgent.send(propuesta);

@@ -112,7 +112,7 @@ public class AgenteLugar extends Agent {
     private class RecibirPedido extends CyclicBehaviour {
 
         public void action() {
-            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+            MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.CFP),MessageTemplate.MatchConversationId("Busqueda de Lugar"));
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
                 // si ya se aplicaron descuentos los valores en el paquete van a ser 0 (CantPsas, duracion, fecha)

@@ -109,7 +109,8 @@ public class AgenteTransporte extends Agent {
 
         @Override
         public void action() {
-            ACLMessage msg = myAgent.receive();
+            MessageTemplate mttransport = MessageTemplate.MatchConversationId("Busqueda de Transporte");
+            ACLMessage msg = myAgent.receive(mttransport);
             if (msg != null) {
                 ACLMessage respuestaT = msg.createReply();
                 Paquete pref;
