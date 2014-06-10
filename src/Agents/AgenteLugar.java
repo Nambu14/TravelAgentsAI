@@ -7,7 +7,6 @@ package Agents;
 
 import Agents.AgenteLugar.Tipo;
 import Things.Paquete;
-import Ventanas.PantallaInicial;
 import Ventanas.VentanaLugar;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -27,10 +26,12 @@ public class AgenteLugar extends Agent {
     private String ciudad;
     private int precioPersona;
     private String[] servicios;
+       
     private float[] descuentoPorPersonas;
     private float[] descuentoPorAnticipacion;
     private float[] descuentoPorCantidadDeDias;
 
+    
     public enum Tipo {
 
         HOTEL, APART, CABAÑA, HOSTAL
@@ -58,7 +59,7 @@ public class AgenteLugar extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        addBehaviour(new RecibirPedido());
+        //addBehaviour(new RecibirPedido());
     }
 
     // Métodos llamados desde la interfaz, donde ya se crean los arreglos
@@ -92,10 +93,20 @@ public class AgenteLugar extends Agent {
             fe.printStackTrace();
         }
     }
+    public int getPrecioPersona() {
+        return precioPersona;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
 
     @Override
     public String toString() {
         return "AgenteLugar{" + "ciudad=" + ciudad + ", servicios=" + servicios + ", nombre=" + nombre + ", calidad=" + calidad + ", tipo=" + tipo + '}';
+    }
+    public void agregarComportamiento(){
+    addBehaviour(new RecibirPedido());
     }
 
     private class RecibirPedido extends CyclicBehaviour {

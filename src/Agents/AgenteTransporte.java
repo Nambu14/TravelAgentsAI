@@ -62,7 +62,7 @@ public class AgenteTransporte extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        addBehaviour(new RecibirPedido());
+        //addBehaviour(new RecibirPedido());
 
     }
 
@@ -77,6 +77,10 @@ public class AgenteTransporte extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
+    }
+    
+    public void agregarComportamiento(){
+        addBehaviour(new RecibirPedido());
     }
 
     // Métodos llamados desde la interfaz, donde ya se crean los arreglos
@@ -117,7 +121,7 @@ public class AgenteTransporte extends Agent {
                     GregorianCalendar fechaSalida = pref.getFechaInicialInferior();
                     if (pref.daysBetween() == 0) {
                         for (CronogramaTransporte ruta : rutas) {
-                            if ((ruta.getOrigen().equals(pref.getOrigen())) && (ruta.getDestino().equals(pref.getDestino()))) {
+                            if ((ruta.getOrigen().equalsIgnoreCase(pref.getOrigen())) && (ruta.getDestino().equalsIgnoreCase(pref.getDestino()))) {
                                 if (ruta.askForDate(fechaSalida)) {
                                     existeRutaIda = true;
                                 }
@@ -139,7 +143,7 @@ public class AgenteTransporte extends Agent {
                     } else {
                         for (int i = 0; i < pref.daysBetween(); i++) {
                             for (CronogramaTransporte ruta : rutas) {
-                                if ((ruta.getOrigen().equals(pref.getOrigen())) && (ruta.getDestino().equals(pref.getDestino()))) {
+                                if ((ruta.getOrigen().equalsIgnoreCase(pref.getOrigen())) && (ruta.getDestino().equalsIgnoreCase(pref.getDestino()))) {
                                     if (ruta.askForDate(fechaSalida)) {
                                         existeRutaIda = true;
                                     }

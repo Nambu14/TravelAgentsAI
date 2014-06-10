@@ -59,7 +59,7 @@ public class AgenteAgenciaTurismo extends Agent {
             fe.printStackTrace();
         }
         //addBehaviour(new ActualizarLugares());
-        addBehaviour(new BuscarPaquete());
+        //addBehaviour(new BuscarPaquete());
         addBehaviour(new AsociarServicio());
     }
 
@@ -83,6 +83,10 @@ public class AgenteAgenciaTurismo extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
+    }
+    
+    public void agregarComportamiento(){
+        addBehaviour(new BuscarPaquete());
     }
 
     private class BuscarPaquete extends CyclicBehaviour {
@@ -257,7 +261,7 @@ public class AgenteAgenciaTurismo extends Agent {
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
                 String contenido = msg.getContent();
-                if (contenido.equals("Transporte")) {
+                if (contenido.equalsIgnoreCase("Transporte")) {
                     transportes.add(msg.getSender());
                 } else {
                     lugares.add(msg.getSender());

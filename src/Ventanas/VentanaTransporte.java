@@ -163,6 +163,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
                 break;
         }
         miAgente.setTransporte(tipo);
+        miAgente.agregarComportamiento();
         dispose();
     }//GEN-LAST:event_aceptarActionPerformed
 
@@ -1356,7 +1357,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
     // End of variables declaration                   
 
     private void setearCalidad(String tipo) {
-        if("Terrestre".equals(tipo)){
+        if("Terrestre".equalsIgnoreCase(tipo)){
             calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "EJECUTIVO", "CAMA", "SEMICAMA"}));
         } else {calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PRIMERA CLASE", "BUSSINES", "TURISTA"}));;
         }

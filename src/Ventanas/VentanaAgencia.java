@@ -211,6 +211,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
             float descuentoLugar = Float.parseFloat(dtoLugar.getText());
             float comision = Float.parseFloat(comisionAgencia.getText());
             miAgente.definirAgencia(descuentoTransporte, descuentoLugar, comision);
+            miAgente.agregarComportamiento();
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(VentanaAgencia.this, "Valores inválidos" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

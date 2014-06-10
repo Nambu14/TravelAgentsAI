@@ -8,6 +8,7 @@ package Ventanas;
 
 import Agents.AgenteLugar;
 import Agents.AgenteLugar.Tipo;
+import Things.Paquete;
 import jade.core.AID;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -189,19 +190,8 @@ public class VentanaLugar extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(166, 166, 166)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(76, 76, 76)
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(precio, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(descuentosAplicables)
                             .addComponent(jLabel5)
                             .addGroup(layout.createSequentialGroup()
@@ -232,7 +222,20 @@ public class VentanaLugar extends javax.swing.JFrame {
                                     .addComponent(cuarto)
                                     .addComponent(limpieza)
                                     .addComponent(gimnasio)
-                                    .addComponent(mascotas)))))
+                                    .addComponent(mascotas)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(76, 76, 76)
+                                        .addComponent(jLabel6))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(137, 137, 137)
+                                        .addComponent(jLabel1)))
+                                .addGap(18, 18, 18)
+                                .addComponent(precio, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(110, 110, 110)
                         .addComponent(aceptar)
@@ -334,6 +337,7 @@ public class VentanaLugar extends javax.swing.JFrame {
         int cal= Integer.parseInt((String) calidad.getSelectedItem());
         miAgente.asignarServicios(definirServicios());
         miAgente.definirLugar(ciudad.getText(),precioPersona, cal,definirTipo(tipo.getSelectedItem()));
+        miAgente.agregarComportamiento();
         this.dispose();
       } else { JOptionPane.showMessageDialog(this, "Error: Todos los campos deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);}  
     }//GEN-LAST:event_aceptarActionPerformed
@@ -447,6 +451,7 @@ public class VentanaLugar extends javax.swing.JFrame {
         services = servicios.toArray(services);
         return services;
     }
+
     public class DescuentosAplicables extends javax.swing.JFrame {
 
     /**

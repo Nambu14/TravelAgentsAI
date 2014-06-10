@@ -126,7 +126,7 @@ public class LugarWrapper {
     public static LugarWrapper stringToLugar(String str) {
         LugarWrapper lugar = new LugarWrapper();
         String[] wrapper = str.split("--");
-        if("null".equals(wrapper[0])){
+        if("null".equalsIgnoreCase(wrapper[0])){
             lugar.setNombre(null);
         }else{
             lugar.setNombre(wrapper[0]);
