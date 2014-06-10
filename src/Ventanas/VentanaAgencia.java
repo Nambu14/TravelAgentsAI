@@ -384,6 +384,8 @@ public class VentanaAgencia extends javax.swing.JFrame {
             }
             VentanaAgencia.this.miAgente.asignarServicios(lugaresAID, transportesAID);
             dispose();
+            
+            
         
     }                                       
 

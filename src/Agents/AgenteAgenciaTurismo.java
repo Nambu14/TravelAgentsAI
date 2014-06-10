@@ -37,6 +37,14 @@ public class AgenteAgenciaTurismo extends Agent {
     //Descuentos por pago con efectivo o tarjeta.
     private ArrayList<AID> transportes;
     private ArrayList<AID> lugares;
+
+    public ArrayList<AID> getTransportes() {
+        return transportes;
+    }
+
+    public ArrayList<AID> getLugares() {
+        return lugares;
+    }
     private float comision;
     private VentanaAgencia myGui;
 
@@ -115,8 +123,8 @@ public class AgenteAgenciaTurismo extends Agent {
                 myAgent.send(cfpLugares);
                 
                 for (AID lugar : lugares) {
-                  Boolean boolLugar = true;
-                  do{
+                  
+                  
                     MessageTemplate mtlugar = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Lugar"),
                             MessageTemplate.MatchSender(lugar));
                     ACLMessage respuestaLugar = myAgent.receive(mtlugar);
@@ -135,7 +143,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                     if (ofertasLugar.indexOf(paqLugar) == 0) {
                                         mejorLugar = lugar;
                                     }
-                                    boolLugar = false;
+                                    
                                 } else {
                                     ACLMessage pedirRebaja = respuestaLugar.createReply();
                                     pedirRebaja.setPerformative(ACLMessage.CFP);
@@ -156,14 +164,14 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (ofertasLugar.indexOf(paqLugar) == 0) {
                                     mejorLugar = lugar;
                                 }
-                                boolLugar = false;
+                                
                             }
                             break;
                             default:
                                 break;
                         }
                     }
-                  } while(boolLugar); 
+                  
                 }
                 // EMPIEZA LA NEGOCIACION CON TRANSPORTES
                 ACLMessage cfpTransportes = new ACLMessage(ACLMessage.CFP);
@@ -175,9 +183,7 @@ public class AgenteAgenciaTurismo extends Agent {
                 myAgent.send(cfpTransportes);
                 prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.3f);
                 for (AID transporte : transportes) {
-                  Boolean boolTransporte = true;
-                  do{  
-                    
+                                      
                     MessageTemplate mttransporte = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Transportes"),
                             MessageTemplate.MatchSender(transporte));
                     ACLMessage respuestaTransporte = myAgent.receive(mttransporte);
@@ -196,7 +202,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                     if (ofertasTransporte.indexOf(paqTrans) == 0) {
                                         mejorTransporte = transporte;
                                     }
-                                    boolTransporte = false;
+                                    
                                 } else {
                                     ACLMessage pedirRebaja = respuestaTransporte.createReply();
                                     pedirRebaja.setPerformative(ACLMessage.INFORM);
@@ -217,13 +223,13 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (ofertasTransporte.indexOf(paqTrans) == 0) {
                                     mejorTransporte = transporte;
                                 }
-                                boolTransporte = false;
+                                
                             }
                             break;
                             default:
                         }
                     }
-                  }while(boolTransporte);
+                  
                 }
                 ACLMessage propuesta;
                 
