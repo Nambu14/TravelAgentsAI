@@ -190,9 +190,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="calidad">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;}));"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>

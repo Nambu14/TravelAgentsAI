@@ -94,7 +94,7 @@ public class VentanaLugar extends javax.swing.JFrame {
 
         jLabel3.setText("Calidad");
 
-        calidad.setEnabled(false);
+        calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5"}));
 
         jLabel4.setText("Ciudad");
 

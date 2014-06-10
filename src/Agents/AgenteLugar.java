@@ -109,7 +109,7 @@ public class AgenteLugar extends Agent {
                 Paquete pref;
                 pref = Paquete.stringToPaquete(msg.getContent());
                 //Si el alojamiento no queda en la ciudad de destino envía un REFUSE
-                if (pref.getDestino().equals(ciudad)) {
+                if (pref.getDestino().equalsIgnoreCase(ciudad)) {
                     if (pref.getCantidadPersonas() > 0) {
                         pref.setPrecio(precioPersona * pref.getCantidadPersonas());
                         pref.setCantidadPersonas(-1);

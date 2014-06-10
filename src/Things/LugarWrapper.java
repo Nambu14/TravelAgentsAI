@@ -126,7 +126,12 @@ public class LugarWrapper {
     public static LugarWrapper stringToLugar(String str) {
         LugarWrapper lugar = new LugarWrapper();
         String[] wrapper = str.split("--");
-        lugar.setNombre(wrapper[0]);
+        if("null".equals(wrapper[0])){
+            lugar.setNombre(null);
+        }else{
+            lugar.setNombre(wrapper[0]);
+        }
+        
         switch (wrapper[1]) {
             case "HOTEL":
                 lugar.setTipo(Tipo.HOTEL);
@@ -140,6 +145,8 @@ public class LugarWrapper {
             case "HOSTAL":
                 lugar.setTipo(Tipo.HOSTAL);
                 break;
+            default:
+                lugar.setTipo(null);
         }
         lugar.setCalidad(Integer.parseInt(wrapper[2]));
         if (wrapper.length == 4) {

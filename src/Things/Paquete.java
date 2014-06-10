@@ -157,6 +157,8 @@ public final class Paquete implements Comparable {
             case "TURISTA":
                 paquete.setCalidadTransporte(Calidad.TURISTA);
                 break;
+            default:
+                paquete.setCalidadTransporte(null);
         }
         paquete.setPrecio(Float.parseFloat(str[11]));
         paquete.setAnticipacion(Integer.parseInt(str[12]));
@@ -168,6 +170,8 @@ public final class Paquete implements Comparable {
             case "TERRESTRE":
                 paquete.setTipoTransporte(TipoEmpresa.TERRESTRE);
                 break;
+            default:
+                paquete.setTipoTransporte(null);
         }
         return paquete;
     }
