@@ -92,8 +92,8 @@ public class AgenteAgenciaTurismo extends Agent {
             fe.printStackTrace();
         }
     }
-    
-    public void agregarComportamiento(){
+
+    public void agregarComportamiento() {
         addBehaviour(new BuscarPaquete());
     }
 
@@ -101,149 +101,177 @@ public class AgenteAgenciaTurismo extends Agent {
 
         @Override
         public void action() {
-            MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Paquete"),MessageTemplate.MatchPerformative(ACLMessage.CFP));
+            MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Paquete"), MessageTemplate.MatchPerformative(ACLMessage.CFP));
             ACLMessage msg = myAgent.receive(mt);
+            int step = 0;
             if (msg != null) {
                 String pref = msg.getContent();
                 Paquete preferencias;
                 preferencias = Paquete.stringToPaquete(pref);
                 Paquete prefSemiHeuristica;
                 prefSemiHeuristica = Paquete.stringToPaquete(pref);
-                prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.7f);
-                //EMPIEZA LA NEGOCIACION CON LUGARES
-                ACLMessage cfpLugares = new ACLMessage(ACLMessage.CFP);
-                
+                switch (step) {
+                    case 0: {
+
+                        //EMPIEZA LA NEGOCIACION CON LUGARES
+                        prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.7f);
+                        ACLMessage cfpLugares = new ACLMessage(ACLMessage.CFP);
+
                 // Acá debe hacer control de que no haya lugares
-                
-                for (AID lugar : lugares) {
-                    cfpLugares.addReceiver(lugar);
-                }
-                cfpLugares.setContent(pref);
-                cfpLugares.setConversationId("Busqueda de Lugar");
-                myAgent.send(cfpLugares);
-                
-                for (AID lugar : lugares) {
-                  
-                  
-                    MessageTemplate mtlugar = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Lugar"),
-                            MessageTemplate.MatchSender(lugar));
-                    ACLMessage respuestaLugar = myAgent.receive(mtlugar);
-                    if (respuestaLugar != null) {
-                        switch (respuestaLugar.getPerformative()) {
-                            case ACLMessage.PROPOSE: {
-                                // presupuestomax va a tomar como el descuento realizado
-                                Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
-                                if (descuentoLugar <= paqLugar.getPresupuestoMax()) {
-                                    //guarda paquete ordenado en ofertasLugar
-                                    paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
-                                    paqLugar.setHeuristica(prefSemiHeuristica);
-                                    ofertasLugar.add(paqLugar);
-                                    Collections.sort(ofertasLugar);
-                                    Collections.reverse(ofertasLugar);
-                                    if (ofertasLugar.indexOf(paqLugar) == 0) {
-                                        mejorLugar = lugar;
-                                    }
-                                    
-                                } else {
-                                    ACLMessage pedirRebaja = respuestaLugar.createReply();
-                                    pedirRebaja.setPerformative(ACLMessage.CFP);
-                                    pedirRebaja.setContent(respuestaLugar.getContent());
-                                    send(pedirRebaja);
-                                }
-                            }
-                            break;
-                            case ACLMessage.INFORM: {
-                                //El lugar ha descontado lo máximo que puede
-                                Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
-                                //guarda paquete ordenado en ofertasLugar
-                                paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
-                                paqLugar.setHeuristica(prefSemiHeuristica);
-                                ofertasLugar.add(paqLugar);
-                                Collections.sort(ofertasLugar);
-                                Collections.reverse(ofertasLugar);
-                                if (ofertasLugar.indexOf(paqLugar) == 0) {
-                                    mejorLugar = lugar;
-                                }
-                                
-                            }
-                            break;
-                            default:
-                                break;
+                        for (AID lugar : lugares) {
+                            cfpLugares.addReceiver(lugar);
                         }
-                    }
-                  
-                }
-                // EMPIEZA LA NEGOCIACION CON TRANSPORTES
-                ACLMessage cfpTransportes = new ACLMessage(ACLMessage.CFP);
-                for (AID transporte : transportes) {
-                    cfpTransportes.addReceiver(transporte);
-                }
-                cfpTransportes.setContent(pref);
-                cfpTransportes.setConversationId("Busqueda de Transportes");
-                myAgent.send(cfpTransportes);
-                prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.3f);
-                for (AID transporte : transportes) {
-                                      
-                    MessageTemplate mttransporte = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Transportes"),
-                            MessageTemplate.MatchSender(transporte));
-                    ACLMessage respuestaTransporte = myAgent.receive(mttransporte);
-                    if (respuestaTransporte != null) {
-                        switch (respuestaTransporte.getPerformative()) {
-                            case ACLMessage.PROPOSE: {
-                                // presupuestomax va a tomar como el descuento realizado.
-                                Paquete paqTrans = Paquete.stringToPaquete(respuestaTransporte.getContent());
-                                if (descuentoTransporte <= paqTrans.getPresupuestoMax()) {
-                                    //guarda paquete ordenado en ofertasTransporte
-                                    paqTrans.setAlojamiento(preferencias.getAlojamiento());
-                                    paqTrans.setHeuristica(prefSemiHeuristica);
-                                    ofertasTransporte.add(paqTrans);
-                                    Collections.sort(ofertasTransporte);
-                                    Collections.reverse(ofertasTransporte);
-                                    if (ofertasTransporte.indexOf(paqTrans) == 0) {
-                                        mejorTransporte = transporte;
+                        cfpLugares.setContent(pref);
+                        cfpLugares.setConversationId("Busqueda de Lugar");
+                        myAgent.send(cfpLugares);
+
+                        for (AID lugar : lugares) {
+
+                            MessageTemplate mtlugar = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Lugar"),
+                                    MessageTemplate.MatchSender(lugar));
+                            ACLMessage respuestaLugar = myAgent.receive(mtlugar);
+                            if (respuestaLugar != null) {
+                                switch (respuestaLugar.getPerformative()) {
+                                    case ACLMessage.PROPOSE: {
+                                        // presupuestomax va a tomar como el descuento realizado
+                                        Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
+                                        if (descuentoLugar <= paqLugar.getPresupuestoMax()) {
+                                            //guarda paquete ordenado en ofertasLugar
+                                            paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
+                                            paqLugar.setHeuristica(prefSemiHeuristica);
+                                            ofertasLugar.add(paqLugar);
+                                            Collections.sort(ofertasLugar);
+                                            Collections.reverse(ofertasLugar);
+                                            if (ofertasLugar.indexOf(paqLugar) == 0) {
+                                                mejorLugar = lugar;
+                                            }
+
+                                        } else {
+                                            ACLMessage pedirRebaja = respuestaLugar.createReply();
+                                            pedirRebaja.setPerformative(ACLMessage.CFP);
+                                            pedirRebaja.setContent(respuestaLugar.getContent());
+                                            send(pedirRebaja);
+                                        }
                                     }
-                                    
-                                } else {
-                                    ACLMessage pedirRebaja = respuestaTransporte.createReply();
-                                    pedirRebaja.setPerformative(ACLMessage.INFORM);
-                                    pedirRebaja.setContent(respuestaTransporte.getContent());
-                                    send(pedirRebaja);
+                                    break;
+                                    case ACLMessage.INFORM: {
+                                        //El lugar ha descontado lo máximo que puede
+                                        Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
+                                        //guarda paquete ordenado en ofertasLugar
+                                        paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
+                                        paqLugar.setHeuristica(prefSemiHeuristica);
+                                        ofertasLugar.add(paqLugar);
+                                        Collections.sort(ofertasLugar);
+                                        Collections.reverse(ofertasLugar);
+                                        if (ofertasLugar.indexOf(paqLugar) == 0) {
+                                            mejorLugar = lugar;
+                                        }
+
+                                    }
+                                    break;
+                                    default:
+                                        break;
                                 }
                             }
-                            break;
-                            case ACLMessage.INFORM: {
-                                //El transporte ha descontado lo máximo que puede
-                                Paquete paqTrans = Paquete.stringToPaquete(respuestaTransporte.getContent());
-                                //guarda paquete ordenado en ofertasTransporte
-                                paqTrans.setAlojamiento(preferencias.getAlojamiento());
-                                paqTrans.setHeuristica(prefSemiHeuristica);
-                                ofertasTransporte.add(paqTrans);
-                                Collections.sort(ofertasTransporte);
-                                Collections.reverse(ofertasTransporte);
-                                if (ofertasTransporte.indexOf(paqTrans) == 0) {
-                                    mejorTransporte = transporte;
-                                }
-                                
-                            }
-                            break;
-                            default:
+
                         }
+
                     }
-                  
+                    step = 1;
+                    ;
+                    break;
+                    case 1: {
+                        // EMPIEZA LA NEGOCIACION CON TRANSPORTES
+                        ACLMessage cfpTransportes = new ACLMessage(ACLMessage.CFP);
+                        for (AID transporte : transportes) {
+                            cfpTransportes.addReceiver(transporte);
+                        }
+                        cfpTransportes.setContent(pref);
+                        cfpTransportes.setConversationId("Busqueda de Transportes");
+                        myAgent.send(cfpTransportes);
+                        prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.3f);
+                        for (AID transporte : transportes) {
+
+                            MessageTemplate mttransporte = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Transportes"),
+                                    MessageTemplate.MatchSender(transporte));
+                            ACLMessage respuestaTransporte = myAgent.receive(mttransporte);
+                            if (respuestaTransporte != null) {
+                                switch (respuestaTransporte.getPerformative()) {
+                                    case ACLMessage.PROPOSE: {
+                                        // presupuestomax va a tomar como el descuento realizado.
+                                        Paquete paqTrans = Paquete.stringToPaquete(respuestaTransporte.getContent());
+                                        if (descuentoTransporte <= paqTrans.getPresupuestoMax()) {
+                                            //guarda paquete ordenado en ofertasTransporte
+                                            paqTrans.setAlojamiento(preferencias.getAlojamiento());
+                                            paqTrans.setHeuristica(prefSemiHeuristica);
+                                            ofertasTransporte.add(paqTrans);
+                                            Collections.sort(ofertasTransporte);
+                                            Collections.reverse(ofertasTransporte);
+                                            if (ofertasTransporte.indexOf(paqTrans) == 0) {
+                                                mejorTransporte = transporte;
+                                            }
+
+                                        } else {
+                                            ACLMessage pedirRebaja = respuestaTransporte.createReply();
+                                            pedirRebaja.setPerformative(ACLMessage.INFORM);
+                                            pedirRebaja.setContent(respuestaTransporte.getContent());
+                                            send(pedirRebaja);
+                                        }
+                                    }
+                                    break;
+                                    case ACLMessage.INFORM: {
+                                        //El transporte ha descontado lo máximo que puede
+                                        Paquete paqTrans = Paquete.stringToPaquete(respuestaTransporte.getContent());
+                                        //guarda paquete ordenado en ofertasTransporte
+                                        paqTrans.setAlojamiento(preferencias.getAlojamiento());
+                                        paqTrans.setHeuristica(prefSemiHeuristica);
+                                        ofertasTransporte.add(paqTrans);
+                                        Collections.sort(ofertasTransporte);
+                                        Collections.reverse(ofertasTransporte);
+                                        if (ofertasTransporte.indexOf(paqTrans) == 0) {
+                                            mejorTransporte = transporte;
+                                        }
+
+                                    }
+                                    break;
+                                    default:
+                                }
+                            }
+
+                        }
+                        ACLMessage propuesta;
+
+                        if (!ofertasLugar.isEmpty() && !ofertasTransporte.isEmpty()) {
+                            aceptarPropuestas(mejorLugar, mejorTransporte);
+                            Paquete paqueteArmado;
+                            paqueteArmado = armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0), preferencias);
+                            propuesta = new ACLMessage(ACLMessage.PROPOSE);
+                            propuesta.setContent(paqueteArmado.toStringForMessage());
+                        } else {
+                            propuesta = new ACLMessage(ACLMessage.REFUSE);
+                        }
+                        propuesta.addReceiver(msg.getSender());
+                        myAgent.send(propuesta);
+                    }
+                    ;
+                    step = 2;
+                    break;
+                    case 2: {
+                        ACLMessage propuesta;
+
+                        if (!ofertasLugar.isEmpty() && !ofertasTransporte.isEmpty()) {
+                            aceptarPropuestas(mejorLugar, mejorTransporte);
+                            Paquete paqueteArmado;
+                            paqueteArmado = armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0), preferencias);
+                            propuesta = new ACLMessage(ACLMessage.PROPOSE);
+                            propuesta.setContent(paqueteArmado.toStringForMessage());
+                        } else {
+                            propuesta = new ACLMessage(ACLMessage.REFUSE);
+                        }
+                        propuesta.addReceiver(msg.getSender());
+                        myAgent.send(propuesta);
+                    }
                 }
-                ACLMessage propuesta;
-                
-                if (!ofertasLugar.isEmpty() && !ofertasTransporte.isEmpty()) {
-                    aceptarPropuestas(mejorLugar, mejorTransporte);
-                    Paquete paqueteArmado;
-                    paqueteArmado = armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0), preferencias);
-                    propuesta = new ACLMessage(ACLMessage.PROPOSE);
-                    propuesta.setContent(paqueteArmado.toStringForMessage());
-                } else {
-                    propuesta = new ACLMessage(ACLMessage.REFUSE);
-                }
-                propuesta.addReceiver(msg.getSender());
-                myAgent.send(propuesta);
             } else {
                 block();
             }
