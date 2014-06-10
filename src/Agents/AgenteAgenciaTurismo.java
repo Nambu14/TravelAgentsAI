@@ -27,8 +27,8 @@ import java.util.Collections;
 public class AgenteAgenciaTurismo extends Agent {
 
     private String nombre;
-    private ArrayList<Paquete> ofertasLugar;
-    private ArrayList<Paquete> ofertasTransporte;
+    private ArrayList<Paquete> ofertasLugar = new ArrayList<>();
+    private ArrayList<Paquete> ofertasTransporte = new ArrayList<>();
     private AID mejorLugar;
     private AID mejorTransporte;
     //Descuentos máximos a pedir a una empresa de transporte o lugar.
@@ -257,7 +257,7 @@ public class AgenteAgenciaTurismo extends Agent {
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
                 String contenido = msg.getContent();
-                if (contenido == "Transporte") {
+                if (contenido.equals("Transporte")) {
                     transportes.add(msg.getSender());
                 } else {
                     lugares.add(msg.getSender());

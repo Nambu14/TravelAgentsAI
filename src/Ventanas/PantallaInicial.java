@@ -35,6 +35,7 @@ public class PantallaInicial extends javax.swing.JFrame {
         rt = jade.core.Runtime.instance(); 
         Profile p = new ProfileImpl();
         mainContainer = rt.createMainContainer(p);
+        
     }
 
     /**

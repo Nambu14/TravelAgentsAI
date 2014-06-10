@@ -1356,7 +1356,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
     // End of variables declaration                   
 
     private void setearCalidad(String tipo) {
-        if(tipo == "Terrestre"){
+        if("Terrestre".equals(tipo)){
             calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "EJECUTIVO", "CAMA", "SEMICAMA"}));
         } else {calidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PRIMERA CLASE", "BUSSINES", "TURISTA"}));;
         }

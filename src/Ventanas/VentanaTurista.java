@@ -271,13 +271,13 @@ public class VentanaTurista extends javax.swing.JFrame {
                                         .addGap(10, 10, 10)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel12)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(pondPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel15)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(tipoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                .addComponent(tipoTransporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel12)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(pondPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
@@ -418,7 +418,7 @@ public class VentanaTurista extends javax.swing.JFrame {
         
         //presupuesto maximo
         float presu;
-        if (presupuesto.getText()==null){
+        if (presupuesto.getText().isEmpty()){
             presu=(float)personas*10000;
         } else {
             presu=Float.parseFloat(presupuesto.getText());
@@ -436,8 +436,8 @@ public class VentanaTurista extends javax.swing.JFrame {
         int dias = Integer.parseInt(duracion.getText());
         
         //Ponderaciones 
-        float ponderacionP = Float.parseFloat(pondPrecio.getValue().toString());
-        float ponderacionS = Float.parseFloat(pondServicio.getText());
+        float ponderacionP = Float.parseFloat(pondPrecio.getValue().toString())/100;
+        float ponderacionS = Float.parseFloat(pondServicio.getText())/100;
         try {
             Paquete preferencias = new Paquete(origen.getText(), destino.getText(), presu, personas,fechaInicial, fechaFinal, dias, alojamiento, ponderacionP, ponderacionS, setearCalidadTransporte());
             preferencias.setTipoTransporte(setearTipoEmpresa());

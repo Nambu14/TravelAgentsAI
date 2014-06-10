@@ -32,7 +32,7 @@ public class LugarWrapper {
     }
 
     public LugarWrapper() {
-
+        this.servicios = new String[0];
     }
 
     public String getNombre() {
@@ -111,7 +111,11 @@ public class LugarWrapper {
     public String lugarToString() {
         String str;
         String temp;
-        temp = servicios[0];
+        if (servicios.length != 0) {
+            temp = servicios[0];
+        } else {
+            temp = new String();
+        }
         for (int i = 1; i < servicios.length; i++) {
             temp = temp + "-_-" + servicios[i];
         }
@@ -138,8 +142,11 @@ public class LugarWrapper {
                 break;
         }
         lugar.setCalidad(Integer.parseInt(wrapper[2]));
-        String[] servicios = wrapper[3].split("-_-");
-        lugar.setServicios(servicios);
+        if (wrapper.length == 4) {
+            String[] servicios;
+            servicios = wrapper[3].split("-_-");
+            lugar.setServicios(servicios);
+        }
         return lugar;
     }
 
