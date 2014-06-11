@@ -44,6 +44,12 @@ public class AgenteTransporte extends Agent {
 
     @Override
     protected void setup() {
+        descuentoPorPersonas[0] = 0;
+        descuentoPorAnticipacion[0]=0;
+        for(int i=0; i<7; i++){
+            descuentoPorDias[i]=0;
+        }
+        
         myGui = new VentanaTransporte(this);
         myGui.setVisible(true);
 
@@ -121,17 +127,13 @@ public class AgenteTransporte extends Agent {
                     boolean existeRutaVuelta = true;
                     GregorianCalendar fechaSalida = pref.getFechaInicialInferior();
                     if (pref.daysBetween() == 0) {
+                       
                         for (CronogramaTransporte ruta : rutas) {
                             if ((ruta.getOrigen().equalsIgnoreCase(pref.getOrigen())) && (ruta.getDestino().equalsIgnoreCase(pref.getDestino()))) {
                                 if (ruta.askForDate(fechaSalida)) {
                                     existeRutaIda = true;
                                 }
-                                GregorianCalendar vuelta;
-                                vuelta = fechaSalida;
-                                vuelta.add(Calendar.DAY_OF_MONTH, pref.getDuracion());
-                                if (ruta.askForDate(vuelta)) {
-                                    existeRutaIda = true;
-                                }
+                                
                                 if (existeRutaIda && existeRutaVuelta) {
                                     pref.setPresupuestoMax(0);
                                     pref.setCalidadTransporte(ruta.getCalidad());
@@ -148,12 +150,7 @@ public class AgenteTransporte extends Agent {
                                     if (ruta.askForDate(fechaSalida)) {
                                         existeRutaIda = true;
                                     }
-                                    GregorianCalendar vuelta;
-                                    vuelta = fechaSalida;
-                                    vuelta.add(Calendar.DAY_OF_MONTH, pref.getDuracion());
-                                    if (ruta.askForDate(vuelta)) {
-                                        existeRutaIda = true;
-                                    }
+                                    
                                     if (existeRutaIda && existeRutaVuelta) {
                                         pref.setPresupuestoMax(0);
                                         pref.setCalidadTransporte(ruta.getCalidad());

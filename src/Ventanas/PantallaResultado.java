@@ -23,7 +23,7 @@ public class PantallaResultado extends javax.swing.JFrame {
      */
     public PantallaResultado(Paquete paquete) {
         this.resultado = paquete;
-        fecha = Integer.toString(resultado.getFechaInicialInferior().get(Calendar.DAY_OF_MONTH));
+        fecha = Integer.toString(resultado.getFechaInicialInferior().get(Calendar.DATE));
         fecha = fecha + "/";
         fecha = fecha + Integer.toString(resultado.getFechaInicialInferior().get(Calendar.MONTH));
         fecha = fecha + "/";
@@ -118,7 +118,7 @@ public class PantallaResultado extends javax.swing.JFrame {
         duracion.setText(Integer.toString(resultado.getDuracion()));
         duracion.setName("duracion"); // NOI18N
 
-        transporte.setText(resultado.getCalidadTransporte().toString());
+        transporte.setText(resultado.getTipoTransporte().toString());
         transporte.setName("transporte"); // NOI18N
 
         comodidadTransporte.setText(resultado.getCalidadTransporte().toString());
