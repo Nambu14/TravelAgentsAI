@@ -16,41 +16,23 @@ import javax.swing.JLabel;
  */
 public class PantallaResultado extends javax.swing.JFrame {
 
-    Paquete resultado;
+    private Paquete resultado;
+    private String fecha;
     /**
      * Creates new form PantallaResultado
      */
-    public PantallaResultado() {
-        initComponents();
-        this.setResizable(false);
-        this.setVisible(false);
-    }
-
-    public void setResultado(Paquete resultado) {
-        this.resultado = resultado;
-        origen.setText(resultado.getOrigen());
-        destino.setText(resultado.getDestino());
-        String fecha = new String();
+    public PantallaResultado(Paquete paquete) {
+        this.resultado = paquete;
         fecha = Integer.toString(resultado.getFechaInicialInferior().get(Calendar.DAY_OF_MONTH));
         fecha = fecha + "/";
         fecha = fecha + Integer.toString(resultado.getFechaInicialInferior().get(Calendar.MONTH));
         fecha = fecha + "/";
         fecha = fecha + Integer.toString(resultado.getFechaInicialInferior().get(Calendar.YEAR));
-        fSalida.setText(fecha);
-        duracion.setText(Integer.toString(resultado.getDuracion()));
-        transporte.setText(resultado.getCalidadTransporte().toString());
-        comodidadTransporte.setText(resultado.getCalidadTransporte().toString());
-        alojamiento.setText(resultado.getAlojamiento().getNombre());
-        tipoAlojamiento.setText(resultado.getAlojamiento().getTipo().toString());
-        estrellas.setText(Integer.toString(resultado.getAlojamiento().getCalidad()));
-        for (String servicio: resultado.getAlojamiento().getServicios()){
-            JLabel service = new JLabel();
-            service.setText(servicio);
-            serviciosLista.add(service);
-        }
-        precio.setText(Float.toString(resultado.getPrecio()));
+        initComponents();
+        
     }
-    
+
+      
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -115,7 +97,7 @@ public class PantallaResultado extends javax.swing.JFrame {
         jLabel10.setText("Estrellas:");
 
         serviciosLista.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = resultado.getAlojamiento().getServicios();
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -124,31 +106,31 @@ public class PantallaResultado extends javax.swing.JFrame {
 
         jLabel11.setText("Servicios:");
 
-        origen.setText("jLabel13");
+        origen.setText(resultado.getOrigen());
         origen.setName("origen"); // NOI18N
 
-        destino.setText("jLabel14");
+        destino.setText(resultado.getDestino());
         destino.setName("destino"); // NOI18N
 
-        fSalida.setText("jLabel15");
+        fSalida.setText(fecha);
         fSalida.setName("fSalida"); // NOI18N
 
-        duracion.setText("jLabel16");
+        duracion.setText(Integer.toString(resultado.getDuracion()));
         duracion.setName("duracion"); // NOI18N
 
-        transporte.setText("jLabel17");
+        transporte.setText(resultado.getCalidadTransporte().toString());
         transporte.setName("transporte"); // NOI18N
 
-        comodidadTransporte.setText("jLabel18");
+        comodidadTransporte.setText(resultado.getCalidadTransporte().toString());
         comodidadTransporte.setName("comodidad"); // NOI18N
 
-        alojamiento.setText("jLabel19");
+        alojamiento.setText(resultado.getAlojamiento().getNombre());
         alojamiento.setName("alojamiento"); // NOI18N
 
-        tipoAlojamiento.setText("jLabel20");
+        tipoAlojamiento.setText(resultado.getAlojamiento().getTipo().toString());
         tipoAlojamiento.setName("tipoAlojamiento"); // NOI18N
 
-        estrellas.setText("jLabel21");
+        estrellas.setText(Integer.toString(resultado.getAlojamiento().getCalidad()));
         estrellas.setName("estrellas"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -161,15 +143,17 @@ public class PantallaResultado extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(origen))
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fSalida)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(origen)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fSalida)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -263,7 +247,7 @@ public class PantallaResultado extends javax.swing.JFrame {
 
         jLabel12.setText("Precio:");
 
-        precio.setText("jLabel22");
+        precio.setText(Float.toString(resultado.getPrecio()));
         precio.setName("precio"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -283,7 +267,7 @@ public class PantallaResultado extends javax.swing.JFrame {
                         .addComponent(aceptarPaqueteSelecto)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 132, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(113, 113, 113))
             .addGroup(layout.createSequentialGroup()
@@ -314,40 +298,6 @@ public class PantallaResultado extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_aceptarPaqueteSelectoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equalsIgnoreCase(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaResultado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaResultado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaResultado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaResultado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PantallaResultado().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarPaqueteSelecto;

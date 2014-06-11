@@ -97,17 +97,20 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="origen" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
-                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="fSalida" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="fSalida" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -276,14 +279,8 @@
           <SubComponents>
             <Component class="javax.swing.JList" name="serviciosLista">
               <Properties>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                  <StringArray count="5">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                    <StringItem index="4" value="Item 5"/>
-                  </StringArray>
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new javax.swing.AbstractListModel() {&#xa;    String[] strings = resultado.getAlojamiento().getServicios();&#xa;    public int getSize() { return strings.length; }&#xa;    public Object getElementAt(int i) { return strings[i]; }&#xa;}" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="listaServicios" noResource="true"/>
               </Properties>
@@ -297,55 +294,73 @@
         </Component>
         <Component class="javax.swing.JLabel" name="origen">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel13"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="resultado.getOrigen()" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="origen" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="destino">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel14"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="resultado.getDestino()" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="destino" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="fSalida">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel15"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="fecha" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="fSalida" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="duracion">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel16"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="Integer.toString(resultado.getDuracion())" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="duracion" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="transporte">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel17"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="resultado.getCalidadTransporte().toString()" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="transporte" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="comodidadTransporte">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel18"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="resultado.getCalidadTransporte().toString()" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="comodidad" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="alojamiento">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel19"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="resultado.getAlojamiento().getNombre()" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="alojamiento" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="tipoAlojamiento">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel20"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="resultado.getAlojamiento().getTipo().toString()" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="tipoAlojamiento" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="estrellas">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel21"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="Integer.toString(resultado.getAlojamiento().getCalidad())" type="code"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="estrellas" noResource="true"/>
           </Properties>
         </Component>
@@ -366,7 +381,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="precio">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel22"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Float.toString(resultado.getPrecio())" type="code"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="precio" noResource="true"/>
       </Properties>
     </Component>
