@@ -169,6 +169,7 @@ public class VentanaLugar extends javax.swing.JFrame {
 
         jLabel6.setText("Precio por persona");
 
+        precio.setText("0");
         precio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 precioKeyTyped(evt);

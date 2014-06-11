@@ -201,6 +201,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
         // TODO add your handling code here:
         VentanaAgencia.VentanaDFServicios servicios = this.new VentanaDFServicios();
         servicios.setVisible(true);
+        setEnabled(false);
 
     }//GEN-LAST:event_accederDFActionPerformed
 
@@ -384,6 +385,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
                 transportesAID.add(getResultadosTransporte()[index].getName());
             }
             VentanaAgencia.this.miAgente.asignarServicios(transportesAID, lugaresAID);
+            VentanaAgencia.this.setEnabled(true);
             dispose();
             
             
