@@ -367,11 +367,11 @@ public class VentanaAgencia extends javax.swing.JFrame {
             int[] seleccionTransporte = empresasTransporte.getSelectedIndices();
             ArrayList<AID> lugaresAID = new ArrayList<>();
             ArrayList<AID> transportesAID = new ArrayList<>();
-            for (int index=0; index <= seleccionLugar.length; index++) {
-                lugaresAID.add(resultadosLugar[seleccionLugar[index]].getName());
+            for (int index: seleccionLugar) {
+                lugaresAID.add(getResultadosLugar()[index].getName());
             }
-            for (int index = 0 ; index <= seleccionTransporte.length; index++) {
-                transportesAID.add(resultadosTransporte[seleccionTransporte[index]].getName());
+            for (int index: seleccionTransporte) {
+                transportesAID.add(getResultadosTransporte()[index].getName());
             }
             VentanaAgencia.this.miAgente.asignarServicios(transportesAID, lugaresAID);
             dispose();
@@ -379,6 +379,14 @@ public class VentanaAgencia extends javax.swing.JFrame {
             
         
     }                                       
+
+        public DFAgentDescription[] getResultadosTransporte() {
+            return resultadosTransporte;
+        }
+
+        public DFAgentDescription[] getResultadosLugar() {
+            return resultadosLugar;
+        }
 
         private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {
             // TODO add your handling code here:
