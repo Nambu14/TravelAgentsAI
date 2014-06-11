@@ -109,10 +109,10 @@ public class AgenteAgenciaTurismo extends Agent {
 
         @Override
         public void action() {
-            
+
             int cuentaLugar = 0;
             int cuentaTransporte = 0;
-            
+
             switch (step) {
                 case 0: {
                     MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Paquete"), MessageTemplate.MatchPerformative(ACLMessage.CFP));
@@ -158,7 +158,7 @@ public class AgenteAgenciaTurismo extends Agent {
                     MessageTemplate mtlugar = MessageTemplate.MatchConversationId("Busqueda de Lugar");
                     ACLMessage respuestaLugar = myAgent.receive(mtlugar);
                     if (respuestaLugar != null) {
-                        cuentaLugar++;
+
                         switch (respuestaLugar.getPerformative()) {
                             case ACLMessage.PROPOSE: {
                                 // presupuestomax va a tomar como el descuento realizado
@@ -170,6 +170,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                     ofertasLugar.add(paqLugar);
                                     Collections.sort(ofertasLugar);
                                     Collections.reverse(ofertasLugar);
+                                    cuentaLugar++;
                                     if (ofertasLugar.indexOf(paqLugar) == 0) {
                                         mejorLugar = respuestaLugar.getSender();
                                     }
@@ -191,6 +192,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                 ofertasLugar.add(paqLugar);
                                 Collections.sort(ofertasLugar);
                                 Collections.reverse(ofertasLugar);
+                                cuentaLugar++;
                                 if (ofertasLugar.indexOf(paqLugar) == 0) {
                                     mejorLugar = respuestaLugar.getSender();
                                 }
@@ -198,15 +200,18 @@ public class AgenteAgenciaTurismo extends Agent {
                             }
                             break;
                             default:
+                                cuentaLugar++;
                                 break;
                         }
+                        
+                    } else {
+                        block();
+                    }
+                    if (cuentaLugar == lugares.size()) {
+                        step = 3;
                     }else{
                         block();
                     }
-                    if (cuentaLugar == lugares.size()){
-                        step = 3;
-                    }
-                    
 
                 }
                 ;
@@ -218,7 +223,7 @@ public class AgenteAgenciaTurismo extends Agent {
                     MessageTemplate mttransporte = MessageTemplate.MatchConversationId("Busqueda de Transportes");
                     ACLMessage respuestaTransporte = myAgent.receive(mttransporte);
                     if (respuestaTransporte != null) {
-                        cuentaTransporte++;
+
                         switch (respuestaTransporte.getPerformative()) {
                             case ACLMessage.PROPOSE: {
                                 // presupuestomax va a tomar como el descuento realizado.
@@ -230,6 +235,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                     ofertasTransporte.add(paqTrans);
                                     Collections.sort(ofertasTransporte);
                                     Collections.reverse(ofertasTransporte);
+                                    cuentaTransporte++;
                                     if (ofertasTransporte.indexOf(paqTrans) == 0) {
                                         mejorTransporte = respuestaTransporte.getSender();
                                     }
@@ -251,6 +257,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                 ofertasTransporte.add(paqTrans);
                                 Collections.sort(ofertasTransporte);
                                 Collections.reverse(ofertasTransporte);
+                                cuentaTransporte++;
                                 if (ofertasTransporte.indexOf(paqTrans) == 0) {
                                     mejorTransporte = respuestaTransporte.getSender();
                                 }
@@ -258,14 +265,19 @@ public class AgenteAgenciaTurismo extends Agent {
                             }
                             break;
                             default:
+                                cuentaTransporte++;
+                                break;
                         }
-                    }else{
+                       
+                    } else {
                         block();
                     }
-                    if (cuentaTransporte == transportes.size()){
+                    if (cuentaTransporte == transportes.size()) {
                         step = 4;
+                    }else {
+                        block();
                     }
-                    
+
                 }
                 ;
                 break;
@@ -306,8 +318,7 @@ public class AgenteAgenciaTurismo extends Agent {
                     paqueteArmado = armarPaquete(ofertasLugar.get(0), ofertasTransporte.get(0), preferencias);
                     propuesta = new ACLMessage(ACLMessage.PROPOSE);
                     propuesta.setContent(paqueteArmado.toStringForMessage());
-                    
-                    
+
                 } else {
                     propuesta = new ACLMessage(ACLMessage.REFUSE);
                 }

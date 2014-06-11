@@ -102,7 +102,7 @@ public class LugarWrapper {
                 calidadEstrella = 0f;
                 break;
             default:
-                System.out.println("No se tiene calidad");
+                calidadEstrella = 0f;
         }
         calidadServicios = (float) 0.1f * servicios.length;
         return (calidadEstrella + calidadServicios + calidadTipo);
