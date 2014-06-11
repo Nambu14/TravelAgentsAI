@@ -172,33 +172,45 @@ public class PantallaInicial extends javax.swing.JFrame {
 
     private void crearAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearAgenciaActionPerformed
         // TODO add your handling code here:
+      if("".equals(nombreServicio.getText())){
+        JOptionPane.showMessageDialog(this, "Debe ingresar un nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
+      }else{  
         try {
            ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteAgenciaTurismo", null);
            ac.start();
         } catch (StaleProxyException ex) {
 	   JOptionPane.showMessageDialog(this, "Debe elegir otro nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
         }
+      }  
     }//GEN-LAST:event_crearAgenciaActionPerformed
 
     private void crearLugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearLugarActionPerformed
         // TODO add your handling code here:
+      if("".equals(nombreServicio.getText())){
+        JOptionPane.showMessageDialog(this, "Debe ingresar un nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
+      }else{
         try {
            ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteLugar", null);
            ac.start();
         } catch (StaleProxyException ex) {
 	   JOptionPane.showMessageDialog(this, "Debe elegir otro nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
         }
+      }
 
     }//GEN-LAST:event_crearLugarActionPerformed
 
     private void crearTransporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearTransporteActionPerformed
         // TODO add your handling code here:
+      if("".equals(nombreServicio.getText())){
+        JOptionPane.showMessageDialog(this, "Debe ingresar un nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
+      }else{
         try {
            ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteTransporte", null);
            ac.start();
         } catch (StaleProxyException ex) {
 	   JOptionPane.showMessageDialog(this, "Debe elegir otro nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
         }
+      }  
     }//GEN-LAST:event_crearTransporteActionPerformed
 
     private void nombreServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreServicioActionPerformed

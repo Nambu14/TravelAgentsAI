@@ -331,7 +331,7 @@ public class VentanaLugar extends javax.swing.JFrame {
     }//GEN-LAST:event_pensionActionPerformed
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-      if(precio.getText() != null && ciudad.getText() != null){
+      if(!( "".equals(precio.getText()) && "".equals(ciudad.getText()))){
         int precioPersona= Integer.parseInt(precio.getText());
         int cal= Integer.parseInt((String) calidad.getSelectedItem());
         miAgente.asignarServicios(definirServicios());

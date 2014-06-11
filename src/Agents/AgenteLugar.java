@@ -28,9 +28,9 @@ public class AgenteLugar extends Agent {
     private int precioPersona;
     private String[] servicios;
        
-    private float[] descuentoPorPersonas;
-    private float[] descuentoPorAnticipacion;
-    private float[] descuentoPorCantidadDeDias;
+    private float[] descuentoPorPersonas = new float[1];
+    private float[] descuentoPorAnticipacion = new float[1];
+    private float[] descuentoPorCantidadDeDias = new float [1];
 
     
     public enum Tipo {
@@ -131,7 +131,7 @@ public class AgenteLugar extends Agent {
                         pref.setPresupuestoMax(0);
                     } else if ((pref.getCantidadPersonas() < 0) && (-1*pref.getCantidadPersonas())<descuentoPorPersonas.length){
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                        float dto = descuentoPorPersonas[pref.getCantidadPersonas()];
+                        float dto = descuentoPorPersonas[-1*pref.getCantidadPersonas()];
                         pref.setPresupuestoMax(dto);
                         pref.setCantidadPersonas(0);
                     } else if (pref.getDuracion() != 0 && pref.getDuracion()<descuentoPorCantidadDeDias.length) {

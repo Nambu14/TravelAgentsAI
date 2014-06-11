@@ -27,10 +27,10 @@ import java.util.GregorianCalendar;
 public class AgenteTransporte extends Agent {
 
     //Hasta determinada cantidad de personas hay descuento, esa cantidad es la longitud del arreglo
-    private float[] descuentoPorPersonas;
-    private float[] descuentoPorAnticipacion;
+    private float[] descuentoPorPersonas = new float[1];
+    private float[] descuentoPorAnticipacion = new float[1];
     //Descuento dado por promociones en determinados días.
-    private float[] descuentoPorDias;
+    private float[] descuentoPorDias = new float[7];
     private String nombre;
 
     public enum TipoEmpresa {
