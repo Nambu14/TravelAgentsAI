@@ -127,6 +127,7 @@ public class AgenteTurista extends Agent {
                         block();
                     }
 
+                    
                 }
             }
 
@@ -140,7 +141,6 @@ public class AgenteTurista extends Agent {
                     mensajeAcept.addReceiver(mejorAID);
                     myAgent.send(mensajeAcept);
                     pr.setResultado(ofertas.get(0));
-                    pr.setVisible(true);
                     
                 } else {
                     JOptionPane.showMessageDialog(null, "No hay servicios disponibles para el viaje que desea realizar.", ":-(", JOptionPane.ERROR_MESSAGE);
