@@ -310,7 +310,7 @@ public class AgenteAgenciaTurismo extends Agent {
             propuesta.setAlojamiento(lugar.getAlojamiento());
             propuesta.setPonderacion(preferencias.getPonderacionPrecio());
             propuesta.setCalidadTransporte(transporte.getCalidadTransporte());
-            propuesta.setPrecio((lugar.getPrecio() * lugar.getPresupuestoMax() + transporte.getPrecio() * transporte.getPresupuestoMax()) * comision);
+            propuesta.setPrecio((lugar.getPrecio() * (1-lugar.getPresupuestoMax()) + transporte.getPrecio() * (1-transporte.getPresupuestoMax())) * comision);
             return propuesta;
         }
 

@@ -128,6 +128,7 @@ public class AgenteLugar extends Agent {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         pref.setPrecio(precioPersona * pref.getCantidadPersonas());
                         pref.setCantidadPersonas(-1*pref.getCantidadPersonas());
+                        pref.setPresupuestoMax(0);
                     } else if ((pref.getCantidadPersonas() < 0) && (-1*pref.getCantidadPersonas())<descuentoPorPersonas.length){
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto = descuentoPorPersonas[pref.getCantidadPersonas()];

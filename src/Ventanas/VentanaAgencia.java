@@ -367,10 +367,10 @@ public class VentanaAgencia extends javax.swing.JFrame {
             int[] seleccionTransporte = empresasTransporte.getSelectedIndices();
             ArrayList<AID> lugaresAID = new ArrayList<>();
             ArrayList<AID> transportesAID = new ArrayList<>();
-            for (int index : seleccionLugar) {
+            for (int index=0; index <= seleccionLugar.length; index++) {
                 lugaresAID.add(resultadosLugar[seleccionLugar[index]].getName());
             }
-            for (int index : seleccionTransporte) {
+            for (int index = 0 ; index <= seleccionTransporte.length; index++) {
                 transportesAID.add(resultadosTransporte[seleccionTransporte[index]].getName());
             }
             VentanaAgencia.this.miAgente.asignarServicios(transportesAID, lugaresAID);
@@ -396,7 +396,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
             try {
                 resultadosTransporte = DFService.search(VentanaAgencia.this.miAgente, descripcion);
                 transportes = new String[resultadosTransporte.length];
-                for (int i = 0; i < resultadosTransporte.length; ++i) {
+                for (int i = 0; i < resultadosTransporte.length; i++) {
                     transportes[i] = resultadosTransporte[i].getName().getLocalName();
                 }
             } catch (FIPAException ex) {
@@ -413,7 +413,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
             try {
                 resultadosLugar = DFService.search(VentanaAgencia.this.miAgente, descripcion);
                 lugares = new String[resultadosLugar.length];
-                for (int i = 0; i < resultadosLugar.length; ++i) {
+                for (int i = 0; i < resultadosLugar.length; i++) {
                     lugares[i] = resultadosLugar[i].getName().getLocalName();
                 }
             } catch (FIPAException ex) {

@@ -1022,6 +1022,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
     public Rutas(String tipo) {
         this.tipo =  tipo;
         initComponents();
+        agregar.setVisible(false);
     }
 
     /**
@@ -1322,8 +1323,9 @@ public class VentanaTransporte extends javax.swing.JFrame {
     private void capacidadKeyTyped(java.awt.event.KeyEvent evt) {                                     
         // TODO add your handling code here:
         char car = evt.getKeyChar();
-        if((car<'1' || car>'9')) evt.consume();
-    }
+        if((car<'0' || car>'9' || ((! capacidad.getText().equals("")) && car == '0')))
+            evt.consume();
+    }    
     private void precioPersonaKeyTyped(java.awt.event.KeyEvent evt) {                                     
         // TODO add your handling code here:
         char car = evt.getKeyChar();

@@ -1013,15 +1013,15 @@ public class VentanaLugar extends javax.swing.JFrame {
         agregarDiasActionPerformed(null);
         agregarPsasActionPerformed(null);
         agregarAntiActionPerformed(null);
-        for(int i = 1; i<personas.length; ++i){
+        for(int i = 1; i<personas.length; i++){
             if(personas[i] == 0)
                 personas[i] = personas[i-1];
         }
-        for(int i =1; i<anticipacion.length; ++i){
+        for(int i =1; i<anticipacion.length; i++){
             if(anticipacion[i] == 0)
                 anticipacion[i] = anticipacion[i-1];
         }
-        for(int i = 1; i< cantDias.length; ++i){
+        for(int i = 1; i< cantDias.length; i++){
             if(cantDias[i] == 0)
                 cantDias[i] = cantDias[i-1];
         }
