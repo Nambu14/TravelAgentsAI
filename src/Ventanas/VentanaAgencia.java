@@ -56,6 +56,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
         dtoTransporte = new javax.swing.JSpinner();
         comisionAgencia = new javax.swing.JSpinner();
         dtoLugar = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -102,6 +103,8 @@ public class VentanaAgencia extends javax.swing.JFrame {
 
         dtoLugar.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
 
+        jLabel1.setText("(Selección múltiple con la tecla Ctrl)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,6 +150,10 @@ public class VentanaAgencia extends javax.swing.JFrame {
                                 .addGap(23, 23, 23)
                                 .addComponent(cancelar)))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,9 +177,11 @@ public class VentanaAgencia extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jLabel11)
                     .addComponent(dtoLugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(accederDF)
-                .addGap(11, 11, 11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(aceptar)
                     .addComponent(cancelar))
@@ -219,6 +228,7 @@ public class VentanaAgencia extends javax.swing.JFrame {
     private javax.swing.JSpinner comisionAgencia;
     private javax.swing.JSpinner dtoLugar;
     private javax.swing.JSpinner dtoTransporte;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

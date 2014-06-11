@@ -85,6 +85,7 @@ public class VentanaTurista extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         pondServicio = new javax.swing.JTextField();
         cantPsas = new javax.swing.JSpinner();
+        jLabel21 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -228,6 +229,8 @@ public class VentanaTurista extends javax.swing.JFrame {
 
         cantPsas.setModel(new javax.swing.SpinnerNumberModel(1, 1, 20, 1));
 
+        jLabel21.setText("El alojamiento y transporte son tentativos, se buscará la mejor opción.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -310,11 +313,14 @@ public class VentanaTurista extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel20))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(109, 109, 109)
+                        .addGap(112, 112, 112)
                         .addComponent(aceptar)
-                        .addGap(33, 33, 33)
-                        .addComponent(cancelar)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .addGap(30, 30, 30)
+                        .addComponent(cancelar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel21)))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,12 +381,12 @@ public class VentanaTurista extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cancelar)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jLabel21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelar)
                     .addComponent(aceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGap(33, 33, 33))
         );
 
         pack();
@@ -579,6 +585,7 @@ public class VentanaTurista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
