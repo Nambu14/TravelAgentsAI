@@ -6,6 +6,7 @@
 package Agents;
 
 import Agents.AgenteLugar.Tipo;
+import Things.LugarWrapper;
 import Things.Paquete;
 import Ventanas.VentanaLugar;
 import jade.core.Agent;
@@ -121,6 +122,8 @@ public class AgenteLugar extends Agent {
                 pref = Paquete.stringToPaquete(msg.getContent());
                 //Si el alojamiento no queda en la ciudad de destino envía un REFUSE
                 if (pref.getDestino().equalsIgnoreCase(getCiudad())) {
+                    LugarWrapper alojamiento = new LugarWrapper(nombre, tipo, calidad, servicios);
+                    pref.setAlojamiento(alojamiento);
                     if (pref.getCantidadPersonas() > 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         pref.setPrecio(precioPersona * pref.getCantidadPersonas());

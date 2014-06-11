@@ -171,6 +171,7 @@ public class AgenteTransporte extends Agent {
                         }
                     }
                     if (existeRutaIda && existeRutaVuelta) {
+                        pref.setTipoTransporte(tipo);
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
                         respuestaT.setContent(pref.toStringForMessage());
                         myAgent.send(respuestaT);

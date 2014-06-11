@@ -455,6 +455,7 @@ public class VentanaTurista extends javax.swing.JFrame {
           JOptionPane.showMessageDialog(this, "Error: Los campos Obligatorios deben estar completos", "Error", JOptionPane.ERROR_MESSAGE);
 
       }
+      dispose();
     }//GEN-LAST:event_aceptarActionPerformed
 
     private void fechaMinPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_fechaMinPropertyChange

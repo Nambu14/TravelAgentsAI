@@ -37,7 +37,6 @@ public class AgenteTurista extends Agent {
     private VentanaTurista myGui;
     private boolean fin = false;
     private AID mejorAID;
-    PantallaResultado pr = new PantallaResultado();
     int step = 0;
 
     @Override
@@ -140,8 +139,9 @@ public class AgenteTurista extends Agent {
                     ACLMessage mensajeAcept = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
                     mensajeAcept.addReceiver(mejorAID);
                     myAgent.send(mensajeAcept);
-                    pr.setResultado(ofertas.get(0));
-                    
+                    PantallaResultado pr = new PantallaResultado(ofertas.get(0));
+                    pr.setVisible(true);
+                                        
                 } else {
                     JOptionPane.showMessageDialog(null, "No hay servicios disponibles para el viaje que desea realizar.", ":-(", JOptionPane.ERROR_MESSAGE);
                 }
