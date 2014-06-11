@@ -42,7 +42,7 @@ public class IA2014 {
         paq.setCantidadPersonas(5);
         GregorianCalendar cal = new GregorianCalendar();
         cal.set(2015, 6, 7);
-        paq.setFechaInicialInferior(cal);
+        paq.setFechaInicialInferior(cal.getTime());
         GregorianCalendar cal2 = new GregorianCalendar();
         cal2.set(2012, 2, 10);
         paq.setFechaInicialSuperior(cal2);

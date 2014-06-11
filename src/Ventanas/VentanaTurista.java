@@ -410,7 +410,7 @@ public class VentanaTurista extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-      if(origen.getText()!=null && destino.getText()!= null && fechaMin.getDate() != null && fechaMax.getDate() !=null && duracion.getText() != null){
+      if(!("".equals(origen.getText()) && "".equals(destino.getText()) && "".equals(duracion.getText())) && fechaMin.getDate() != null && fechaMax.getDate() !=null){
         
         //alojamiento
         alojamiento.setTipo(setearTipoLugar());

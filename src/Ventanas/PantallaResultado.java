@@ -118,7 +118,7 @@ public class PantallaResultado extends javax.swing.JFrame {
         duracion.setText(Integer.toString(resultado.getDuracion()));
         duracion.setName("duracion"); // NOI18N
 
-        transporte.setText(resultado.getTipoTransporte().toString());
+        transporte.setText(resultado.getTipoTransporteString());
         transporte.setName("transporte"); // NOI18N
 
         comodidadTransporte.setText(resultado.getCalidadTransporte().toString());

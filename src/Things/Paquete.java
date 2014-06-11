@@ -8,6 +8,7 @@ package Things;
 import Agents.AgenteTransporte.TipoEmpresa;
 import Things.CronogramaTransporte.Calidad;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -120,7 +121,7 @@ public final class Paquete implements Comparable {
         int mes1 = Integer.parseInt(fechaInferior[1]);
         int dia1 = Integer.parseInt(fechaInferior[0]);
         fechaInferiorIncial.set(ano1, mes1, dia1);
-        paquete.setFechaInicialInferior(fechaInferiorIncial);
+        paquete.setFechaInicialInferior(fechaInferiorIncial.getTime());
         //tratamiento de la segunda fecha: fechaInicialSuperior
         String[] fechaSuperior = str[5].split("--");
         GregorianCalendar fechaSuperiorIncial = new GregorianCalendar();
@@ -252,9 +253,8 @@ public final class Paquete implements Comparable {
         return fechaInicialInferior;
     }
 
-    public void setFechaInicialInferior(GregorianCalendar fechaInicialInferior) {
-        this.fechaInicialInferior.set(fechaInicialInferior.get(Calendar.YEAR), fechaInicialInferior.get(Calendar.MONTH),
-                fechaInicialInferior.get(Calendar.DAY_OF_MONTH));
+    public void setFechaInicialInferior(Date fechainicial) {
+        this.fechaInicialInferior.setTime(fechainicial);
     }
 
     public GregorianCalendar getFechaInicialSuperior() {
@@ -441,5 +441,13 @@ public final class Paquete implements Comparable {
         Long dias;
         dias = daysBetween;
         return dias.intValue();
+    }
+
+    public String getTipoTransporteString() {
+        if(tipoTransporte == TipoEmpresa.AEREA){
+            return "AEREA";
+        }else{
+            return "TERRESTRE";
+        }
     }
 }

@@ -137,7 +137,7 @@ public class AgenteTransporte extends Agent {
                                 if (existeRutaIda && existeRutaVuelta) {
                                     pref.setPresupuestoMax(0);
                                     pref.setCalidadTransporte(ruta.getCalidad());
-                                    pref.setFechaInicialInferior(fechaSalida);
+                                    pref.setFechaInicialInferior(fechaSalida.getTime());
                                     pref.setPrecio(ruta.getPrecioPersona() * pref.getCantidadPersonas());
                                     break;
                                 }
@@ -154,7 +154,7 @@ public class AgenteTransporte extends Agent {
                                     if (existeRutaIda && existeRutaVuelta) {
                                         pref.setPresupuestoMax(0);
                                         pref.setCalidadTransporte(ruta.getCalidad());
-                                        pref.setFechaInicialInferior(fechaSalida);
+                                        pref.setFechaInicialInferior(fechaSalida.getTime());
                                         pref.setPrecio(ruta.getPrecioPersona() * pref.getCantidadPersonas());
                                         break;
                                     }
@@ -206,4 +206,9 @@ public class AgenteTransporte extends Agent {
         }
 
     }
+
+    public ArrayList<CronogramaTransporte> getRutas() {
+        return rutas;
+    }
+    
 }

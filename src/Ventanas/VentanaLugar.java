@@ -937,8 +937,8 @@ public class VentanaLugar extends javax.swing.JFrame {
 
     private void agregarDiasActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
-     if(dias1.getText()!=null && dias2.getText()!=null && dias3.getText()!=null &&
-           dtoDias1.getText()!=null && dtoDias2.getText()!=null && dtoDias3.getText()!=null ){  
+     if(!("".equals(dias1.getText()) && "".equals(dias2.getText()) && "".equals(dias3.getText()) &&
+           "".equals(dtoDias1.getText()) && "".equals(dtoDias2.getText()) && "".equals(dtoDias3.getText()))){  
        if(Integer.parseInt(dtoDias1.getText())<=100 && Integer.parseInt(dtoDias2.getText())<=100 && Integer.parseInt(dtoDias3.getText())<=100){ 
          int uno = Integer.parseInt(dias1.getText());
          int dos = Integer.parseInt(dias2.getText());
@@ -959,8 +959,8 @@ public class VentanaLugar extends javax.swing.JFrame {
 
     private void agregarPsasActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
-      if(psas1.getText()!=null && psas2.getText()!=null && psas3.getText()!=null &&
-           dtoPsas1.getText()!=null && dtoPsas2.getText()!=null && dtoPsas3.getText()!=null ){  
+      if(!("".equals(psas1.getText())&& "".equals(psas2.getText()) && "".equals(psas3.getText()) &&
+           "".equals(dtoPsas1.getText()) && "".equals(dtoPsas2.getText()) && "".equals(dtoPsas3.getText())) ){  
         if(Integer.parseInt(dtoPsas1.getText())<=100 && Integer.parseInt(dtoPsas2.getText())<=100 && Integer.parseInt(dtoPsas3.getText())<=100){ 
             int uno = Integer.parseInt(psas1.getText());
             int dos = Integer.parseInt(psas2.getText());
@@ -981,8 +981,8 @@ public class VentanaLugar extends javax.swing.JFrame {
 
     private void agregarAntiActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
-     if(anticipacion1.getText()!= null && anticipacion2.getText()!= null && anticipacion3.getText()!= null 
-                && dtoA1.getText()!= null && dtoA2.getText()!= null && dtoA3.getText()!= null){
+     if(!("".equals(anticipacion1.getText()) && "".equals(anticipacion2.getText()) && "".equals(anticipacion3.getText()) 
+                && "".equals(dtoA1.getText()) && "".equals(dtoA2.getText()) && "".equals(dtoA3.getText()))){
          
        if(Integer.parseInt(dtoA1.getText())<=100 && Integer.parseInt(dtoA2.getText())<=100 && Integer.parseInt(dtoA3.getText())<=100){
          int uno = Integer.parseInt(anticipacion1.getText());

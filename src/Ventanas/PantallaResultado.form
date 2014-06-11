@@ -327,7 +327,7 @@
         <Component class="javax.swing.JLabel" name="transporte">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="resultado.getTipoTransporte().toString()" type="code"/>
+              <Connection code="resultado.getTipoTransporteString()" type="code"/>
             </Property>
             <Property name="name" type="java.lang.String" value="transporte" noResource="true"/>
           </Properties>

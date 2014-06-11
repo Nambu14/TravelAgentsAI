@@ -152,6 +152,9 @@ public class VentanaTransporte extends javax.swing.JFrame {
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
+      if(miAgente.getRutas().isEmpty()){  
+          JOptionPane.showMessageDialog(this, "Error: Debe cargar una ruta", "Error", JOptionPane.ERROR_MESSAGE);
+      }else{
         TipoEmpresa tipo = null;
         String a = (String) tipoEmpresa.getSelectedItem();
         switch(a){
@@ -165,6 +168,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
         miAgente.setTransporte(tipo);
         miAgente.agregarComportamiento();
         dispose();
+      }  
     }//GEN-LAST:event_aceptarActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
@@ -729,8 +733,8 @@ public class VentanaTransporte extends javax.swing.JFrame {
     }                                             
 
     private void agregarPsasActionPerformed(java.awt.event.ActionEvent evt) {                                            
-     if(psas1.getText()!=null && psas2.getText()!=null && psas3.getText()!=null &&
-           dtoPsas1.getText()!=null && dtoPsas2.getText()!=null && dtoPsas3.getText()!=null ){  
+     if(!("".equals(psas1.getText())&& "".equals(psas2.getText()) && "".equals(psas3.getText()) &&
+           "".equals(dtoPsas1.getText()) && "".equals(dtoPsas2.getText()) && "".equals(dtoPsas3.getText())) ){  
       if(Integer.parseInt(dtoPsas1.getText())<=100 && Integer.parseInt(dtoPsas2.getText())<=100 && Integer.parseInt(dtoPsas3.getText())<=100){ 
            
         int uno = Integer.parseInt(psas1.getText());
@@ -751,8 +755,8 @@ public class VentanaTransporte extends javax.swing.JFrame {
     }                                           
 
     private void agregarAntiActionPerformed(java.awt.event.ActionEvent evt) {                                            
-     if(anticipacion1.getText()!= null && anticipacion2.getText()!= null && anticipacion3.getText()!= null 
-                && dtoA1.getText()!= null && dtoA2.getText()!= null && dtoA3.getText()!= null){
+     if(!("".equals(anticipacion1.getText()) && "".equals(anticipacion2.getText()) && "".equals(anticipacion3.getText()) 
+                && "".equals(dtoA1.getText()) && "".equals(dtoA2.getText()) && "".equals(dtoA3.getText()))){
          
        if(Integer.parseInt(dtoA1.getText())<=100 && Integer.parseInt(dtoA2.getText())<=100 && Integer.parseInt(dtoA3.getText())<=100){
          
@@ -774,8 +778,8 @@ public class VentanaTransporte extends javax.swing.JFrame {
     }                                           
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {                                        
-     if(lunes.getText()!= null && martes.getText()!= null && miercoles.getText()!= null && jueves.getText()!= null && 
-             viernes.getText()!= null && sabado.getText()!= null && domingo.getText()!= null ){
+     if(!("".equals(lunes.getText()) && "".equals(martes.getText()) && "".equals(miercoles.getText()) && "".equals(jueves.getText()) && 
+             "".equals(viernes.getText()) && "".equals(sabado.getText()) && "".equals(domingo.getText())) ){
       if(Integer.parseInt(lunes.getText())<=100 && Integer.parseInt(martes.getText())<=100  && Integer.parseInt(miercoles.getText())<=100 
               &&Integer.parseInt(jueves.getText())<=100 && Integer.parseInt(viernes.getText())<=100 && Integer.parseInt(sabado.getText())<=100 && Integer.parseInt(domingo.getText())<=100 ){
         agregarPsasActionPerformed(null);
@@ -1304,7 +1308,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
     }                                         
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {                                        
-      if(precioPersona.getText() != null && capacidad.getText() != null && origen.getText() != null && destino.getText()!= null){
+      if(!("".equals(precioPersona.getText()) && "".equals(capacidad.getText()) && "".equals(origen.getText()) && "".equals(destino.getText()))){
         float precio = Float.parseFloat(precioPersona.getText());
         int capac = Integer.parseInt(capacidad.getText());
         CronogramaTransporte cronograma = new CronogramaTransporte(origen.getText(), destino.getText(), precio, capac, definirSalidas(), definirCalidad() );
