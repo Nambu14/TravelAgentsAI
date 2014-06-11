@@ -194,6 +194,11 @@ public class VentanaTurista extends javax.swing.JFrame {
                 fechaMinPropertyChange(evt);
             }
         });
+        fechaMin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                fechaMinKeyTyped(evt);
+            }
+        });
 
         fechaMax.setEnabled(false);
         fechaMax.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -540,6 +545,15 @@ public class VentanaTurista extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_presupuestoActionPerformed
 
+    private void fechaMinKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fechaMinKeyTyped
+        // TODO add your handling code here:
+        evt.consume();
+    }//GEN-LAST:event_fechaMinKeyTyped
+
+    private void fechaMaxKeyTyped(java.awt.event.KeyEvent evt) {                                  
+        // TODO add your handling code here:
+        evt.consume();
+    } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;

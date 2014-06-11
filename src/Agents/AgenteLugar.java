@@ -124,18 +124,18 @@ public class AgenteLugar extends Agent {
                     if (pref.getCantidadPersonas() > 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         pref.setPrecio(precioPersona * pref.getCantidadPersonas());
-                        pref.setCantidadPersonas(-1);
-                    } else if (pref.getCantidadPersonas() < 0) {
+                        pref.setCantidadPersonas(-1*pref.getCantidadPersonas());
+                    } else if ((pref.getCantidadPersonas() < 0) && (-1*pref.getCantidadPersonas())<descuentoPorPersonas.length){
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto = descuentoPorPersonas[pref.getCantidadPersonas()];
                         pref.setPresupuestoMax(dto);
                         pref.setCantidadPersonas(0);
-                    } else if (pref.getDuracion() != 0) {
+                    } else if (pref.getDuracion() != 0 && pref.getDuracion()<descuentoPorCantidadDeDias.length) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
                         pref.setPresupuestoMax(dto);
                         pref.setDuracion(0);
-                    } else if (pref.getAnticipacion() != 0) {
+                    } else if (pref.getAnticipacion() != 0 && pref.getAnticipacion()<descuentoPorAnticipacion.length) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[pref.getAnticipacion()];
                         pref.setPresupuestoMax(dto);
