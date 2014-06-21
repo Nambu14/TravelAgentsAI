@@ -20,11 +20,11 @@ public class LugarWrapper {
     private String[] servicios;
     private float calidadGeneral;
 
-    public LugarWrapper(String nombre, Tipo tipo, int calidad, String[] servicios) {
+    public LugarWrapper(String nombre, Tipo tipo, int calidad, String[] servicios2) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.calidad = calidad;
-        this.servicios = servicios;
+        this.servicios = servicios2;
     }
 
     public void setCalidadGeneral() {

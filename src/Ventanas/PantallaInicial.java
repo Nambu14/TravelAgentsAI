@@ -6,13 +6,12 @@
 
 package Ventanas;
 
-import Agents.*;
-import Things.Paquete;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -28,8 +27,9 @@ public class PantallaInicial extends javax.swing.JFrame {
     private VentanaTransporte ventanaTransporte;
     private final ContainerController mainContainer;
     private AgentController ac;
-    private jade.core.Runtime rt;
+    private final jade.core.Runtime rt;
     private int turista=0;
+    private AgentController rma;
     /**
      * Creates new form PantallaInicial
      */
@@ -38,6 +38,8 @@ public class PantallaInicial extends javax.swing.JFrame {
         rt = jade.core.Runtime.instance(); 
         Profile p = new ProfileImpl();
         mainContainer = rt.createMainContainer(p);
+        cargarEscenario();
+        
         
     }
 
@@ -58,6 +60,8 @@ public class PantallaInicial extends javax.swing.JFrame {
         nombreServicio = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         cerrar = new javax.swing.JButton();
+        verCargados = new javax.swing.JButton();
+        abrirJade = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -89,6 +93,7 @@ public class PantallaInicial extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
         jLabel1.setText("Crear un nuevo servicio");
 
         nombreServicio.setText("Nombre del servicio");
@@ -107,39 +112,59 @@ public class PantallaInicial extends javax.swing.JFrame {
             }
         });
 
+        verCargados.setText("Ver servicios cargados");
+
+        abrirJade.setText("Abrir plataforma JADE");
+        abrirJade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirJadeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(nombreServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(crearAgencia)
-                        .addGap(6, 6, 6)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 15, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(nombreServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(crearLugar)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(cerrar)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(crearAgencia)
+                                        .addGap(6, 6, 6)
+                                        .addComponent(crearLugar)))
                                 .addGap(10, 10, 10)
                                 .addComponent(crearTransporte))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(cerrar)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(crearTurista)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(143, 143, 143)
+                                .addComponent(crearTurista))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(verCargados, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(83, 83, 83)
+                                .addComponent(abrirJade)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addGap(37, 37, 37)
                 .addComponent(crearTurista)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(verCargados)
+                    .addComponent(abrirJade))
+                .addGap(37, 37, 37)
                 .addComponent(jLabel1)
                 .addGap(6, 6, 6)
                 .addComponent(jLabel2)
@@ -150,7 +175,7 @@ public class PantallaInicial extends javax.swing.JFrame {
                     .addComponent(crearAgencia)
                     .addComponent(crearLugar)
                     .addComponent(crearTransporte))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addComponent(cerrar)
                 .addContainerGap())
         );
@@ -223,6 +248,111 @@ public class PantallaInicial extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_cerrarActionPerformed
 
+    private void abrirJadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirJadeActionPerformed
+        // TODO add your handling code here:
+        try {
+           rma= mainContainer.createNewAgent("rma", "jade.tools.rma.rma", null);
+           rma.start();
+        } catch (StaleProxyException ex) {
+	   JOptionPane.showMessageDialog(this, "No se puede cargar el RMA", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_abrirJadeActionPerformed
+    
+    private void cargarEscenario() {
+        AgentController v1;
+        AgentController v2;
+        AgentController v3;
+        AgentController aLugar1 = null;
+        AgentController aLugar2 = null;
+        AgentController aLugar3 = null;
+        AgentController aLugar4 = null;
+        AgentController aLugar5 = null;
+        AgentController aLugar6 = null;
+        AgentController aTransporte1 = null;
+        AgentController aTransporte2 = null;
+        AgentController aTransporte3 = null;
+        AgentController aTransporte4 = null;
+        AgentController aTransporte5 = null;
+        AgentController aTransporte6 = null;
+        
+        //crear arreglos para hacer mas facil la creación
+        AgentController[] lugares = new  AgentController[6];
+        AgentController [] transportes = new  AgentController[6];
+        //cargar arreglos
+        lugares[0]=aLugar1; lugares[1]=aLugar2; lugares[2]=aLugar3; lugares[3]=aLugar4; lugares[4]=aLugar5; lugares[5]=aLugar6;
+        transportes[0]=aTransporte1; transportes[1]=aTransporte2; transportes[2]=aTransporte3; 
+        transportes[3]=aTransporte4; transportes[4]=aTransporte5; transportes[5]=aTransporte6; 
+        
+        /*Se crean dos casos de Lugar y Transporte
+        
+        CASO 1 
+        Se crean 4 lugares y 4 transportes con Buenos Aires como ciudad o destino según corresponda
+        CASO 2
+        Se crean 2 lugares y 2 transportes con Posadas como ciudad o destino según corresponda
+        
+        En cualquier caso el origen es siempre Corrientes
+        Los demás atributos correspondientes dependen del número u orden y serán tratados en el Agente correspondiente
+        
+        */
+        
+        // argumentos para las agencias que cargan diferentes descuentos estará ordenado [dtoPropio, dtoLugares, dtoTransporteS]
+        
+        String[] argsAg = new String [3];
+        
+        //argumentos para los lugares y transportes, tendrá una ciudad  y un número que indica con qué se carga en la clase Agente correspondiente
+        String[] argsS = {"Buenos Aires","1","Buenos Aires","2","Buenos Aires","3","Buenos Aires","4"};
+        String[] argsS2 = {"Posadas","1","Posadas","2"};
+        
+        
+        
+            //Caso1 BsAs
+        int c = 1;
+        for(int i=0; i<=6; i= i+2){
+        try {
+            aLugar1 = mainContainer.createNewAgent("Lugar"+(i+c), "Agents.AgenteLugar", Arrays.copyOfRange(argsS, i, i+2));
+            aLugar1.start();
+            aTransporte1= mainContainer.createNewAgent("Transporte"+(i+c), "Agents.AgenteTransporte", Arrays.copyOfRange(argsS, i, i+2));
+            aTransporte1.start();
+            c= c-1;
+        } catch (StaleProxyException ex) {
+            Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        
+        int d=5;
+        for(int i=0; i<=2; i= i+2){
+        try {
+            aLugar2 = mainContainer.createNewAgent("Lugar"+(i+d), "Agents.AgenteLugar", Arrays.copyOfRange(argsS2, i, i+2));
+            aLugar2.start();
+            aTransporte2= mainContainer.createNewAgent("Transporte"+(i+d), "Agents.AgenteTransporte", Arrays.copyOfRange(argsS2, i, i+2));
+            aTransporte2.start();
+            c=-1;
+        } catch (StaleProxyException ex) {
+            Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        
+           
+        //CREACIÓN DE AGENCIAS: los descuentos fueron elegidos al azar
+        try {
+            argsAg[0]= "42" ; argsAg[1]= "9" ; argsAg[2]= "36";
+            v1= mainContainer.createNewAgent("Agencia1", "Agents.AgenteAgenciaTurismo", argsAg);
+            v1.start();
+            argsAg[0]= "51" ; argsAg[1]= "32" ; argsAg[2]= "10";
+            v2= mainContainer.createNewAgent("Agencia2", "Agents.AgenteAgenciaTurismo", argsAg);
+            v2.start();
+            argsAg[0]= "25" ; argsAg[1]= "37" ; argsAg[2]= "21";
+            v3= mainContainer.createNewAgent("Agencia3", "Agents.AgenteAgenciaTurismo", argsAg);
+            v3.start();
+            
+        } catch (StaleProxyException ex) {
+            Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -260,6 +390,7 @@ public class PantallaInicial extends javax.swing.JFrame {
     
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton abrirJade;
     private javax.swing.JButton cerrar;
     private javax.swing.JButton crearAgencia;
     private javax.swing.JButton crearLugar;
@@ -268,6 +399,11 @@ public class PantallaInicial extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField nombreServicio;
+    private javax.swing.JButton verCargados;
     // End of variables declaration//GEN-END:variables
+
+    
+
+    
     
 }

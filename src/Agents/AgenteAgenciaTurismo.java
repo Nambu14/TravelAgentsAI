@@ -11,7 +11,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -20,6 +19,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Clase Agencia de Turismo, es el agente encargado de representar a una Agencia
@@ -62,9 +63,16 @@ public class AgenteAgenciaTurismo extends Agent {
     @Override
     protected void setup() {
         nombre = this.getLocalName();
-        myGui = new VentanaAgencia(this);
-        myGui.setVisible(true);
-
+        Object[] args = getArguments();
+        if (args!=null && args.length>0){
+            //para el caso de la creación de escenarios
+            cargarAgencia(args);
+            addBehaviour(new BuscarPaquete());
+        }else{
+            //para el caso de llamada desde la interfaz    
+            myGui = new VentanaAgencia(this);
+            myGui.setVisible(true);
+        }        
         //Registro en paginas amarillas
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -106,6 +114,53 @@ public class AgenteAgenciaTurismo extends Agent {
 
     public void agregarComportamiento() {
         addBehaviour(new BuscarPaquete());
+    }
+
+    private void cargarAgencia(Object[] args) {
+        ArrayList<AID> transportesDF = new ArrayList<>();
+        ArrayList<AID> lugaresDF = new ArrayList<>();
+        DFAgentDescription [] resultadosTransporte;
+        DFAgentDescription[] resultadosLugar;
+        float argsComision= Integer.parseInt(args[0].toString());
+        float argsDtoLugar= Integer.parseInt(args[1].toString());
+        float argsDtoT= Integer.parseInt(args[2].toString());
+        this.descuentoLugar = argsDtoLugar / 100;
+        this.comision = 1 + (argsComision / 100);
+        this.descuentoTransporte = argsDtoT / 100;
+        
+        //Buscar todos los transportes registrados
+        ServiceDescription servicio = new ServiceDescription();
+        servicio.setType("Transporte");
+        DFAgentDescription descripcion = new DFAgentDescription();
+        descripcion.addServices(servicio);
+        try {
+            resultadosTransporte = DFService.search(this, descripcion);
+            for (DFAgentDescription resultadosTransporte1 : resultadosTransporte) {
+                transportesDF.add(resultadosTransporte1.getName());
+            }
+        } catch (FIPAException ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       //Buscar todos los Lugares registrados 
+        
+        ServiceDescription servicio2 = new ServiceDescription();
+        servicio2.setType("Lugar");
+        DFAgentDescription descripcion2 = new DFAgentDescription();
+        descripcion2.addServices(servicio2);
+        try {
+            resultadosLugar = DFService.search(this, descripcion2);
+            for (DFAgentDescription resultadosLugar1 : resultadosLugar) {
+                lugaresDF.add(resultadosLugar1.getName());
+            }
+        } catch (FIPAException ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Asignar los lugares y transportes encontrados
+        asignarServicios(transportesDF, lugaresDF);
+        
+        
     }
 
     private class BuscarPaquete extends Behaviour {
