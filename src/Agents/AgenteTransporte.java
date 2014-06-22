@@ -344,23 +344,47 @@ public class AgenteTransporte extends Agent {
                         myAgent.send(respuestaT);
                     }
                 } else if (msg.getPerformative() == ACLMessage.INFORM) {
+                    //Calcular anticipación
+                    GregorianCalendar cal = new GregorianCalendar();
+                    int anticipacion = Paquete.daysBetween(cal, pref.getFechaInicialInferior());
+                    
                     //Dar descuentos
-                    if (pref.getCantidadPersonas() != 0 && pref.getCantidadPersonas()<descuentoPorPersonas.length) {
+                    //Descuentos según cantidad de personas
+                    if (pref.getCantidadPersonas() != 0 && descuentoPorPersonas.length>1) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
-                        float dbt = descuentoPorPersonas[pref.getCantidadPersonas()];
+                        float dbt;
+                        if(pref.getCantidadPersonas()<descuentoPorPersonas.length){
+                            dbt = descuentoPorPersonas[pref.getCantidadPersonas()];
+                        }else{
+                            dbt = descuentoPorPersonas[descuentoPorPersonas.length - 1];
+                        }
                         pref.setPresupuestoMax(dbt);
                         pref.setCantidadPersonas(0);
-                    } else if (pref.getDuracion() != 0 && pref.getDuracion()< descuentoPorAnticipacion.length) {
+                        
+                    //Descuento según días de anticipación
+                    } else if (pref.getAnticipacion() != 0 && descuentoPorAnticipacion.length > 1) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
-                        GregorianCalendar cal = new GregorianCalendar();
-                        float dbt = descuentoPorAnticipacion[Paquete.daysBetween(cal, pref.getFechaInicialInferior())];
+                        float dbt ;
+                        if(anticipacion< descuentoPorAnticipacion.length){
+                            dbt = descuentoPorAnticipacion[anticipacion];
+                        }else{
+                            dbt = descuentoPorAnticipacion[descuentoPorAnticipacion.length-1];
+                        }
                         pref.setPresupuestoMax(pref.getPresupuestoMax() + dbt);
-                        pref.setDuracion(0);
-                    } else if (pref.getAnticipacion() != 0 && pref.getAnticipacion()<descuentoPorDias.length) {
-                        respuestaT.setPerformative(ACLMessage.PROPOSE);
-                        float dto = descuentoPorDias[(pref.getFechaInicialInferior().get(Calendar.DAY_OF_WEEK) - 1)];
-                        pref.setPresupuestoMax(pref.getPresupuestoMax() + dto);
                         pref.setAnticipacion(0);
+                        
+                    //Descuentos según el día de viaje    
+                    } else if (pref.getDuracion() != 0) {
+                        int diaDeViaje = pref.getFechaInicialInferior().get(Calendar.DAY_OF_WEEK);
+                        if (diaDeViaje == 0){
+                            diaDeViaje = 6;
+                        }else { 
+                            diaDeViaje = diaDeViaje -1;
+                        }
+                        respuestaT.setPerformative(ACLMessage.PROPOSE);
+                        float dto = descuentoPorDias[diaDeViaje];
+                        pref.setPresupuestoMax(pref.getPresupuestoMax() + dto);
+                        pref.setDuracion(0);
                     } else {
                         respuestaT.setPerformative(ACLMessage.INFORM);
                     }

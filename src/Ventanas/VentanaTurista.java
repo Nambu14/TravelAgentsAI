@@ -446,12 +446,14 @@ public class VentanaTurista extends javax.swing.JFrame {
         //duracion
         int dias = Integer.parseInt(duracion.getText());
         
+        
         //Ponderaciones 
         float ponderacionP = Float.parseFloat(pondPrecio.getValue().toString())/100;
         float ponderacionS = Float.parseFloat(pondServicio.getText())/100;
         try {
             Paquete preferencias = new Paquete(origen.getText(), destino.getText(), presu, personas,fechaInicial, fechaFinal, dias, alojamiento, ponderacionP, ponderacionS, setearCalidadTransporte());
             preferencias.setTipoTransporte(setearTipoEmpresa());
+            
             miAgente.setPreferencias(preferencias);
         } catch (Exception ex) {
             Logger.getLogger(VentanaTurista.class.getName()).log(Level.SEVERE, null, ex);

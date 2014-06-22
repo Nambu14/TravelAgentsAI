@@ -1327,7 +1327,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
     private void capacidadKeyTyped(java.awt.event.KeyEvent evt) {                                     
         // TODO add your handling code here:
         char car = evt.getKeyChar();
-        if((car<'0' || car>'9' || ((! capacidad.getText().equals("")) && car == '0')))
+        if((car<'0' || car>'9' ))
             evt.consume();
     }    
     private void precioPersonaKeyTyped(java.awt.event.KeyEvent evt) {                                     

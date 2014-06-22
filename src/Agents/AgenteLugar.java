@@ -18,6 +18,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -273,7 +274,7 @@ public class AgenteLugar extends Agent {
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
-                // si ya se aplicaron descuentos los valores en el paquete van a ser 0 (CantPsas, duracion, fecha)
+                // si ya se aplicaron descuentos los valores en el paquete van a ser 0 (CantPsas, duracion, anticipacion)
                 ACLMessage respuestaLugar = msg.createReply();
                 Paquete pref;
                 pref = Paquete.stringToPaquete(msg.getContent());
@@ -281,24 +282,48 @@ public class AgenteLugar extends Agent {
                 if (pref.getDestino().equalsIgnoreCase(getCiudad())) {
                     LugarWrapper alojamiento = new LugarWrapper(nombre, tipo, calidad, servicios);
                     pref.setAlojamiento(alojamiento);
+                    //Primer mensaje recibido
                     if (pref.getCantidadPersonas() > 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         pref.setPrecio(precioPersona * pref.getCantidadPersonas());
                         pref.setCantidadPersonas(-1*pref.getCantidadPersonas());
                         pref.setPresupuestoMax(0);
-                    } else if ((pref.getCantidadPersonas() < 0) && (-1*pref.getCantidadPersonas())<descuentoPorPersonas.length){
+                    //Dar descuentos
+                    //Descuentos según cantidad de personas
+                    } else if ((pref.getCantidadPersonas() < 0) && descuentoPorPersonas.length >1){
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                        float dto = descuentoPorPersonas[-1*pref.getCantidadPersonas()];
+                        float dto;
+                        if ((-1*pref.getCantidadPersonas())<descuentoPorPersonas.length){
+                            dto = descuentoPorPersonas[-1*pref.getCantidadPersonas()];
+                        }else{
+                            dto = descuentoPorPersonas[descuentoPorPersonas.length - 1];
+                        }
                         pref.setPresupuestoMax(dto);
                         pref.setCantidadPersonas(0);
-                    } else if (pref.getDuracion() != 0 && pref.getDuracion()<descuentoPorCantidadDeDias.length) {
+                    //Descuentos según duración del viaje
+                    } else if (pref.getDuracion() != 0 && descuentoPorCantidadDeDias.length >1) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                        float dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
+                        float dto;
+                        if(pref.getDuracion()<descuentoPorCantidadDeDias.length){
+                            dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
+                        }else{
+                            dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[descuentoPorCantidadDeDias.length -1]; 
+                        }
                         pref.setPresupuestoMax(dto);
                         pref.setDuracion(0);
-                    } else if (pref.getAnticipacion() != 0 && pref.getAnticipacion()<descuentoPorAnticipacion.length) {
+                    //Descuentos según anticipación de reserva
+                    } else if (pref.getAnticipacion() != 0 && descuentoPorAnticipacion.length >1) {
+                        //calculo anticipacion
+                        GregorianCalendar cal = new GregorianCalendar();
+                        int anticipacion = Paquete.daysBetween(cal, pref.getFechaInicialSuperior());
+                        
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                        float dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[pref.getAnticipacion()];
+                        float dto;
+                        if(anticipacion<descuentoPorAnticipacion.length){
+                            dto= pref.getPresupuestoMax() + descuentoPorAnticipacion[anticipacion];
+                        }else{
+                            dto= pref.getPresupuestoMax() + descuentoPorAnticipacion[descuentoPorAnticipacion.length -1];
+                        }
                         pref.setPresupuestoMax(dto);
                         pref.setAnticipacion(0);
                     } else {

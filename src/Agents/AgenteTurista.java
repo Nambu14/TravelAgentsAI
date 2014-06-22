@@ -134,12 +134,15 @@ public class AgenteTurista extends Agent {
 
         @Override
         public boolean done() {
+            Paquete mejor;
             if (contadorRespuesta == agenciasTurismo.length) {
                 if (!ofertas.isEmpty()) {
                     ACLMessage mensajeAcept = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
                     mensajeAcept.addReceiver(mejorAID);
                     myAgent.send(mensajeAcept);
-                    PantallaResultado pr = new PantallaResultado(ofertas.get(0));
+                    mejor =ofertas.get(0);
+                    mejor.actualizar();
+                    PantallaResultado pr = new PantallaResultado(mejor);
                     pr.setVisible(true);
                                         
                 } else {

@@ -62,6 +62,7 @@ public final class Paquete implements Comparable {
         this.alojamiento = alojamiento;
         this.setPonderacion(ponderacionPrecio, ponderacionCalidad);
         this.calidadTransporte = calidad;
+        this.setAnticipacion(1);
     }
 
     public Paquete() {
@@ -449,5 +450,10 @@ public final class Paquete implements Comparable {
         }else{
             return "TERRESTRE";
         }
+    }
+
+    public void actualizar() {
+        Calendar fechaBien= new GregorianCalendar(getAnoFechaInicialInferior(), getMesFechaInicialInferior()+1,getDiaFechaInicialInferior() );
+        setFechaInicialInferior(fechaBien.getTime());
     }
 }
