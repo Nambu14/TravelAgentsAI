@@ -7,6 +7,7 @@ package Agents;
 
 import Things.Paquete;
 import Ventanas.VentanaAgencia;
+import Ventanas.VentanaMostrarAgencia;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -42,16 +43,9 @@ public class AgenteAgenciaTurismo extends Agent {
     
     int cuentaLugar;
     int cuentaTransporte;
-
-    public ArrayList<AID> getTransportes() {
-        return transportes;
-    }
-
-    public ArrayList<AID> getLugares() {
-        return lugares;
-    }
     private float comision;
     private VentanaAgencia myGui;
+    private VentanaMostrarAgencia mostrarGui;
 
     //VAriables usadas en el beahaviour
     int step = 0;
@@ -67,7 +61,8 @@ public class AgenteAgenciaTurismo extends Agent {
         if (args!=null && args.length>0){
             //para el caso de la creación de escenarios
             cargarAgencia(args);
-            addBehaviour(new BuscarPaquete());
+            asociarTodosServicios();
+            agregarComportamiento();
         }else{
             //para el caso de llamada desde la interfaz    
             myGui = new VentanaAgencia(this);
@@ -85,9 +80,7 @@ public class AgenteAgenciaTurismo extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        //addBehaviour(new ActualizarLugares());
-        //addBehaviour(new BuscarPaquete());
-        addBehaviour(new AsociarServicio());
+        
     }
 
     //Métodos llamados desde la interfaz
@@ -102,6 +95,14 @@ public class AgenteAgenciaTurismo extends Agent {
         this.transportes = transportes;
         this.lugares = lugares;
     }
+    
+    public ArrayList<AID> getTransportes() {
+        return transportes;
+    }
+
+    public ArrayList<AID> getLugares() {
+        return lugares;
+    }
 
     //Quitar registro de las paginas amarillas
     protected void takeDown() {
@@ -112,22 +113,34 @@ public class AgenteAgenciaTurismo extends Agent {
         }
     }
 
-    public void agregarComportamiento() {
-        addBehaviour(new BuscarPaquete());
+    public float getDescuentoTransporte() {
+        return descuentoTransporte;
     }
 
-    private void cargarAgencia(Object[] args) {
+    public float getDescuentoLugar() {
+        return descuentoLugar;
+    }
+
+    public float getComision() {
+        return comision;
+    }
+    
+    private void mostrarDatos(){
+        mostrarGui = new VentanaMostrarAgencia(this);
+        mostrarGui.setVisible(true);
+    }
+
+    public void agregarComportamiento() {
+        addBehaviour(new BuscarPaquete());
+        addBehaviour(new MostrarInformacion());
+        addBehaviour(new AsociarServicio());
+    }
+    
+    public void asociarTodosServicios(){
         ArrayList<AID> transportesDF = new ArrayList<>();
         ArrayList<AID> lugaresDF = new ArrayList<>();
         DFAgentDescription [] resultadosTransporte;
         DFAgentDescription[] resultadosLugar;
-        float argsComision= Integer.parseInt(args[0].toString());
-        float argsDtoLugar= Integer.parseInt(args[1].toString());
-        float argsDtoT= Integer.parseInt(args[2].toString());
-        this.descuentoLugar = argsDtoLugar / 100;
-        this.comision = 1 + (argsComision / 100);
-        this.descuentoTransporte = argsDtoT / 100;
-        
         //Buscar todos los transportes registrados
         ServiceDescription servicio = new ServiceDescription();
         servicio.setType("Transporte");
@@ -159,7 +172,32 @@ public class AgenteAgenciaTurismo extends Agent {
         
         //Asignar los lugares y transportes encontrados
         asignarServicios(transportesDF, lugaresDF);
+    }
+
+    private void cargarAgencia(Object[] args) {
         
+        float argsComision= Integer.parseInt(args[0].toString());
+        float argsDtoLugar= Integer.parseInt(args[1].toString());
+        float argsDtoT= Integer.parseInt(args[2].toString());
+        this.descuentoLugar = argsDtoLugar / 100;
+        this.comision = 1 + (argsComision / 100);
+        this.descuentoTransporte = argsDtoT / 100;
+        
+        
+        
+        
+    }
+    
+    private class MostrarInformacion extends CyclicBehaviour{
+        private ACLMessage infoM;
+        @Override
+        public void action() {
+            MessageTemplate mtInfo = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+            infoM = myAgent.receive(mtInfo);
+            if (infoM != null) {
+                mostrarDatos();
+            }
+        }
         
     }
 

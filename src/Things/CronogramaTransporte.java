@@ -106,6 +106,30 @@ public class CronogramaTransporte {
     public Calidad getCalidad() {
         return calidad;
     }
+    
+    public String getCalidadString() {
+        String calidadString;
+        switch(calidad){
+            case BUSSINES:
+                calidadString="BUSSINES";
+            break;
+            case TURISTA:
+                calidadString="TURISTA";
+            break;
+            case PRIMERACLASE:
+                calidadString="PRIMERACLASE";
+            break;
+            case SEMICAMA:
+                calidadString="SEMICAMA";
+            break;
+            case CAMA:
+                calidadString="CAMA";
+            break;
+            default:
+                calidadString="EJECUTIVO";
+        }
+        return calidadString;
+    }
 
     public void setCalidad(Calidad calidad) {
         this.calidad = calidad;

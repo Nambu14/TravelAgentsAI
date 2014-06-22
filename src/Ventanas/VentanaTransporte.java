@@ -1548,7 +1548,7 @@ public class VentanaTransporte extends javax.swing.JFrame {
         // TODO add your handling code here:
         int[] seleccion = listaAgencias.getSelectedIndices();
         AID[] agenciasAID = new AID[seleccion.length];
-        for(int index: seleccion){
+        for(int index=0; index<seleccion.length; index++){
             agenciasAID[index]=resultados[seleccion[index]].getName();
         }
         ACLMessage suscribir = new ACLMessage(ACLMessage.SUBSCRIBE);

@@ -113,6 +113,11 @@ public class PantallaInicial extends javax.swing.JFrame {
         });
 
         verCargados.setText("Ver servicios cargados");
+        verCargados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verCargadosActionPerformed(evt);
+            }
+        });
 
         abrirJade.setText("Abrir plataforma JADE");
         abrirJade.addActionListener(new java.awt.event.ActionListener() {
@@ -232,6 +237,7 @@ public class PantallaInicial extends javax.swing.JFrame {
         try {
            ac= mainContainer.createNewAgent(nombreServicio.getText(), "Agents.AgenteTransporte", null);
            ac.start();
+           
         } catch (StaleProxyException ex) {
 	   JOptionPane.showMessageDialog(this, "Debe elegir otro nombre de servicio", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -257,6 +263,18 @@ public class PantallaInicial extends javax.swing.JFrame {
 	   JOptionPane.showMessageDialog(this, "No se puede cargar el RMA", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_abrirJadeActionPerformed
+
+    private void verCargadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verCargadosActionPerformed
+        // TODO add your handling code here:
+        AgentController agenteBuscar;
+        try {
+            agenteBuscar = mainContainer.createNewAgent("Busqueda", "Agents.AgenteBuscar", null);
+            agenteBuscar.start();
+            
+        } catch (StaleProxyException ex) {
+            Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_verCargadosActionPerformed
     
     private void cargarEscenario() {
         AgentController v1;
@@ -264,25 +282,9 @@ public class PantallaInicial extends javax.swing.JFrame {
         AgentController v3;
         AgentController aLugar1 = null;
         AgentController aLugar2 = null;
-        AgentController aLugar3 = null;
-        AgentController aLugar4 = null;
-        AgentController aLugar5 = null;
-        AgentController aLugar6 = null;
         AgentController aTransporte1 = null;
         AgentController aTransporte2 = null;
-        AgentController aTransporte3 = null;
-        AgentController aTransporte4 = null;
-        AgentController aTransporte5 = null;
-        AgentController aTransporte6 = null;
-        
-        //crear arreglos para hacer mas facil la creación
-        AgentController[] lugares = new  AgentController[6];
-        AgentController [] transportes = new  AgentController[6];
-        //cargar arreglos
-        lugares[0]=aLugar1; lugares[1]=aLugar2; lugares[2]=aLugar3; lugares[3]=aLugar4; lugares[4]=aLugar5; lugares[5]=aLugar6;
-        transportes[0]=aTransporte1; transportes[1]=aTransporte2; transportes[2]=aTransporte3; 
-        transportes[3]=aTransporte4; transportes[4]=aTransporte5; transportes[5]=aTransporte6; 
-        
+
         /*Se crean dos casos de Lugar y Transporte
         
         CASO 1 
@@ -294,10 +296,6 @@ public class PantallaInicial extends javax.swing.JFrame {
         Los demás atributos correspondientes dependen del número u orden y serán tratados en el Agente correspondiente
         
         */
-        
-        // argumentos para las agencias que cargan diferentes descuentos estará ordenado [dtoPropio, dtoLugares, dtoTransporteS]
-        
-        String[] argsAg = new String [3];
         
         //argumentos para los lugares y transportes, tendrá una ciudad  y un número que indica con qué se carga en la clase Agente correspondiente
         String[] argsS = {"Buenos Aires","1","Buenos Aires","2","Buenos Aires","3","Buenos Aires","4"};
@@ -321,28 +319,28 @@ public class PantallaInicial extends javax.swing.JFrame {
         
         int d=5;
         for(int i=0; i<=2; i= i+2){
-        try {
+         try {
             aLugar2 = mainContainer.createNewAgent("Lugar"+(i+d), "Agents.AgenteLugar", Arrays.copyOfRange(argsS2, i, i+2));
             aLugar2.start();
             aTransporte2= mainContainer.createNewAgent("Transporte"+(i+d), "Agents.AgenteTransporte", Arrays.copyOfRange(argsS2, i, i+2));
             aTransporte2.start();
-            c=-1;
-        } catch (StaleProxyException ex) {
+            d=d-1;
+         } catch (StaleProxyException ex) {
             Logger.getLogger(PantallaInicial.class.getName()).log(Level.SEVERE, null, ex);
-        }
+         }
         }
         
            
         //CREACIÓN DE AGENCIAS: los descuentos fueron elegidos al azar
         try {
-            argsAg[0]= "42" ; argsAg[1]= "9" ; argsAg[2]= "36";
-            v1= mainContainer.createNewAgent("Agencia1", "Agents.AgenteAgenciaTurismo", argsAg);
+            String[] argsAg1={ "42" ,"9", "36"};
+            v1= mainContainer.createNewAgent("Agencia1", "Agents.AgenteAgenciaTurismo", argsAg1);
             v1.start();
-            argsAg[0]= "51" ; argsAg[1]= "32" ; argsAg[2]= "10";
-            v2= mainContainer.createNewAgent("Agencia2", "Agents.AgenteAgenciaTurismo", argsAg);
+            String[] argsAg2= {"51","32","10"};
+            v2= mainContainer.createNewAgent("Agencia2", "Agents.AgenteAgenciaTurismo", argsAg2);
             v2.start();
-            argsAg[0]= "25" ; argsAg[1]= "37" ; argsAg[2]= "21";
-            v3= mainContainer.createNewAgent("Agencia3", "Agents.AgenteAgenciaTurismo", argsAg);
+            String[] argsAg3= { "25" , "37" ,"21"};
+            v3= mainContainer.createNewAgent("Agencia3", "Agents.AgenteAgenciaTurismo", argsAg3);
             v3.start();
             
         } catch (StaleProxyException ex) {

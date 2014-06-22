@@ -7,6 +7,7 @@ package Agents;
 
 import Things.CronogramaTransporte;
 import Things.Paquete;
+import Ventanas.VentanaMostrarTransporte;
 import Ventanas.VentanaTransporte;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -33,8 +34,9 @@ public class AgenteTransporte extends Agent {
     //Descuento dado por promociones en determinados días.
     private float[] descuentoPorDias = new float[7];
     private String nombre;
-
-    
+    private VentanaMostrarTransporte mostrarGui;
+    private String args1;
+    private int args2;
 
     public enum TipoEmpresa {
 
@@ -47,27 +49,8 @@ public class AgenteTransporte extends Agent {
 
     @Override
     protected void setup() {
-        //Inicializar descuentos
-        descuentoPorPersonas[0] = 0;
-        descuentoPorAnticipacion[0]=0;
-        for(int i=0; i<7; i++){
-            descuentoPorDias[i]=0;
-        }
-        rutas = new ArrayList<>();
+        
         nombre = getLocalName();
-        
-        Object [] args = getArguments();
-        if (args!=null && args.length>0){
-            //para el caso de la creación de escenarios
-            cargarTransporte(args);
-            addBehaviour(new RecibirPedido());
-        }else{
-            //para el caso de llamada desde la interfaz    
-            myGui = new VentanaTransporte(this);
-            myGui.setVisible(true);
-        }    
-        
-
         //Registro en paginas amarillas;
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -80,6 +63,29 @@ public class AgenteTransporte extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
+        
+        //Inicializar descuentos
+        descuentoPorPersonas[0] = 0;
+        descuentoPorAnticipacion[0]=0;
+        for(int i=0; i<7; i++){
+            descuentoPorDias[i]=0;
+        }
+        rutas = new ArrayList<>();
+        
+        //Inicializar atributos
+        Object [] args = getArguments();
+        if (args!=null && args.length>0){
+            //para el caso de la creación de escenarios
+            args1=args[0].toString();
+            args2= Integer.parseInt(args[1].toString());
+            cargarTransporte(args1,args2);
+            agregarComportamiento();
+            
+        }else{
+            //para el caso de llamada desde la interfaz    
+            myGui = new VentanaTransporte(this);
+            myGui.setVisible(true);
+        }    
         
 
     }
@@ -99,9 +105,15 @@ public class AgenteTransporte extends Agent {
     
     public void agregarComportamiento(){
         addBehaviour(new RecibirPedido());
+        addBehaviour(new MostrarInformacion());
     }
     
-    private void definirDescuentosEscenario(int d10anti, int d3psas, int d6Psas) {
+    private void mostrarDatos(){
+        mostrarGui = new VentanaMostrarTransporte(this);
+        mostrarGui.setVisible(true);
+    }
+    
+    private void definirDescuentosEscenario(float d10anti, float d3psas, float d6Psas) {
         //descuentos anticipacion
         for(int i=0; i<10; i++){
             descuentoPorAnticipacion[i]= 0;
@@ -116,9 +128,9 @@ public class AgenteTransporte extends Agent {
             descuentoPorPersonas[i]=0;
         }
         for(int i=3; i<6; i++){
-            descuentoPorPersonas[i]=d3psas;
+            descuentoPorPersonas[i]=d3psas/100;
         }
-        descuentoPorPersonas[6]=d6Psas;
+        descuentoPorPersonas[6]=d6Psas/100;
         
     }
 
@@ -143,10 +155,35 @@ public class AgenteTransporte extends Agent {
         nombre = this.getLocalName();
         this.tipo = tipo; 
     }
+
+    public float[] getDescuentoPorPersonas() {
+        return descuentoPorPersonas;
+    }
+
+    public float[] getDescuentoPorAnticipacion() {
+        return descuentoPorAnticipacion;
+    }
+
+    public float[] getDescuentoPorDias() {
+        return descuentoPorDias;
+    }
+
+    public String getTipoString() {
+        String tipoString;
+        switch(tipo){
+            case TERRESTRE:
+                tipoString="TERRESTRE";
+            break;
+            default:
+                tipoString="AEREA";
+        }
+        return tipoString;
+    }
     
-    private void cargarTransporte(Object[] args) {
+    
+    
+    private void cargarTransporte(String arg1, int arg2) {
         CronogramaTransporte cr;
-        int escenario = Integer.parseInt(args[1].toString());
         descuentoPorAnticipacion = new float[91];
         descuentoPorPersonas = new float[7];
         descuentoPorPersonas[0] = 0;
@@ -160,36 +197,36 @@ public class AgenteTransporte extends Agent {
         salidasT.add(DayOfWeek.FRIDAY);
         salidasT.add(DayOfWeek.SATURDAY);
         salidasT.add(DayOfWeek.SUNDAY);
-        switch (escenario){
+        switch (arg2){
             case 1:
                 //Primer escenario: descuento de 5% desde 10 dias de anticipacion y aumentando diariamente en 0,5%
                 //Descuentos por días: Lunes a Jueves : 16%
                 //Descuento por cantidad de personas: no hay
                 definirDescuentosEscenario(5,0,0);
                 for(int i= 0; i<=3; i++){
-                    descuentoPorDias[i]= 16/100;
+                    descuentoPorDias[i]= 16.0f/100;
                 }
                 
-                if(args[0].toString().equalsIgnoreCase("Buenos Aires")){
+                if(arg1.equalsIgnoreCase("Buenos Aires")){
                     precioEsc=583;
                 }else{precioEsc=213;}
                 
                 tipo = TipoEmpresa.TERRESTRE;
-                cr= new CronogramaTransporte("Corrientes", args[0].toString(), precioEsc, 100, salidasT, CronogramaTransporte.Calidad.SEMICAMA);
+                cr= new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.SEMICAMA);
                 rutas.add(cr);
                 break;
             case 2: 
                 //Segundo escenario: descuento de 7% desde 10 dias de anticipacion y aumentando diariamente en 0,7%
                 //Descuentos por días: no hay
-                //Descuento por cantidad de personas: desde 3 3%, desde 6 6%;
-                definirDescuentosEscenario(7,3,6);
+                //Descuento por cantidad de personas: desde 3 3%, desde 6 7%;
+                definirDescuentosEscenario(7,3,7);
 
-                 if(args[0].toString().equalsIgnoreCase("Buenos Aires")){
+                 if(arg1.equalsIgnoreCase("Buenos Aires")){
                     precioEsc=624;
                 }else{precioEsc=250;}
                  
                 tipo = TipoEmpresa.TERRESTRE;
-                cr= new CronogramaTransporte("Corrientes", args[0].toString(), precioEsc, 100, salidasT, CronogramaTransporte.Calidad.CAMA);
+                cr= new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.CAMA);
                 rutas.add(cr); 
                 break;
             case 3:
@@ -197,14 +234,14 @@ public class AgenteTransporte extends Agent {
                 //Descuentos por días: Miércoles Viernes y Domingo : 22%
                 //Descuento por cantidad de personas: desde 3 5%, desde 6 11%;
                 definirDescuentosEscenario(2,5,11);
-                descuentoPorDias[2]= 22/100;
-                descuentoPorDias[4]= 22/100;
-                descuentoPorDias[6]= 22/100;
+                descuentoPorDias[2]= 22.0f/100;
+                descuentoPorDias[4]= 22.0f/100;
+                descuentoPorDias[6]= 22.0f/100;
                 
                 precioEsc = 716;
                 
                 tipo = TipoEmpresa.TERRESTRE;
-                cr= new CronogramaTransporte("Corrientes", args[0].toString(), precioEsc, 100, salidasT, CronogramaTransporte.Calidad.EJECUTIVO);
+                cr= new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.EJECUTIVO);
                 rutas.add(cr);
                 break;
             case 4:
@@ -212,18 +249,34 @@ public class AgenteTransporte extends Agent {
                 //Descuentos por días: Miércoles : 18%
                 //Descuento por cantidad de personas: desde 3 6%, desde 6 15%;
                 definirDescuentosEscenario(4,6,15);
-                descuentoPorDias[2]= 18/100;
+                descuentoPorDias[2]= 18.0f/100;
                 
                 precioEsc=1600;
                 
                 tipo = TipoEmpresa.AEREA;
-                cr= new CronogramaTransporte("Corrientes", args[0].toString(), precioEsc, 100, salidasT, CronogramaTransporte.Calidad.TURISTA);
+                cr= new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.TURISTA);
                 rutas.add(cr);
                 break;
                 
         }
         
     }
+    
+    private class MostrarInformacion extends CyclicBehaviour{
+        private ACLMessage infoM;
+
+        @Override
+        public void action() {
+            MessageTemplate mtInfo = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+            infoM = myAgent.receive(mtInfo);
+            if (infoM != null) {
+                mostrarDatos();
+            }
+        }
+        
+    }
+    
+    
 
     private class RecibirPedido extends CyclicBehaviour {
 

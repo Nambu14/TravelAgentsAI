@@ -9,7 +9,7 @@ import Agents.AgenteLugar.Tipo;
 import Things.LugarWrapper;
 import Things.Paquete;
 import Ventanas.VentanaLugar;
-import Ventanas.VentanaMostrar;
+import Ventanas.VentanaMostrarLugar;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
@@ -27,6 +27,85 @@ public class AgenteLugar extends Agent {
 
     private String ciudad;
 
+    
+    private int precioPersona;
+    private String[] servicios;
+       
+    private float[] descuentoPorPersonas = new float[1];
+    private float[] descuentoPorAnticipacion = new float[1];
+    private float[] descuentoPorCantidadDeDias = new float [1];
+
+
+
+
+    
+    public enum Tipo {
+
+        HOTEL, APART, CABAÑA, HOSTAL
+    };
+    private String nombre;
+    private int calidad;
+    private Tipo tipo;
+    private VentanaLugar myGui;
+    private VentanaMostrarLugar mostrarGui;
+    private String args1;
+    private int args2;
+    
+    @Override
+    protected void setup() {
+        nombre = this.getLocalName();
+        
+        //Registro en paginas amarillas
+        DFAgentDescription dfd = new DFAgentDescription();
+        dfd.setName(getAID());
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("Lugar");
+        sd.setName(nombre);
+        dfd.addServices(sd);
+        try {
+            DFService.register(this, dfd);
+        } catch (FIPAException fe) {
+            fe.printStackTrace();
+        }
+        
+        //Inicialización de atributos
+        Object[] args = this.getArguments();
+        if (args!=null && args.length>0){
+            args1=args[0].toString();
+            args2= Integer.parseInt(args[1].toString());
+            //para el caso de la creación de escenarios
+            cargarLugar(args1,args2);
+            agregarComportamiento();
+            
+            
+        }else{
+            myGui = new VentanaLugar(this);
+            myGui.setVisible(true);
+        }    
+        
+        
+    }
+
+    // Métodos llamados desde la interfaz, donde ya se crean los arreglos
+    public void definirLugar(String ciudad, int precio, int calidad, Tipo tipo) {
+        this.ciudad = ciudad;
+        precioPersona = precio;
+        this.calidad = calidad;
+        this.tipo = tipo;
+    }
+
+    public void asignarServicios(String[] servicios) {
+        this.servicios = servicios;
+    }
+
+    public void asignarDescuentoPersonas(float[] dtoPsas) {
+        descuentoPorPersonas = dtoPsas;
+    }
+
+    public void asignarDescuentoDias(float[] dtoDias) {
+        descuentoPorCantidadDeDias = dtoDias;
+    }
+    
     public String[] getServicios() {
         return servicios;
     }
@@ -50,81 +129,6 @@ public class AgenteLugar extends Agent {
     public int getCalidad() {
         return calidad;
     }
-    private int precioPersona;
-    private String[] servicios;
-       
-    private float[] descuentoPorPersonas = new float[1];
-    private float[] descuentoPorAnticipacion = new float[1];
-    private float[] descuentoPorCantidadDeDias = new float [1];
-
-
-
-
-    
-    public enum Tipo {
-
-        HOTEL, APART, CABAÑA, HOSTAL
-    };
-    private String nombre;
-    private int calidad;
-    private Tipo tipo;
-    private VentanaLugar myGui;
-    private VentanaMostrar mostrarGui;
-    private String args1;
-    private int args2;
-    
-    @Override
-    protected void setup() {
-        nombre = this.getLocalName();
-        
-        Object[] args = this.getArguments();
-        if (args!=null && args.length>0){
-            args1=args[0].toString();
-            args2= Integer.parseInt(args[1].toString());
-            //para el caso de la creación de escenarios
-            cargarLugar(args1,args2);
-            addBehaviour(new RecibirPedido());
-            mostrarGui = new VentanaMostrar(this,args1,args2);
-            mostrarGui.setVisible(true);
-            
-        }else{
-            myGui = new VentanaLugar(this);
-            myGui.setVisible(true);
-        }    
-        
-        //Registro en paginas amarillas
-        DFAgentDescription dfd = new DFAgentDescription();
-        dfd.setName(getAID());
-        ServiceDescription sd = new ServiceDescription();
-        sd.setType("Lugar");
-        sd.setName(nombre);
-        dfd.addServices(sd);
-        try {
-            DFService.register(this, dfd);
-        } catch (FIPAException fe) {
-            fe.printStackTrace();
-        }
-    }
-
-    // Métodos llamados desde la interfaz, donde ya se crean los arreglos
-    public void definirLugar(String ciudad, int precio, int calidad, Tipo tipo) {
-        this.ciudad = ciudad;
-        precioPersona = precio;
-        this.calidad = calidad;
-        this.tipo = tipo;
-    }
-
-    public void asignarServicios(String[] servicios) {
-        this.servicios = servicios;
-    }
-
-    public void asignarDescuentoPersonas(float[] dtoPsas) {
-        descuentoPorPersonas = dtoPsas;
-    }
-
-    public void asignarDescuentoDias(float[] dtoDias) {
-        descuentoPorCantidadDeDias = dtoDias;
-    }
 
     public void asignarDescuentoAnticipación(float[] dtoAnticipacion) {
         descuentoPorAnticipacion = dtoAnticipacion;
@@ -145,7 +149,8 @@ public class AgenteLugar extends Agent {
         return ciudad;
     }
     
-        private void cargarLugar(String argsCiudad, int argES) {
+        
+    private void cargarLugar(String argsCiudad, int argES) {
         
         descuentoPorAnticipacion = new float[91];
         descuentoPorPersonas = new float[17];
@@ -208,7 +213,8 @@ public class AgenteLugar extends Agent {
         return "AgenteLugar{" + "ciudad=" + ciudad + ", servicios=" + servicios + ", nombre=" + nombre + ", calidad=" + calidad + ", tipo=" + tipo + '}';
     }
     public void agregarComportamiento(){
-    addBehaviour(new RecibirPedido());
+        addBehaviour(new RecibirPedido());
+        addBehaviour(new MostrarInformacion());
     }
     
     
@@ -245,6 +251,22 @@ public class AgenteLugar extends Agent {
         descuentoPorPersonas[16]=dto16Psas/100;
     }
 
+    
+    private class MostrarInformacion extends CyclicBehaviour{
+        private ACLMessage infoM;
+
+        @Override
+        public void action() {
+            MessageTemplate mtInfo = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+            infoM = myAgent.receive(mtInfo);
+            if (infoM != null) {
+                mostrarDatos();
+            }
+        }
+        
+    }
+    
+    
     private class RecibirPedido extends CyclicBehaviour {
 
         public void action() {
@@ -303,6 +325,10 @@ public class AgenteLugar extends Agent {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
+    }
+    private void mostrarDatos(){
+        mostrarGui = new VentanaMostrarLugar(this);
+        mostrarGui.setVisible(true);
     }
 
     public float getCalidadGeneral() {
