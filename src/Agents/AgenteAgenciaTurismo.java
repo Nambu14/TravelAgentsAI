@@ -403,6 +403,13 @@ public class AgenteAgenciaTurismo extends Agent {
             propuesta.setAlojamiento(lugar.getAlojamiento());
             propuesta.setPonderacion(preferencias.getPonderacionPrecio());
             propuesta.setCalidadTransporte(transporte.getCalidadTransporte());
+            
+            //verificar que el descuento sea como máximo 100%
+            if(lugar.getPresupuestoMax()>1)
+                lugar.setPresupuestoMax(1);
+            if(transporte.getPresupuestoMax()>1)
+                transporte.setPresupuestoMax(1);
+            
             propuesta.setPrecio((lugar.getPrecio() * (1-lugar.getPresupuestoMax()) + transporte.getPrecio() * (1-transporte.getPresupuestoMax())) * comision);
             return propuesta;
         }

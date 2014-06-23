@@ -767,9 +767,9 @@ public class VentanaTransporte extends javax.swing.JFrame {
         if(max>=anticipacion.length)
             anticipacion = Arrays.copyOf(anticipacion, max+1);
         
-        anticipacion[uno] = Float.parseFloat(dtoPsas1.getText())/100;
-        anticipacion[dos] = Float.parseFloat(dtoPsas2.getText())/100;
-        anticipacion[tres] = Float.parseFloat(dtoPsas3.getText())/100;
+        anticipacion[uno] = Float.parseFloat(dtoA1.getText())/100;
+        anticipacion[dos] = Float.parseFloat(dtoA2.getText())/100;
+        anticipacion[tres] = Float.parseFloat(dtoA3.getText())/100;
         
         limpiarAnticipacion();
        } else { JOptionPane.showMessageDialog(this, "Error: Descuento no puede ser mayor a 100", "Error", JOptionPane.ERROR_MESSAGE);}
@@ -999,13 +999,13 @@ public class VentanaTransporte extends javax.swing.JFrame {
 
     private float[] descuentoDias() {
         float[] dias= new float[7];
-        dias[0] = Float.parseFloat(lunes.getText());
-        dias[1] = Float.parseFloat(martes.getText());
-        dias[2] = Float.parseFloat(miercoles.getText());
-        dias[3] = Float.parseFloat(jueves.getText());
-        dias[4] = Float.parseFloat(viernes.getText());
-        dias[5] = Float.parseFloat(sabado.getText());
-        dias[6] = Float.parseFloat(domingo.getText());
+        dias[0] = Float.parseFloat(lunes.getText())/100;
+        dias[1] = Float.parseFloat(martes.getText())/100;
+        dias[2] = Float.parseFloat(miercoles.getText())/100;
+        dias[3] = Float.parseFloat(jueves.getText())/100;
+        dias[4] = Float.parseFloat(viernes.getText())/100;
+        dias[5] = Float.parseFloat(sabado.getText())/100;
+        dias[6] = Float.parseFloat(domingo.getText())/100;
         return dias;   
     }
     }

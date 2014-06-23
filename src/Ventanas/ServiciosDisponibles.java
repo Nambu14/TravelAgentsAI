@@ -102,7 +102,7 @@ public class ServiciosDisponibles extends javax.swing.JFrame {
             }
         });
 
-        cancelar.setText("Cancelar");
+        cancelar.setText("Cerrar");
         cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelarActionPerformed(evt);
@@ -207,7 +207,7 @@ public class ServiciosDisponibles extends javax.swing.JFrame {
         int[] seleccionT = transportesList.getSelectedIndices();
         AID[] transportesAID = new AID[seleccionT.length];
         for(int index=0; index<seleccionT.length; index++){
-            transportesAID[index]=resultadosLugar[seleccionT[index]].getName();
+            transportesAID[index]=resultadosTransporte[seleccionT[index]].getName();
         }
         
         for(AID tr: transportesAID){
@@ -217,6 +217,9 @@ public class ServiciosDisponibles extends javax.swing.JFrame {
         mostrarInfo.setContent("Información");
         miAgente.send(mostrarInfo);
         
+        agenciasList.removeSelectionInterval(0, resultadosAgencias.length-1);
+        lugaresList.removeSelectionInterval(0, resultadosLugar.length-1);
+        transportesList.removeSelectionInterval(0, resultadosTransporte.length);
         
         
     }//GEN-LAST:event_verInfoActionPerformed

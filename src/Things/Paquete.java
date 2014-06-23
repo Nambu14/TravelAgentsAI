@@ -416,7 +416,13 @@ public final class Paquete implements Comparable {
         } else if (this.heuristica < paquete.getHeuristica()) {
             return (-1);
         } else {
-            return 0;
+            if (this.precio < paquete.getPrecio()) {
+                return 1;
+            } else if (this.precio > paquete.getPrecio()) {
+                return (-1);
+            }else{
+                return 0;
+            }
         }
     }
 

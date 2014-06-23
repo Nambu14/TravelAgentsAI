@@ -285,7 +285,7 @@ public class AgenteLugar extends Agent {
                     //Primer mensaje recibido
                     if (pref.getCantidadPersonas() > 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                        pref.setPrecio(precioPersona * pref.getCantidadPersonas());
+                        pref.setPrecio(precioPersona * pref.getCantidadPersonas()*pref.getDuracion());
                         pref.setCantidadPersonas(-1*pref.getCantidadPersonas());
                         pref.setPresupuestoMax(0);
                     //Dar descuentos

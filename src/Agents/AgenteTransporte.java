@@ -288,7 +288,9 @@ public class AgenteTransporte extends Agent {
                 ACLMessage respuestaT = msg.createReply();
                 Paquete pref;
                 pref = Paquete.stringToPaquete(msg.getContent());
+                
                 if (msg.getPerformative() == ACLMessage.CFP) {
+
                     //Verificar que existan rutas para los días de salida y vuelta
                     boolean existeRutaIda = false;
                     boolean existeRutaVuelta = true;
