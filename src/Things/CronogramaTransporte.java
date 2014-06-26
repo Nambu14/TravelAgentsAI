@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 
 /**
  *
- *
+ *  Clase dedicada a representar las distintas rutas que tienen las empresas de tranporte
  */
 public class CronogramaTransporte {
 

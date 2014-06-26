@@ -21,8 +21,6 @@ import jade.lang.acl.MessageTemplate;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,6 +29,7 @@ import javax.swing.JOptionPane;
  */
 public class AgenteTurista extends Agent {
 
+    //Atributos
     private Paquete preferencias;
     private AID[] agenciasTurismo;
     private ArrayList<Paquete> ofertas;
@@ -104,7 +103,7 @@ public class AgenteTurista extends Agent {
                     MessageTemplate mt = MessageTemplate.MatchConversationId("Busqueda de Paquete");
                     ACLMessage respuesta = myAgent.receive(mt);
                     if (respuesta != null) {
-                        
+
                         //Procesar ofertas
                         if (respuesta.getPerformative() == ACLMessage.PROPOSE) {
                             Paquete propuesta = Paquete.stringToPaquete(respuesta.getContent());
@@ -120,16 +119,13 @@ public class AgenteTurista extends Agent {
                         } else {
                             //No hay posiblidad de formar un paquete con los requerimientos solicitados en esta agencia.
                         }
-                        
+
                         contadorRespuesta++;
                     } else {
                         block();
                     }
-
-                    
                 }
             }
-
         }
 
         @Override
@@ -140,11 +136,10 @@ public class AgenteTurista extends Agent {
                     ACLMessage mensajeAcept = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
                     mensajeAcept.addReceiver(mejorAID);
                     myAgent.send(mensajeAcept);
-                    mejor =ofertas.get(0);
+                    mejor = ofertas.get(0);
                     mejor.actualizar();
                     PantallaResultado pr = new PantallaResultado(mejor);
                     pr.setVisible(true);
-                                        
                 } else {
                     JOptionPane.showMessageDialog(null, "No hay servicios disponibles para el viaje que desea realizar.", ":-(", JOptionPane.ERROR_MESSAGE);
                 }

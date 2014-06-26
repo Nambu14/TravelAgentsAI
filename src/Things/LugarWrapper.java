@@ -9,7 +9,7 @@ import Agents.AgenteLugar.Tipo;
 
 /**
  *
- * @author Lucas
+ * clase encargada de ser envoltorio de los atributos de un lugar
  */
 public class LugarWrapper {
 
@@ -109,6 +109,7 @@ public class LugarWrapper {
     }
 
     public String lugarToString() {
+        //Representación del lugar en forma de String, separando de forma ordenada los atributos
         String str;
         String temp;
         if (servicios.length != 0) {
@@ -124,14 +125,14 @@ public class LugarWrapper {
     }
 
     public static LugarWrapper stringToLugar(String str) {
+        //Creación de un LugarWrapper a partir de un String
         LugarWrapper lugar = new LugarWrapper();
         String[] wrapper = str.split("--");
-        if("null".equalsIgnoreCase(wrapper[0])){
+        if ("null".equalsIgnoreCase(wrapper[0])) {
             lugar.setNombre(null);
-        }else{
+        } else {
             lugar.setNombre(wrapper[0]);
         }
-        
         switch (wrapper[1]) {
             case "HOTEL":
                 lugar.setTipo(Tipo.HOTEL);

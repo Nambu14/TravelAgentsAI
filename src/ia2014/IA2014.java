@@ -23,10 +23,11 @@ import java.util.logging.Logger;
 public class IA2014 {
 
     /**
-     * @param args the command line arguments
+     * Lugar de prueba rápida de distintas cosas...
      */
     public static void main(String[] args) throws Exception {
-
+        
+        
         String[] service = {"Pileta", "Pool", "Baño", "sala de estar", "juegos"};
         String[] service2 = {"Baño", "sala de estar", "juegos"};
         LugarWrapper lugarcito = new LugarWrapper("mundo canino", AgenteLugar.Tipo.HOTEL, 5, service);

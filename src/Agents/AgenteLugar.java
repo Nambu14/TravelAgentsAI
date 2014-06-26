@@ -22,24 +22,18 @@ import java.util.GregorianCalendar;
 
 /**
  *
- * @author Lucas
+ * Agente dedicado a representar a una empresa de Lugar
  */
 public class AgenteLugar extends Agent {
 
+    //Atributos
     private String ciudad;
-
-    
     private int precioPersona;
     private String[] servicios;
-       
     private float[] descuentoPorPersonas = new float[1];
     private float[] descuentoPorAnticipacion = new float[1];
-    private float[] descuentoPorCantidadDeDias = new float [1];
+    private float[] descuentoPorCantidadDeDias = new float[1];
 
-
-
-
-    
     public enum Tipo {
 
         HOTEL, APART, CABAÑA, HOSTAL
@@ -51,11 +45,11 @@ public class AgenteLugar extends Agent {
     private VentanaMostrarLugar mostrarGui;
     private String args1;
     private int args2;
-    
+
     @Override
     protected void setup() {
         nombre = this.getLocalName();
-        
+
         //Registro en paginas amarillas
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -68,23 +62,19 @@ public class AgenteLugar extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        
+
         //Inicialización de atributos
         Object[] args = this.getArguments();
-        if (args!=null && args.length>0){
-            args1=args[0].toString();
-            args2= Integer.parseInt(args[1].toString());
+        if (args != null && args.length > 0) {
+            args1 = args[0].toString();
+            args2 = Integer.parseInt(args[1].toString());
             //para el caso de la creación de escenarios
-            cargarLugar(args1,args2);
+            cargarLugar(args1, args2);
             agregarComportamiento();
-            
-            
-        }else{
+        } else {
             myGui = new VentanaLugar(this);
             myGui.setVisible(true);
-        }    
-        
-        
+        }
     }
 
     // Métodos llamados desde la interfaz, donde ya se crean los arreglos
@@ -106,7 +96,7 @@ public class AgenteLugar extends Agent {
     public void asignarDescuentoDias(float[] dtoDias) {
         descuentoPorCantidadDeDias = dtoDias;
     }
-    
+
     public String[] getServicios() {
         return servicios;
     }
@@ -142,6 +132,7 @@ public class AgenteLugar extends Agent {
             fe.printStackTrace();
         }
     }
+
     public int getPrecioPersona() {
         return precioPersona;
     }
@@ -149,111 +140,104 @@ public class AgenteLugar extends Agent {
     public String getCiudad() {
         return ciudad;
     }
-    
-        
+
     private void cargarLugar(String argsCiudad, int argES) {
-        
+
         descuentoPorAnticipacion = new float[91];
         descuentoPorPersonas = new float[17];
         descuentoPorCantidadDeDias = new float[31];
         descuentoPorPersonas[0] = 0;
-        descuentoPorAnticipacion[0]=0;
+        descuentoPorAnticipacion[0] = 0;
         descuentoPorCantidadDeDias[0] = 0;
-        
-        
-        switch (argES){
+
+        switch (argES) {
             case 1:
                 //Primer escenario: descuento de 5% desde 10 dias de anticipacion y aumentando diariamente en 0,5%
                 //Descuentos por días: Desde 10 dias 0%, desde 20 5%, desde 30 10%
                 //Descuento por cantidad de personas: no hay
-                definirDescuentosEscenario(5, 0,20,30, 0,0);
+                definirDescuentosEscenario(5, 0, 20, 30, 0, 0);
                 definirLugar(argsCiudad, 100, 2, Tipo.HOTEL);
-                
                 //servicios
-                String [] serviciosDef= {"AA/CC - Calefacción", "TV con Cable", "Internet WiFi", "Servicio de Limpieza"};
+                String[] serviciosDef = {"AA/CC - Calefacción", "TV con Cable", "Internet WiFi", "Servicio de Limpieza"};
                 asignarServicios(serviciosDef);
                 break;
-            case 2: 
+            case 2:
                 //Segundo escenario: descuento de 7% desde 10 dias de anticipacion y aumentando diariamente en 0,7%
                 //Descuentos por días: Desde 10 dias 2%, desde 20 8%, desde 30 15%
                 //Descuento por cantidad de personas: desde 8 3%, desde 16 6%;
-                definirDescuentosEscenario(7, 2, 8, 15, 3,6);
-                definirLugar(argsCiudad, 200,4,Tipo.HOTEL);
+                definirDescuentosEscenario(7, 2, 8, 15, 3, 6);
+                definirLugar(argsCiudad, 200, 4, Tipo.HOTEL);
                 //servicios
-                String [] serviciosDef2={"AA/CC - Calefacción", "Media Pensión", "Garage", "Salón de Juegos", "Piscina", "TV con Cable", "Internet WiFi", "Servicio de Limpieza", "Servicio al Cuarto", "Gimnasio"};
+                String[] serviciosDef2 = {"AA/CC - Calefacción", "Media Pensión", "Garage", "Salón de Juegos", "Piscina", "TV con Cable", "Internet WiFi", "Servicio de Limpieza", "Servicio al Cuarto", "Gimnasio"};
                 asignarServicios(serviciosDef2);
                 break;
             case 3:
                 //Tercer escenario: descuento de 2% desde 10 dias de anticipacion y aumentando diariamente en 0,2%
                 //Descuentos por días: Desde 10 dias 10%, desde 20 15%, desde 30 20%
                 //Descuento por cantidad de personas: desde 8 5%, desde 16 11%;
-                definirDescuentosEscenario(2, 10,15,20, 5,11);
-                definirLugar(argsCiudad, 250,4,Tipo.APART);
+                definirDescuentosEscenario(2, 10, 15, 20, 5, 11);
+                definirLugar(argsCiudad, 250, 4, Tipo.APART);
                 //SERVICIOS
-                String [] serviciosDef3={"AA/CC - Calefacción", "Garage", "Piscina", "Sauna", "TV con Cable", "Internet WiFi", "Servicio de Limpieza", "Servicio al Cuarto", "Admiten Mascotas"};
+                String[] serviciosDef3 = {"AA/CC - Calefacción", "Garage", "Piscina", "Sauna", "TV con Cable", "Internet WiFi", "Servicio de Limpieza", "Servicio al Cuarto", "Admiten Mascotas"};
                 asignarServicios(serviciosDef3);
                 break;
             case 4:
                 //Cuarto escenario: descuento de 4% desde 10 dias de anticipacion y aumentando diariamente en 0,4%
                 //Descuentos por días: Desde 10 dias 4%, desde 20 12%, desde 30 26%
                 //Descuento por cantidad de personas: desde 8 6%, desde 16 15%;
-                definirDescuentosEscenario(4, 4,12,26, 6,15);
-                definirLugar(argsCiudad, 120,3,Tipo.CABAÑA);
+                definirDescuentosEscenario(4, 4, 12, 26, 6, 15);
+                definirLugar(argsCiudad, 120, 3, Tipo.CABAÑA);
                 //SERVICIOS
-                String [] serviciosDef4={"AA/CC - Calefacción", "Garage", "Piscina", "TV con Cable", "Internet WiFi", "Servicio de Limpieza", "Admiten Mascotas"};
+                String[] serviciosDef4 = {"AA/CC - Calefacción", "Garage", "Piscina", "TV con Cable", "Internet WiFi", "Servicio de Limpieza", "Admiten Mascotas"};
                 asignarServicios(serviciosDef4);
                 break;
-                
         }
-        
-            
     }
 
     @Override
     public String toString() {
         return "AgenteLugar{" + "ciudad=" + ciudad + ", servicios=" + servicios + ", nombre=" + nombre + ", calidad=" + calidad + ", tipo=" + tipo + '}';
     }
-    public void agregarComportamiento(){
+
+    public void agregarComportamiento() {
         addBehaviour(new RecibirPedido());
         addBehaviour(new MostrarInformacion());
     }
-    
-    
+
     private void definirDescuentosEscenario(float dtoAnti10, float DtoDias10, float DtoDias20, float DtoDias30, float dto8Psas, float dto16Psas) {
         //Descuentos Anticipacion
-        for(int i=0; i<10;i++){
-            descuentoPorAnticipacion[i]=0;
+        for (int i = 0; i < 10; i++) {
+            descuentoPorAnticipacion[i] = 0;
         }
-        descuentoPorAnticipacion[10]=dtoAnti10/100;
-        for(int i=11; i<descuentoPorAnticipacion.length;i++){
-            descuentoPorAnticipacion[i]=descuentoPorAnticipacion[i-1]+dtoAnti10/1000;
+        descuentoPorAnticipacion[10] = dtoAnti10 / 100;
+        for (int i = 11; i < descuentoPorAnticipacion.length; i++) {
+            descuentoPorAnticipacion[i] = descuentoPorAnticipacion[i - 1] + dtoAnti10 / 1000;
         }
-        
+
         //Descuentos Cantidad de dias
-        for(int i=0; i<10;i++){
-            descuentoPorCantidadDeDias[i]=0;
+        for (int i = 0; i < 10; i++) {
+            descuentoPorCantidadDeDias[i] = 0;
         }
-        for(int i=10; i<20;i++){
-            descuentoPorCantidadDeDias[i]=DtoDias10/100;
+        for (int i = 10; i < 20; i++) {
+            descuentoPorCantidadDeDias[i] = DtoDias10 / 100;
         }
-        for(int i=20; i<30;i++){
-            descuentoPorCantidadDeDias[i]=DtoDias20/100;
+        for (int i = 20; i < 30; i++) {
+            descuentoPorCantidadDeDias[i] = DtoDias20 / 100;
         }
-        descuentoPorCantidadDeDias[30]=DtoDias30/100;
-        
-        
+        descuentoPorCantidadDeDias[30] = DtoDias30 / 100;
+
         //Descuentos cantidad de personas
-        for(int i=0; i<8;i++){
-            descuentoPorPersonas[i]=0;
+        for (int i = 0; i < 8; i++) {
+            descuentoPorPersonas[i] = 0;
         }
-        for(int i=8; i<16;i++){
-            descuentoPorPersonas[i]=dto8Psas/100;
+        for (int i = 8; i < 16; i++) {
+            descuentoPorPersonas[i] = dto8Psas / 100;
         }
-        descuentoPorPersonas[16]=dto16Psas/100;
+        descuentoPorPersonas[16] = dto16Psas / 100;
     }
 
-    
-    private class MostrarInformacion extends CyclicBehaviour{
+    private class MostrarInformacion extends CyclicBehaviour {
+
         private ACLMessage infoM;
 
         @Override
@@ -264,14 +248,14 @@ public class AgenteLugar extends Agent {
                 mostrarDatos();
             }
         }
-        
+
     }
-    
-    
+
     private class RecibirPedido extends CyclicBehaviour {
 
         public void action() {
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+            //Recibir mensaje de agentes empresa de turismo
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
                 // si ya se aplicaron descuentos los valores en el paquete van a ser 0 (CantPsas, duracion, anticipacion)
@@ -282,51 +266,51 @@ public class AgenteLugar extends Agent {
                 if (pref.getDestino().equalsIgnoreCase(getCiudad())) {
                     LugarWrapper alojamiento = new LugarWrapper(nombre, tipo, calidad, servicios);
                     pref.setAlojamiento(alojamiento);
-                    //Primer mensaje recibido
+                    //En caso de que sea el primer mensaje recibido de una agencia específica
                     if (pref.getCantidadPersonas() > 0) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
-                        pref.setPrecio(precioPersona * pref.getCantidadPersonas()*pref.getDuracion());
-                        pref.setCantidadPersonas(-1*pref.getCantidadPersonas());
+                        pref.setPrecio(precioPersona * pref.getCantidadPersonas() * pref.getDuracion());
+                        pref.setCantidadPersonas(-1 * pref.getCantidadPersonas());
                         pref.setPresupuestoMax(0);
-                    //Dar descuentos
-                    //Descuentos según cantidad de personas
-                    } else if ((pref.getCantidadPersonas() < 0) && descuentoPorPersonas.length >1){
+                        //Dar descuentos
+                        //Descuentos según cantidad de personas
+                    } else if ((pref.getCantidadPersonas() < 0) && descuentoPorPersonas.length > 1) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto;
-                        if ((-1*pref.getCantidadPersonas())<descuentoPorPersonas.length){
-                            dto = descuentoPorPersonas[-1*pref.getCantidadPersonas()];
-                        }else{
+                        if ((-1 * pref.getCantidadPersonas()) < descuentoPorPersonas.length) {
+                            dto = descuentoPorPersonas[-1 * pref.getCantidadPersonas()];
+                        } else {
                             dto = descuentoPorPersonas[descuentoPorPersonas.length - 1];
                         }
                         pref.setPresupuestoMax(dto);
                         pref.setCantidadPersonas(0);
-                    //Descuentos según duración del viaje
-                    } else if (pref.getDuracion() != 0 && descuentoPorCantidadDeDias.length >1) {
+                        //Descuentos según duración del viaje
+                    } else if (pref.getDuracion() != 0 && descuentoPorCantidadDeDias.length > 1) {
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto;
-                        if(pref.getDuracion()<descuentoPorCantidadDeDias.length){
+                        if (pref.getDuracion() < descuentoPorCantidadDeDias.length) {
                             dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[pref.getDuracion()];
-                        }else{
-                            dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[descuentoPorCantidadDeDias.length -1]; 
+                        } else {
+                            dto = pref.getPresupuestoMax() + descuentoPorCantidadDeDias[descuentoPorCantidadDeDias.length - 1];
                         }
                         pref.setPresupuestoMax(dto);
                         pref.setDuracion(0);
-                    //Descuentos según anticipación de reserva
-                    } else if (pref.getAnticipacion() != 0 && descuentoPorAnticipacion.length >1) {
+                        //Descuentos según anticipación de reserva
+                    } else if (pref.getAnticipacion() != 0 && descuentoPorAnticipacion.length > 1) {
                         //calculo anticipacion
                         GregorianCalendar cal = new GregorianCalendar();
                         int anticipacion = Paquete.daysBetween(cal, pref.getFechaInicialSuperior());
-                        
                         respuestaLugar.setPerformative(ACLMessage.PROPOSE);
                         float dto;
-                        if(anticipacion<descuentoPorAnticipacion.length){
-                            dto= pref.getPresupuestoMax() + descuentoPorAnticipacion[anticipacion];
-                        }else{
-                            dto= pref.getPresupuestoMax() + descuentoPorAnticipacion[descuentoPorAnticipacion.length -1];
+                        if (anticipacion < descuentoPorAnticipacion.length) {
+                            dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[anticipacion];
+                        } else {
+                            dto = pref.getPresupuestoMax() + descuentoPorAnticipacion[descuentoPorAnticipacion.length - 1];
                         }
                         pref.setPresupuestoMax(dto);
                         pref.setAnticipacion(0);
                     } else {
+                        //No se pueden dar más descuentos.
                         respuestaLugar.setPerformative(ACLMessage.INFORM);
                     }
                     String nuevoPrecio = pref.toStringForMessage();
@@ -351,12 +335,14 @@ public class AgenteLugar extends Agent {
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
-    private void mostrarDatos(){
+
+    private void mostrarDatos() {
         mostrarGui = new VentanaMostrarLugar(this);
         mostrarGui.setVisible(true);
     }
 
     public float getCalidadGeneral() {
+        //Método que cuantifica la cálidad del lugar
         float calidadTipo;
         float calidadEstrella = 0;
         float calidadServicios;

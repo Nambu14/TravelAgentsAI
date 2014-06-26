@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Lucas
+ * clase encargada de funcionar como envoltorio de paquetes turísticos
  */
 public final class Paquete implements Comparable {
 
@@ -92,6 +92,7 @@ public final class Paquete implements Comparable {
     }
 
     public static Paquete stringToPaquete(String string) {
+        //Crear un paquete a partir de un String
         Paquete paquete;
         paquete = new Paquete();
         String[] str = string.split(",,,");
@@ -323,6 +324,7 @@ public final class Paquete implements Comparable {
     }
 
     public String toStringForMessage() {
+        //Generar un String que represente al paquete para ser enviado
         String paqueteString = (origen + ",,," + destino + ",,," + presupuestoMax
                 + ",,," + cantidadPersonas + ",,,"
                 + getDiaFechaInicialInferior() + "--" + getMesFechaInicialInferior()
@@ -358,6 +360,8 @@ public final class Paquete implements Comparable {
     }
 
     public float heuristica(Paquete preferencias) {
+        //Calcular la heurística para comparar entre paquetes.
+        //Asignando puntos dependiendo de cuánto se adecúa el paquete a otro paquete de referencia.
         int puntosPorPrecio = 0;
         int puntosPorCalidad = 0;
         if (precio >= 1.3f * preferencias.getPrecio()) {
@@ -375,7 +379,6 @@ public final class Paquete implements Comparable {
         } else if (precio <= 0.7f * preferencias.getPrecio()) {
             puntosPorPrecio = 3;
         }
-
         if (getCalidadPaquete() >= 1.3f * preferencias.getCalidadPaquete()) {
             puntosPorCalidad = 3;
         } else if ((getCalidadPaquete() >= (1.2f * preferencias.getCalidadPaquete())) && (getCalidadPaquete() < 1.3f * preferencias.getCalidadPaquete())) {
@@ -410,6 +413,7 @@ public final class Paquete implements Comparable {
 
     @Override
     public int compareTo(Object o) {
+        //Métedo de la interfaz Comparable
         Paquete paquete = (Paquete) o;
         if (this.heuristica > paquete.getHeuristica()) {
             return 1;
@@ -420,7 +424,7 @@ public final class Paquete implements Comparable {
                 return 1;
             } else if (this.precio > paquete.getPrecio()) {
                 return (-1);
-            }else{
+            } else {
                 return 0;
             }
         }
@@ -451,15 +455,15 @@ public final class Paquete implements Comparable {
     }
 
     public String getTipoTransporteString() {
-        if(tipoTransporte == TipoEmpresa.AEREA){
+        if (tipoTransporte == TipoEmpresa.AEREA) {
             return "AEREA";
-        }else{
+        } else {
             return "TERRESTRE";
         }
     }
 
     public void actualizar() {
-        Calendar fechaBien= new GregorianCalendar(getAnoFechaInicialInferior(), getMesFechaInicialInferior()+1,getDiaFechaInicialInferior() );
+        Calendar fechaBien = new GregorianCalendar(getAnoFechaInicialInferior(), getMesFechaInicialInferior() + 1, getDiaFechaInicialInferior());
         setFechaInicialInferior(fechaBien.getTime());
     }
 }

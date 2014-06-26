@@ -28,6 +28,7 @@ import java.util.GregorianCalendar;
  */
 public class AgenteTransporte extends Agent {
 
+    //Atributos
     //Hasta determinada cantidad de personas hay descuento, esa cantidad es la longitud del arreglo
     private float[] descuentoPorPersonas = new float[1];
     private float[] descuentoPorAnticipacion = new float[1];
@@ -43,13 +44,12 @@ public class AgenteTransporte extends Agent {
         TERRESTRE, AEREA
     };
     private TipoEmpresa tipo;
-
     private ArrayList<CronogramaTransporte> rutas;
     private VentanaTransporte myGui;
 
     @Override
     protected void setup() {
-        
+
         nombre = getLocalName();
         //Registro en paginas amarillas;
         DFAgentDescription dfd = new DFAgentDescription();
@@ -63,37 +63,33 @@ public class AgenteTransporte extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        
+
         //Inicializar descuentos
         descuentoPorPersonas[0] = 0;
-        descuentoPorAnticipacion[0]=0;
-        for(int i=0; i<7; i++){
-            descuentoPorDias[i]=0;
+        descuentoPorAnticipacion[0] = 0;
+        for (int i = 0; i < 7; i++) {
+            descuentoPorDias[i] = 0;
         }
         rutas = new ArrayList<>();
-        
+
         //Inicializar atributos
-        Object [] args = getArguments();
-        if (args!=null && args.length>0){
+        Object[] args = getArguments();
+        if (args != null && args.length > 0) {
             //para el caso de la creación de escenarios
-            args1=args[0].toString();
-            args2= Integer.parseInt(args[1].toString());
-            cargarTransporte(args1,args2);
+            args1 = args[0].toString();
+            args2 = Integer.parseInt(args[1].toString());
+            cargarTransporte(args1, args2);
             agregarComportamiento();
-            
-        }else{
+
+        } else {
             //para el caso de llamada desde la interfaz    
             myGui = new VentanaTransporte(this);
             myGui.setVisible(true);
-        }    
-        
+        }
 
     }
 
     //Quitar registro de las paginas amarillas
-    /**
-     *
-     */
     @Override
     protected void takeDown() {
         try {
@@ -102,36 +98,35 @@ public class AgenteTransporte extends Agent {
             fe.printStackTrace();
         }
     }
-    
-    public void agregarComportamiento(){
+
+    public void agregarComportamiento() {
         addBehaviour(new RecibirPedido());
         addBehaviour(new MostrarInformacion());
     }
-    
-    private void mostrarDatos(){
+
+    private void mostrarDatos() {
         mostrarGui = new VentanaMostrarTransporte(this);
         mostrarGui.setVisible(true);
     }
-    
+
     private void definirDescuentosEscenario(float d10anti, float d3psas, float d6Psas) {
         //descuentos anticipacion
-        for(int i=0; i<10; i++){
-            descuentoPorAnticipacion[i]= 0;
+        for (int i = 0; i < 10; i++) {
+            descuentoPorAnticipacion[i] = 0;
         }
-        descuentoPorAnticipacion[10]=d10anti/100;
-        for (int i=11; i< descuentoPorAnticipacion.length; i++){
-            descuentoPorAnticipacion[i]= descuentoPorAnticipacion[i-1]+d10anti/1000;
+        descuentoPorAnticipacion[10] = d10anti / 100;
+        for (int i = 11; i < descuentoPorAnticipacion.length; i++) {
+            descuentoPorAnticipacion[i] = descuentoPorAnticipacion[i - 1] + d10anti / 1000;
         }
-        
+
         //descuentos personas
-        for(int i=0; i<3; i++){
-            descuentoPorPersonas[i]=0;
+        for (int i = 0; i < 3; i++) {
+            descuentoPorPersonas[i] = 0;
         }
-        for(int i=3; i<6; i++){
-            descuentoPorPersonas[i]=d3psas/100;
+        for (int i = 3; i < 6; i++) {
+            descuentoPorPersonas[i] = d3psas / 100;
         }
-        descuentoPorPersonas[6]=d6Psas/100;
-        
+        descuentoPorPersonas[6] = d6Psas / 100;
     }
 
     // Métodos llamados desde la interfaz, donde ya se crean los arreglos
@@ -150,10 +145,10 @@ public class AgenteTransporte extends Agent {
     public void addCronogramas(ArrayList<CronogramaTransporte> rutas) {
         this.rutas = rutas;
     }
-        
-    public void setTransporte(TipoEmpresa tipo){
+
+    public void setTransporte(TipoEmpresa tipo) {
         nombre = this.getLocalName();
-        this.tipo = tipo; 
+        this.tipo = tipo;
     }
 
     public float[] getDescuentoPorPersonas() {
@@ -170,24 +165,22 @@ public class AgenteTransporte extends Agent {
 
     public String getTipoString() {
         String tipoString;
-        switch(tipo){
+        switch (tipo) {
             case TERRESTRE:
-                tipoString="TERRESTRE";
-            break;
+                tipoString = "TERRESTRE";
+                break;
             default:
-                tipoString="AEREA";
+                tipoString = "AEREA";
         }
         return tipoString;
     }
-    
-    
-    
+
     private void cargarTransporte(String arg1, int arg2) {
         CronogramaTransporte cr;
         descuentoPorAnticipacion = new float[91];
         descuentoPorPersonas = new float[7];
         descuentoPorPersonas[0] = 0;
-        descuentoPorAnticipacion[0]=0;
+        descuentoPorAnticipacion[0] = 0;
         int precioEsc;
         ArrayList<DayOfWeek> salidasT = new ArrayList<>();
         salidasT.add(DayOfWeek.MONDAY);
@@ -197,72 +190,73 @@ public class AgenteTransporte extends Agent {
         salidasT.add(DayOfWeek.FRIDAY);
         salidasT.add(DayOfWeek.SATURDAY);
         salidasT.add(DayOfWeek.SUNDAY);
-        switch (arg2){
+        switch (arg2) {
             case 1:
                 //Primer escenario: descuento de 5% desde 10 dias de anticipacion y aumentando diariamente en 0,5%
                 //Descuentos por días: Lunes a Jueves : 16%
                 //Descuento por cantidad de personas: no hay
-                definirDescuentosEscenario(5,0,0);
-                for(int i= 0; i<=3; i++){
-                    descuentoPorDias[i]= 16.0f/100;
+                definirDescuentosEscenario(5, 0, 0);
+                for (int i = 0; i <= 3; i++) {
+                    descuentoPorDias[i] = 16.0f / 100;
                 }
-                
-                if(arg1.equalsIgnoreCase("Buenos Aires")){
-                    precioEsc=583;
-                }else{precioEsc=213;}
-                
+
+                if (arg1.equalsIgnoreCase("Buenos Aires")) {
+                    precioEsc = 583;
+                } else {
+                    precioEsc = 213;
+                }
+
                 tipo = TipoEmpresa.TERRESTRE;
-                cr= new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.SEMICAMA);
+                cr = new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.SEMICAMA);
                 rutas.add(cr);
                 break;
-            case 2: 
+            case 2:
                 //Segundo escenario: descuento de 7% desde 10 dias de anticipacion y aumentando diariamente en 0,7%
                 //Descuentos por días: no hay
                 //Descuento por cantidad de personas: desde 3 3%, desde 6 7%;
-                definirDescuentosEscenario(7,3,7);
+                definirDescuentosEscenario(7, 3, 7);
 
-                 if(arg1.equalsIgnoreCase("Buenos Aires")){
-                    precioEsc=624;
-                }else{precioEsc=250;}
-                 
+                if (arg1.equalsIgnoreCase("Buenos Aires")) {
+                    precioEsc = 624;
+                } else {
+                    precioEsc = 250;
+                }
+
                 tipo = TipoEmpresa.TERRESTRE;
-                cr= new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.CAMA);
-                rutas.add(cr); 
+                cr = new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.CAMA);
+                rutas.add(cr);
                 break;
             case 3:
                 //Tercer escenario: descuento de 2% desde 10 dias de anticipacion y aumentando diariamente en 0,2%
                 //Descuentos por días: Miércoles Viernes y Domingo : 22%
                 //Descuento por cantidad de personas: desde 3 5%, desde 6 11%;
-                definirDescuentosEscenario(2,5,11);
-                descuentoPorDias[2]= 22.0f/100;
-                descuentoPorDias[4]= 22.0f/100;
-                descuentoPorDias[6]= 22.0f/100;
-                
+                definirDescuentosEscenario(2, 5, 11);
+                descuentoPorDias[2] = 22.0f / 100;
+                descuentoPorDias[4] = 22.0f / 100;
+                descuentoPorDias[6] = 22.0f / 100;
+
                 precioEsc = 716;
-                
+
                 tipo = TipoEmpresa.TERRESTRE;
-                cr= new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.EJECUTIVO);
+                cr = new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.EJECUTIVO);
                 rutas.add(cr);
                 break;
             case 4:
                 //Cuarto escenario: descuento de 4% desde 10 dias de anticipacion y aumentando diariamente en 0,4%
                 //Descuentos por días: Miércoles : 18%
                 //Descuento por cantidad de personas: desde 3 6%, desde 6 15%;
-                definirDescuentosEscenario(4,6,15);
-                descuentoPorDias[2]= 18.0f/100;
-                
-                precioEsc=1600;
-                
+                definirDescuentosEscenario(4, 6, 15);
+                descuentoPorDias[2] = 18.0f / 100;
+                precioEsc = 1600;
                 tipo = TipoEmpresa.AEREA;
-                cr= new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.TURISTA);
+                cr = new CronogramaTransporte("Corrientes", arg1, precioEsc, 100, salidasT, CronogramaTransporte.Calidad.TURISTA);
                 rutas.add(cr);
                 break;
-                
         }
-        
     }
-    
-    private class MostrarInformacion extends CyclicBehaviour{
+
+    private class MostrarInformacion extends CyclicBehaviour {
+
         private ACLMessage infoM;
 
         @Override
@@ -273,36 +267,31 @@ public class AgenteTransporte extends Agent {
                 mostrarDatos();
             }
         }
-        
+
     }
-    
-    
 
     private class RecibirPedido extends CyclicBehaviour {
 
         @Override
         public void action() {
+            //Recibir mensaje
             MessageTemplate mt = MessageTemplate.or(MessageTemplate.MatchPerformative(ACLMessage.CFP), MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-                    ACLMessage msg = myAgent.receive(mt);
+            ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
                 ACLMessage respuestaT = msg.createReply();
                 Paquete pref;
                 pref = Paquete.stringToPaquete(msg.getContent());
-                
                 if (msg.getPerformative() == ACLMessage.CFP) {
-
                     //Verificar que existan rutas para los días de salida y vuelta
                     boolean existeRutaIda = false;
                     boolean existeRutaVuelta = true;
                     GregorianCalendar fechaSalida = pref.getFechaInicialInferior();
                     if (pref.daysBetween() == 0) {
-                       
                         for (CronogramaTransporte ruta : rutas) {
                             if ((ruta.getOrigen().equalsIgnoreCase(pref.getOrigen())) && (ruta.getDestino().equalsIgnoreCase(pref.getDestino()))) {
                                 if (ruta.askForDate(fechaSalida)) {
                                     existeRutaIda = true;
                                 }
-                                
                                 if (existeRutaIda && existeRutaVuelta) {
                                     pref.setPresupuestoMax(0);
                                     pref.setCalidadTransporte(ruta.getCalidad());
@@ -319,7 +308,6 @@ public class AgenteTransporte extends Agent {
                                     if (ruta.askForDate(fechaSalida)) {
                                         existeRutaIda = true;
                                     }
-                                    
                                     if (existeRutaIda && existeRutaVuelta) {
                                         pref.setPresupuestoMax(0);
                                         pref.setCalidadTransporte(ruta.getCalidad());
@@ -328,7 +316,6 @@ public class AgenteTransporte extends Agent {
                                         break;
                                     }
                                 }
-
                             }
                             if (existeRutaIda && existeRutaVuelta) {
                                 break;
@@ -337,51 +324,51 @@ public class AgenteTransporte extends Agent {
                         }
                     }
                     if (existeRutaIda && existeRutaVuelta) {
+                        //Se encontró una ruta al destino deseado
                         pref.setTipoTransporte(tipo);
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
                         respuestaT.setContent(pref.toStringForMessage());
                         myAgent.send(respuestaT);
                     } else {
+                        //No se encontró una ruta al destino deseado
                         respuestaT.setPerformative(ACLMessage.REFUSE);
                         myAgent.send(respuestaT);
                     }
                 } else if (msg.getPerformative() == ACLMessage.INFORM) {
+                    //Tratar descuentos
                     //Calcular anticipación
                     GregorianCalendar cal = new GregorianCalendar();
                     int anticipacion = Paquete.daysBetween(cal, pref.getFechaInicialInferior());
-                    
                     //Dar descuentos
                     //Descuentos según cantidad de personas
-                    if (pref.getCantidadPersonas() != 0 && descuentoPorPersonas.length>1) {
+                    if (pref.getCantidadPersonas() != 0 && descuentoPorPersonas.length > 1) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
                         float dbt;
-                        if(pref.getCantidadPersonas()<descuentoPorPersonas.length){
+                        if (pref.getCantidadPersonas() < descuentoPorPersonas.length) {
                             dbt = descuentoPorPersonas[pref.getCantidadPersonas()];
-                        }else{
+                        } else {
                             dbt = descuentoPorPersonas[descuentoPorPersonas.length - 1];
                         }
                         pref.setPresupuestoMax(dbt);
                         pref.setCantidadPersonas(0);
-                        
-                    //Descuento según días de anticipación
+                        //Descuento según días de anticipación
                     } else if (pref.getAnticipacion() != 0 && descuentoPorAnticipacion.length > 1) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
-                        float dbt ;
-                        if(anticipacion< descuentoPorAnticipacion.length){
+                        float dbt;
+                        if (anticipacion < descuentoPorAnticipacion.length) {
                             dbt = descuentoPorAnticipacion[anticipacion];
-                        }else{
-                            dbt = descuentoPorAnticipacion[descuentoPorAnticipacion.length-1];
+                        } else {
+                            dbt = descuentoPorAnticipacion[descuentoPorAnticipacion.length - 1];
                         }
                         pref.setPresupuestoMax(pref.getPresupuestoMax() + dbt);
                         pref.setAnticipacion(0);
-                        
-                    //Descuentos según el día de viaje    
+                        //Descuentos según el día de viaje    
                     } else if (pref.getDuracion() != 0) {
                         int diaDeViaje = pref.getFechaInicialInferior().get(Calendar.DAY_OF_WEEK);
-                        if (diaDeViaje == 0){
+                        if (diaDeViaje == 0) {
                             diaDeViaje = 6;
-                        }else { 
-                            diaDeViaje = diaDeViaje -1;
+                        } else {
+                            diaDeViaje = diaDeViaje - 1;
                         }
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
                         float dto = descuentoPorDias[diaDeViaje];
@@ -397,11 +384,10 @@ public class AgenteTransporte extends Agent {
                 block();
             }
         }
-
     }
 
     public ArrayList<CronogramaTransporte> getRutas() {
         return rutas;
     }
-    
+
 }

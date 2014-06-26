@@ -11,7 +11,7 @@ import jade.core.Agent;
 
 /**
  *
- * @author Torre
+ * Pequeño agente abocado a buscar en el DF.
  */
 public class AgenteBuscar extends Agent{
     

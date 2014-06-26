@@ -29,25 +29,28 @@ import java.util.logging.Logger;
  */
 public class AgenteAgenciaTurismo extends Agent {
 
+    //Atributos:
     private String nombre;
+    //Listas de ofertas recibidas tanto de lugares como de transportes.
     private ArrayList<Paquete> ofertasLugar = new ArrayList<>();
     private ArrayList<Paquete> ofertasTransporte = new ArrayList<>();
+    //Variables para almacenar los AID de las mejores ofertas
     private AID mejorLugar;
     private AID mejorTransporte;
     //Descuentos máximos a pedir a una empresa de transporte o lugar.
     private float descuentoTransporte;
     private float descuentoLugar;
-    //Descuentos por pago con efectivo o tarjeta.
+    //Listas de transportes y lugares.
     private ArrayList<AID> transportes;
     private ArrayList<AID> lugares;
-    
+
     int cuentaLugar;
     int cuentaTransporte;
     private float comision;
     private VentanaAgencia myGui;
     private VentanaMostrarAgencia mostrarGui;
 
-    //VAriables usadas en el beahaviour
+    //VAriables usadas en beahaviours
     int step = 0;
     String pref = new String();
     Paquete preferencias = new Paquete();
@@ -58,16 +61,16 @@ public class AgenteAgenciaTurismo extends Agent {
     protected void setup() {
         nombre = this.getLocalName();
         Object[] args = getArguments();
-        if (args!=null && args.length>0){
+        if (args != null && args.length > 0) {
             //para el caso de la creación de escenarios
             cargarAgencia(args);
             asociarTodosServicios();
             agregarComportamiento();
-        }else{
+        } else {
             //para el caso de llamada desde la interfaz    
             myGui = new VentanaAgencia(this);
             myGui.setVisible(true);
-        }        
+        }
         //Registro en paginas amarillas
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -80,7 +83,7 @@ public class AgenteAgenciaTurismo extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        
+
     }
 
     //Métodos llamados desde la interfaz
@@ -95,7 +98,7 @@ public class AgenteAgenciaTurismo extends Agent {
         this.transportes = transportes;
         this.lugares = lugares;
     }
-    
+
     public ArrayList<AID> getTransportes() {
         return transportes;
     }
@@ -104,7 +107,7 @@ public class AgenteAgenciaTurismo extends Agent {
         return lugares;
     }
 
-    //Quitar registro de las paginas amarillas
+    //Deregistrar de las paginas amarillas
     protected void takeDown() {
         try {
             DFService.deregister(this);
@@ -124,8 +127,8 @@ public class AgenteAgenciaTurismo extends Agent {
     public float getComision() {
         return comision;
     }
-    
-    private void mostrarDatos(){
+
+    private void mostrarDatos() {
         mostrarGui = new VentanaMostrarAgencia(this);
         mostrarGui.setVisible(true);
     }
@@ -135,11 +138,11 @@ public class AgenteAgenciaTurismo extends Agent {
         addBehaviour(new MostrarInformacion());
         addBehaviour(new AsociarServicio());
     }
-    
-    public void asociarTodosServicios(){
+
+    public void asociarTodosServicios() {
         ArrayList<AID> transportesDF = new ArrayList<>();
         ArrayList<AID> lugaresDF = new ArrayList<>();
-        DFAgentDescription [] resultadosTransporte;
+        DFAgentDescription[] resultadosTransporte;
         DFAgentDescription[] resultadosLugar;
         //Buscar todos los transportes registrados
         ServiceDescription servicio = new ServiceDescription();
@@ -154,9 +157,8 @@ public class AgenteAgenciaTurismo extends Agent {
         } catch (FIPAException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
         }
-        
-       //Buscar todos los Lugares registrados 
-        
+
+        //Buscar todos los Lugares registrados 
         ServiceDescription servicio2 = new ServiceDescription();
         servicio2.setType("Lugar");
         DFAgentDescription descripcion2 = new DFAgentDescription();
@@ -169,27 +171,26 @@ public class AgenteAgenciaTurismo extends Agent {
         } catch (FIPAException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //Asignar los lugares y transportes encontrados
         asignarServicios(transportesDF, lugaresDF);
     }
 
     private void cargarAgencia(Object[] args) {
-        
-        float argsComision= Integer.parseInt(args[0].toString());
-        float argsDtoLugar= Integer.parseInt(args[1].toString());
-        float argsDtoT= Integer.parseInt(args[2].toString());
+
+        float argsComision = Integer.parseInt(args[0].toString());
+        float argsDtoLugar = Integer.parseInt(args[1].toString());
+        float argsDtoT = Integer.parseInt(args[2].toString());
         this.descuentoLugar = argsDtoLugar / 100;
         this.comision = 1 + (argsComision / 100);
         this.descuentoTransporte = argsDtoT / 100;
-        
-        
-        
-        
+
     }
-    
-    private class MostrarInformacion extends CyclicBehaviour{
+
+    private class MostrarInformacion extends CyclicBehaviour {
+
         private ACLMessage infoM;
+
         @Override
         public void action() {
             MessageTemplate mtInfo = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
@@ -198,7 +199,7 @@ public class AgenteAgenciaTurismo extends Agent {
                 mostrarDatos();
             }
         }
-        
+
     }
 
     private class BuscarPaquete extends Behaviour {
@@ -206,11 +207,8 @@ public class AgenteAgenciaTurismo extends Agent {
         @Override
         public void action() {
 
-            
-
             switch (step) {
                 case 0: {
-                    
                     //Recibe mensaje del turista
                     MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Busqueda de Paquete"), MessageTemplate.MatchPerformative(ACLMessage.CFP));
                     msg = myAgent.receive(mt);
@@ -228,7 +226,6 @@ public class AgenteAgenciaTurismo extends Agent {
                 ;
                 break;
                 case 1: {
-
                     // Envía mensaje a todos los lugares.
                     ACLMessage cfpLugares = new ACLMessage(ACLMessage.CFP);
                     for (AID lugar : lugares) {
@@ -252,17 +249,18 @@ public class AgenteAgenciaTurismo extends Agent {
                 ;
                 break;
                 case 2: {
-
+                    //EMPIEZA LA NEGOCIACION CON LUGARES
                     prefSemiHeuristica.setPresupuestoMax(preferencias.getPresupuestoMax() * 0.7f);
                     MessageTemplate mtlugar = MessageTemplate.MatchConversationId("Busqueda de Lugar");
+                    //Recibir respuesta de lugar
                     ACLMessage respuestaLugar = myAgent.receive(mtlugar);
                     if (respuestaLugar != null) {
-
                         switch (respuestaLugar.getPerformative()) {
                             case ACLMessage.PROPOSE: {
-                                // presupuestomax va a tomar como el descuento realizado
+                                // presupuestomax va a ser utilizado temporalmente como variables para almacenar el descuento realizado
                                 Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
                                 if (descuentoLugar <= paqLugar.getPresupuestoMax()) {
+                                    //Si el descuento realizado por la empresa de lugar es satisfactorio
                                     //guarda paquete ordenado en ofertasLugar
                                     paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
                                     paqLugar.setHeuristica(prefSemiHeuristica);
@@ -273,8 +271,8 @@ public class AgenteAgenciaTurismo extends Agent {
                                         mejorLugar = respuestaLugar.getSender();
                                     }
                                     cuentaLugar++;
-
                                 } else {
+                                    //Si el descuento realizado no es satisfactorio se pide más descuento
                                     ACLMessage pedirRebaja = respuestaLugar.createReply();
                                     pedirRebaja.setPerformative(ACLMessage.CFP);
                                     pedirRebaja.setContent(respuestaLugar.getContent());
@@ -283,7 +281,7 @@ public class AgenteAgenciaTurismo extends Agent {
                             }
                             break;
                             case ACLMessage.INFORM: {
-                                //El lugar ha descontado lo máximo que puede
+                                //En éste punto, el lugar ha descontado lo máximo que puede
                                 Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
                                 //guarda paquete ordenado en ofertasLugar
                                 paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
@@ -295,22 +293,20 @@ public class AgenteAgenciaTurismo extends Agent {
                                     mejorLugar = respuestaLugar.getSender();
                                 }
                                 cuentaLugar++;
-
                             }
                             break;
                             default:
                                 cuentaLugar++;
                                 break;
                         }
-                        
                     } else {
                         block();
                     }
                     if (cuentaLugar == lugares.size()) {
                         step = 3;
                     }/*else{
-                        block();
-                    }*/
+                     block();
+                     }*/
 
                 }
                 ;
@@ -322,12 +318,12 @@ public class AgenteAgenciaTurismo extends Agent {
                     MessageTemplate mttransporte = MessageTemplate.MatchConversationId("Busqueda de Transportes");
                     ACLMessage respuestaTransporte = myAgent.receive(mttransporte);
                     if (respuestaTransporte != null) {
-
                         switch (respuestaTransporte.getPerformative()) {
                             case ACLMessage.PROPOSE: {
-                                // presupuestomax va a tomar como el descuento realizado.
+                                // presupuestomax va a ser utilizado temporalmente como variables para almacenar el descuento realizado
                                 Paquete paqTrans = Paquete.stringToPaquete(respuestaTransporte.getContent());
                                 if (descuentoTransporte <= paqTrans.getPresupuestoMax()) {
+                                    //Si el descuento realizado es satisfactorio
                                     //guarda paquete ordenado en ofertasTransporte
                                     paqTrans.setAlojamiento(preferencias.getAlojamiento());
                                     paqTrans.setHeuristica(prefSemiHeuristica);
@@ -338,8 +334,8 @@ public class AgenteAgenciaTurismo extends Agent {
                                     if (ofertasTransporte.indexOf(paqTrans) == 0) {
                                         mejorTransporte = respuestaTransporte.getSender();
                                     }
-
                                 } else {
+                                    //En caso de que no sea satisfactorio el descuento se solicitan más descuentos.
                                     ACLMessage pedirRebaja = respuestaTransporte.createReply();
                                     pedirRebaja.setPerformative(ACLMessage.INFORM);
                                     pedirRebaja.setContent(respuestaTransporte.getContent());
@@ -360,22 +356,21 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (ofertasTransporte.indexOf(paqTrans) == 0) {
                                     mejorTransporte = respuestaTransporte.getSender();
                                 }
-
                             }
                             break;
                             default:
                                 cuentaTransporte++;
                                 break;
                         }
-                       
+
                     } else {
                         block();
                     }
                     if (cuentaTransporte == transportes.size()) {
                         step = 4;
                     }/*else {
-                        block();
-                    }*/
+                     block();
+                     }*/
 
                 }
                 ;
@@ -384,6 +379,7 @@ public class AgenteAgenciaTurismo extends Agent {
 
         }
 
+        //Método para informar a las empresas que han ofrecido las mejores propuestas
         private void aceptarPropuestas(AID mejorLugar, AID mejorTransporte) {
             ACLMessage aceptar = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
             aceptar.addReceiver(mejorLugar);
@@ -391,6 +387,7 @@ public class AgenteAgenciaTurismo extends Agent {
             myAgent.send(aceptar);
         }
 
+        //Método para armar el paquete compuesto por las mejores ofertas de lugar y transporte
         private Paquete armarPaquete(Paquete lugar, Paquete transporte, Paquete preferencias) {
             Paquete propuesta = new Paquete();
             propuesta.setOrigen(preferencias.getOrigen());
@@ -403,14 +400,16 @@ public class AgenteAgenciaTurismo extends Agent {
             propuesta.setAlojamiento(lugar.getAlojamiento());
             propuesta.setPonderacion(preferencias.getPonderacionPrecio());
             propuesta.setCalidadTransporte(transporte.getCalidadTransporte());
-            
+
             //verificar que el descuento sea como máximo 100%
-            if(lugar.getPresupuestoMax()>1)
+            if (lugar.getPresupuestoMax() > 1) {
                 lugar.setPresupuestoMax(1);
-            if(transporte.getPresupuestoMax()>1)
+            }
+            if (transporte.getPresupuestoMax() > 1) {
                 transporte.setPresupuestoMax(1);
-            
-            propuesta.setPrecio((lugar.getPrecio() * (1-lugar.getPresupuestoMax()) + transporte.getPrecio() * (1-transporte.getPresupuestoMax())) * comision);
+            }
+
+            propuesta.setPrecio((lugar.getPrecio() * (1 - lugar.getPresupuestoMax()) + transporte.getPrecio() * (1 - transporte.getPresupuestoMax())) * comision);
             return propuesta;
         }
 
