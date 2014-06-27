@@ -420,13 +420,24 @@ public final class Paquete implements Comparable {
         } else if (this.heuristica < paquete.getHeuristica()) {
             return (-1);
         } else {
-            if (this.precio < paquete.getPrecio()) {
+            if (this.getPonderacionCalidad()>this.getPonderacionPrecio()){
+                if (this.getCalidadPaquete() > paquete.getCalidadPaquete()){
+                    return 1;
+                }else if(this.getCalidadPaquete() < paquete.getCalidadPaquete()){
+                    return (-1);
+                }else{
+                    return 0;
+                }
+            }else{
+                if (this.precio < paquete.getPrecio()) {
                 return 1;
-            } else if (this.precio > paquete.getPrecio()) {
-                return (-1);
-            } else {
-                return 0;
+                } else if (this.precio > paquete.getPrecio()) {
+                    return (-1);
+                }else{
+                    return 0;
+                }
             }
+            
         }
     }
 
