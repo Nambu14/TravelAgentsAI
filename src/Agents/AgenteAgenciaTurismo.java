@@ -262,6 +262,10 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (descuentoLugar <= paqLugar.getPresupuestoMax()) {
                                     //Si el descuento realizado por la empresa de lugar es satisfactorio
                                     //guarda paquete ordenado en ofertasLugar
+                                    //verificar que el descuento sea como máximo 100%
+                                    if(paqLugar.getPresupuestoMax()>1)
+                                        paqLugar.setPresupuestoMax(1);
+                                    paqLugar.setPrecio(paqLugar.getPrecio()*(1-paqLugar.getPresupuestoMax()));
                                     paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
                                     paqLugar.setHeuristica(prefSemiHeuristica);
                                     ofertasLugar.add(paqLugar);
@@ -284,6 +288,10 @@ public class AgenteAgenciaTurismo extends Agent {
                                 //En éste punto, el lugar ha descontado lo máximo que puede
                                 Paquete paqLugar = Paquete.stringToPaquete(respuestaLugar.getContent());
                                 //guarda paquete ordenado en ofertasLugar
+                                //verificar que el descuento sea como máximo 100%
+                                if(paqLugar.getPresupuestoMax()>1)
+                                    paqLugar.setPresupuestoMax(1);
+                                paqLugar.setPrecio(paqLugar.getPrecio()*(1-paqLugar.getPresupuestoMax()));
                                 paqLugar.setCalidadTransporte(preferencias.getCalidadTransporte());
                                 paqLugar.setHeuristica(prefSemiHeuristica);
                                 ofertasLugar.add(paqLugar);
@@ -325,6 +333,10 @@ public class AgenteAgenciaTurismo extends Agent {
                                 if (descuentoTransporte <= paqTrans.getPresupuestoMax()) {
                                     //Si el descuento realizado es satisfactorio
                                     //guarda paquete ordenado en ofertasTransporte
+                                    //verificar que el descuento sea como máximo 100%
+                                    if(paqTrans.getPresupuestoMax()>1)
+                                        paqTrans.setPresupuestoMax(1);
+                                    paqTrans.setPrecio(paqTrans.getPrecio()*(1-paqTrans.getPresupuestoMax()));
                                     paqTrans.setAlojamiento(preferencias.getAlojamiento());
                                     paqTrans.setHeuristica(prefSemiHeuristica);
                                     ofertasTransporte.add(paqTrans);
@@ -337,7 +349,7 @@ public class AgenteAgenciaTurismo extends Agent {
                                 } else {
                                     //En caso de que no sea satisfactorio el descuento se solicitan más descuentos.
                                     ACLMessage pedirRebaja = respuestaTransporte.createReply();
-                                    pedirRebaja.setPerformative(ACLMessage.INFORM);
+                                    pedirRebaja.setPerformative(ACLMessage.CFP);
                                     pedirRebaja.setContent(respuestaTransporte.getContent());
                                     send(pedirRebaja);
                                 }
@@ -347,6 +359,10 @@ public class AgenteAgenciaTurismo extends Agent {
                                 //El transporte ha descontado lo máximo que puede
                                 Paquete paqTrans = Paquete.stringToPaquete(respuestaTransporte.getContent());
                                 //guarda paquete ordenado en ofertasTransporte
+                                //verificar que el descuento sea como máximo 100%
+                                if(paqTrans.getPresupuestoMax()>1)
+                                        paqTrans.setPresupuestoMax(1);
+                                paqTrans.setPrecio(paqTrans.getPrecio()*(1-paqTrans.getPresupuestoMax()));
                                 paqTrans.setAlojamiento(preferencias.getAlojamiento());
                                 paqTrans.setHeuristica(prefSemiHeuristica);
                                 ofertasTransporte.add(paqTrans);
@@ -401,15 +417,8 @@ public class AgenteAgenciaTurismo extends Agent {
             propuesta.setPonderacion(preferencias.getPonderacionPrecio());
             propuesta.setCalidadTransporte(transporte.getCalidadTransporte());
 
-            //verificar que el descuento sea como máximo 100%
-            if (lugar.getPresupuestoMax() > 1) {
-                lugar.setPresupuestoMax(1);
-            }
-            if (transporte.getPresupuestoMax() > 1) {
-                transporte.setPresupuestoMax(1);
-            }
-
-            propuesta.setPrecio((lugar.getPrecio() * (1 - lugar.getPresupuestoMax()) + transporte.getPrecio() * (1 - transporte.getPresupuestoMax())) * comision);
+            //ASIGNAR COMISION DE AGENCIA
+            propuesta.setPrecio((lugar.getPrecio() + transporte.getPrecio()) * comision);
             return propuesta;
         }
 

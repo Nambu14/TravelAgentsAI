@@ -281,7 +281,7 @@ public class AgenteTransporte extends Agent {
                 ACLMessage respuestaT = msg.createReply();
                 Paquete pref;
                 pref = Paquete.stringToPaquete(msg.getContent());
-                if (msg.getPerformative() == ACLMessage.CFP) {
+                if (msg.getPerformative() == ACLMessage.CFP && pref.getCantidadPersonas()>0)  {
                     //Verificar que existan rutas para los días de salida y vuelta
                     boolean existeRutaIda = false;
                     boolean existeRutaVuelta = true;
@@ -297,6 +297,7 @@ public class AgenteTransporte extends Agent {
                                     pref.setCalidadTransporte(ruta.getCalidad());
                                     pref.setFechaInicialInferior(fechaSalida.getTime());
                                     pref.setPrecio(ruta.getPrecioPersona() * pref.getCantidadPersonas());
+                                    pref.setCantidadPersonas(-1*pref.getCantidadPersonas());
                                     break;
                                 }
                             }
@@ -313,6 +314,7 @@ public class AgenteTransporte extends Agent {
                                         pref.setCalidadTransporte(ruta.getCalidad());
                                         pref.setFechaInicialInferior(fechaSalida.getTime());
                                         pref.setPrecio(ruta.getPrecioPersona() * pref.getCantidadPersonas());
+                                        pref.setCantidadPersonas(-1*pref.getCantidadPersonas());
                                         break;
                                     }
                                 }
@@ -334,7 +336,7 @@ public class AgenteTransporte extends Agent {
                         respuestaT.setPerformative(ACLMessage.REFUSE);
                         myAgent.send(respuestaT);
                     }
-                } else if (msg.getPerformative() == ACLMessage.INFORM) {
+                } else if (msg.getPerformative() == ACLMessage.CFP && pref.getCantidadPersonas()<=0) {
                     //Tratar descuentos
                     //Calcular anticipación
                     GregorianCalendar cal = new GregorianCalendar();
@@ -343,9 +345,10 @@ public class AgenteTransporte extends Agent {
                     //Descuentos según cantidad de personas
                     if (pref.getCantidadPersonas() != 0 && descuentoPorPersonas.length > 1) {
                         respuestaT.setPerformative(ACLMessage.PROPOSE);
+                        int psas = -1*pref.getCantidadPersonas();
                         float dbt;
-                        if (pref.getCantidadPersonas() < descuentoPorPersonas.length) {
-                            dbt = descuentoPorPersonas[pref.getCantidadPersonas()];
+                        if (psas < descuentoPorPersonas.length) {
+                            dbt = descuentoPorPersonas[psas];
                         } else {
                             dbt = descuentoPorPersonas[descuentoPorPersonas.length - 1];
                         }
