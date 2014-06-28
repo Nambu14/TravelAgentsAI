@@ -138,10 +138,11 @@ public class AgenteTurista extends Agent {
                     myAgent.send(mensajeAcept);
                     mejor = ofertas.get(0);
                     mejor.actualizar();
-                    PantallaResultado pr = new PantallaResultado(mejor);
+                    PantallaResultado pr = new PantallaResultado(mejor, AgenteTurista.this);
                     pr.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "No hay servicios disponibles para el viaje que desea realizar.", ":-(", JOptionPane.ERROR_MESSAGE);
+                    AgenteTurista.this.doDelete();
                 }
                 return true;
             }

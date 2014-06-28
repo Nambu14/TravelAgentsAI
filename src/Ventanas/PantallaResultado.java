@@ -6,6 +6,7 @@
 
 package Ventanas;
 
+import Agents.AgenteTurista;
 import Things.Paquete;
 import java.util.Calendar;
 import javax.swing.JLabel;
@@ -18,10 +19,13 @@ public class PantallaResultado extends javax.swing.JFrame {
 
     private Paquete resultado;
     private String fecha;
+    private AgenteTurista miAgente;
     /**
      * Creates new form PantallaResultado
      */
-    public PantallaResultado(Paquete paquete) {
+    public PantallaResultado(Paquete paquete, AgenteTurista a) {
+        super(a.getLocalName());
+	miAgente = a;
         this.resultado = paquete;
         fecha = Integer.toString(resultado.getFechaInicialInferior().get(Calendar.DATE));
         fecha = fecha + "/";
@@ -256,24 +260,23 @@ public class PantallaResultado extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(161, 161, 161)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(precio)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(aceptarPaqueteSelecto))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(97, 97, 97)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(aceptarPaqueteSelecto)
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,15 +289,16 @@ public class PantallaResultado extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(precio))
-                .addGap(4, 4, 4)
+                .addGap(18, 18, 18)
                 .addComponent(aceptarPaqueteSelecto)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void aceptarPaqueteSelectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarPaqueteSelectoActionPerformed
+        miAgente.doDelete();
         this.dispose();
     }//GEN-LAST:event_aceptarPaqueteSelectoActionPerformed
 
