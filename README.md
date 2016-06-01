@@ -1,34 +1,28 @@
 # README de IA2014 #
 
-This README would normally document whatever steps are necessary to get your application up and running. (SI, CLARO)
+This application was developed as the final practice of Artificial Intelligence, an Information Systems Engineering fifth level subject. The idea was to design a system of colaborative agents that represents every stakeholder involved in the purchase of a turism package:
+ * Travel agencies;
+ * Transports, airlines or buses;
+ * Hotels.
+Once the customer sets his preferences, all the agents work together and negotiate to get the best package available. 
 
 ### What is this repository for? ###
 
-Bueno gente, como ya saben éste repositorio es para que podamos avanzar con el **TPI** de **Inteligencia Artificial** cada uno en la comodidad de su casa, es bien facil de usar siempre que nos dividamos bien las tareas y no nos pisemos. Y si nos pisamos tampoco es muy complicado arreglarlo jaja.
+This repository is a clone of the original held in Bitbucket.
 
-Sobre la *plataforma de desarrollo*:
+About the *development platform*:
 
 * [Netbeans 8.0](https://netbeans.org/)
 * [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html?ssSourceSiteId=otnes)
 * [Jade 4.3.2](http://jade.tilab.com/)
-* [Solarized Theme 4Netbeans <--- OBLIGATORIO no](http://ethanschoonover.com/solarized)
 
-### How do I get set up? ###
+### JADE? ###
 
-Para empezar, primero instalan todo y después **MAGIC** 
-
-Links útiles:
+**J**ava **A**gent **DE**velopment [Framework](http://jade.tilab.com/) simplifies the implementation of multi-agent systems through a middle-ware that complies with the FIPA specifications and through a set of graphical tools that support the debugging and deployment phases.
+Links:
 
 * [JADE Programmer's Guide](http://jade.tilab.com/doc/programmersguide.pdf)
-* [Using Git in Netbeans](https://netbeans.org/kb/docs/ide/git.html)
 
 ### Who do I talk to? ###
 
-* Repo owner or admin (o sea, yo, quejas por escrito)  
-* Other community or team contact (o sea, ustedes)
-
-### Finally ###
-
-Nosotros dentro de un mes cuando tengamos que defender el trabajo.
-
-![Alt text](http://img3.wikia.nocookie.net/__cb20090528000747/terminator/images/2/2e/T-600-terminator-unit.jpg)
+* Repo owner or admin
